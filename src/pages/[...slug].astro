@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import { ssrRender } from '../client/app.js';
+import { routes, metaFor } from '../lib/routes.js';
+
+export function getStaticPaths() {
+  return routes().map(path => ({ params: { slug: path === '/' ? undefined : path.replace(/^\/|\/$/g, '') }, props: { path } }));
+}
+const { path } = Astro.props;
+const { html, title, chrome } = ssrRender(path);
+const meta = metaFor(path, title);
+---
+<Base title={title} description={meta.description} path={path} chrome={chrome} jsonld={meta.jsonld} image={meta.image}>
+  <Fragment set:html={html} />
+</Base>

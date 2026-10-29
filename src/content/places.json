@@ -1,0 +1,316 @@
+[
+ {
+  "id": "burnaby",
+  "name": "Burnaby, Canada",
+  "lat": 49.25,
+  "lon": -122.98,
+  "kind": "office",
+  "sector": "office",
+  "entries": [
+   {
+    "y": "1981",
+    "t": "Head office",
+    "d": "Founded in British Columbia in 1981, with its head office in Burnaby. ISO 9001:2015 registered for Burnaby and Brockville.",
+    "img": "h1981"
+   }
+  ]
+ },
+ {
+  "id": "canada-dnd",
+  "name": "Canada — national defence",
+  "lat": 45.42,
+  "lon": -75.7,
+  "kind": "project",
+  "sector": "military",
+  "entries": [
+   {
+    "y": "1984",
+    "t": "First Canadian military contract",
+    "d": "The MEX-26 helicopter maintenance shelter launches.",
+    "img": "h1984"
+   },
+   {
+    "y": "2013",
+    "t": "Boeing CH-147 Chinook",
+    "d": "24 MSVS Special Equipment Shelter kits for Chinook maintenance.",
+    "img": "h2013"
+   },
+   {
+    "y": "2017",
+    "t": "Headquarters Shelter System",
+    "d": "HQSS acquisition and in-service support contracts worth $167M CDN.",
+    "img": "h2017"
+   }
+  ]
+ },
+ {
+  "id": "natick",
+  "name": "Natick, Massachusetts",
+  "lat": 42.28,
+  "lon": -71.35,
+  "kind": "project",
+  "sector": "military",
+  "entries": [
+   {
+    "y": "1994",
+    "t": "First MECC units",
+    "d": "The first MECCs go to US Natick Labs — and to the Canadian Coast Guard.",
+    "img": "h1994"
+   }
+  ]
+ },
+ {
+  "id": "baffin",
+  "name": "Baffinland mining camp",
+  "lat": 71.3,
+  "lon": -79.3,
+  "kind": "project",
+  "sector": "commercial",
+  "entries": [
+   {
+    "y": null,
+    "t": "Through the winter gales",
+    "d": "Winter gales pulverized seven wooden buildings — and 11 Weatherhaven fabric shelters were still standing.",
+    "img": null
+   }
+  ]
+ },
+ {
+  "id": "redmtn",
+  "name": "Red Mountain",
+  "lat": 56,
+  "lon": -129.7,
+  "kind": "project",
+  "sector": "commercial",
+  "entries": [
+   {
+    "y": null,
+    "t": "IDM Mining camp",
+    "d": "A 70 mph winter storm — and crews stayed warm in their Weatherhaven tents.",
+    "img": null
+   }
+  ]
+ },
+ {
+  "id": "greenland",
+  "name": "North of Greenland",
+  "lat": 82.2,
+  "lon": -38,
+  "kind": "project",
+  "sector": "commercial",
+  "entries": [
+   {
+    "y": null,
+    "t": "1,000 km on the pack ice",
+    "d": "Endurance shelters carried a customer through a 1,000 km wintertime dog-sled journey on the pack ice north of Greenland.",
+    "img": "p_polar2"
+   }
+  ]
+ },
+ {
+  "id": "antarctica",
+  "name": "Antarctica",
+  "lat": -75.6,
+  "lon": -26.6,
+  "kind": "project",
+  "sector": "commercial",
+  "entries": [
+   {
+    "y": "1988",
+    "t": "First Antarctic camp",
+    "d": "Built with the Polarhaven shelter, followed by contracts with more than 10 countries.",
+    "img": "h1988"
+   },
+   {
+    "y": null,
+    "t": "Halley VI relocation",
+    "d": "Support for the British Antarctic Survey’s relocation of the Halley VI research station.",
+    "img": null
+   },
+   {
+    "y": null,
+    "t": "Climate research",
+    "d": "More than 20 of the 32 countries conducting climate change research in Antarctica use Weatherhaven products.",
+    "img": "antarctica"
+   }
+  ]
+ },
+ {
+  "id": "kuwait",
+  "name": "Kuwait",
+  "lat": 29.6,
+  "lon": 47.6,
+  "kind": "project",
+  "sector": "military",
+  "entries": [
+   {
+    "y": "1990",
+    "t": "First United Nations contract",
+    "d": "An Arctic camp redeployed to the Kuwait–Iraq demilitarized zone.",
+    "img": "h1990"
+   },
+   {
+    "y": null,
+    "t": "US Marine Corps C2",
+    "d": "“Absolutely one of the best pieces of gear we have acquired to date related to deployable C2 systems.”",
+    "img": null
+   }
+  ]
+ },
+ {
+  "id": "kosovo",
+  "name": "Kosovo",
+  "lat": 42.6,
+  "lon": 20.9,
+  "kind": "project",
+  "sector": "military",
+  "entries": [
+   {
+    "y": "1999",
+    "t": "Relocatable Temporary Camp",
+    "d": "A 1,400-person camp deployed to Kosovo.",
+    "img": "h1999"
+   }
+  ]
+ },
+ {
+  "id": "afghanistan",
+  "name": "Afghanistan",
+  "lat": 34.5,
+  "lon": 69.2,
+  "kind": "project",
+  "sector": "military",
+  "entries": [
+   {
+    "y": "2003",
+    "t": "Camp Julien",
+    "d": "A 2,200-person camp supplied to support Canadian Forces in Afghanistan.",
+    "img": "h2003"
+   }
+  ]
+ },
+ {
+  "id": "haiti",
+  "name": "Haiti",
+  "lat": 18.5,
+  "lon": -72.3,
+  "kind": "project",
+  "sector": "medical",
+  "entries": [
+   {
+    "y": "2010",
+    "t": "Earthquake response",
+    "d": "Emergency shelters for UN and Brazilian relief — and part of Canada’s Weatherhaven-built field hospital was operational within 24 hours.",
+    "img": "h2010h"
+   }
+  ]
+ },
+ {
+  "id": "peru",
+  "name": "Peru",
+  "lat": -12.05,
+  "lon": -77.04,
+  "kind": "project",
+  "sector": "medical",
+  "entries": [
+   {
+    "y": "2006",
+    "t": "Peru Navy emergency camps",
+    "d": "Emergency camps for 3,100 people.",
+    "img": "h2006"
+   },
+   {
+    "y": null,
+    "t": "Weatherhaven Peru",
+    "d": "Regional operation led by Managing Director Hugo Cueva.",
+    "img": null
+   }
+  ]
+ },
+ {
+  "id": "chile",
+  "name": "Chile",
+  "lat": -33.45,
+  "lon": -70.67,
+  "kind": "project",
+  "sector": "medical",
+  "entries": [
+   {
+    "y": "2020",
+    "t": "COVID-19 field hospitals",
+    "d": "Field hospitals supporting the pandemic response in Chile and Latin America.",
+    "img": "h2020"
+   }
+  ]
+ },
+ {
+  "id": "australia",
+  "name": "Australia",
+  "lat": -31.95,
+  "lon": 115.86,
+  "kind": "project",
+  "sector": "medical",
+  "entries": [
+   {
+    "y": "2010",
+    "t": "Field hospital standing offer",
+    "d": "A softwall field hospital shelter contract, won against 11 international bidders.",
+    "img": "h2010a"
+   },
+   {
+    "y": "2026",
+    "t": "Supacat Asia Pacific",
+    "d": "Partnership announced at Land Forces 2026 in Perth.",
+    "img": null
+   }
+  ]
+ },
+ {
+  "id": "davos",
+  "name": "Davos, Switzerland",
+  "lat": 46.8,
+  "lon": 9.84,
+  "kind": "project",
+  "sector": "commercial",
+  "entries": [
+   {
+    "y": null,
+    "t": "Arctic Basecamp",
+    "d": "A Weatherhaven shelter served as sleeping quarters by night and an event venue by day.",
+    "img": null
+   }
+  ]
+ },
+ {
+  "id": "uk",
+  "name": "United Kingdom",
+  "lat": 52.4,
+  "lon": -1.5,
+  "kind": "office",
+  "sector": "office",
+  "entries": [
+   {
+    "y": null,
+    "t": "Weatherhaven Global Solutions (UK)",
+    "d": "Regional operation serving European military, polar research, commercial and emergency response customers.",
+    "img": null
+   }
+  ]
+ },
+ {
+  "id": "brasil",
+  "name": "Brasil",
+  "lat": -22.9,
+  "lon": -43.2,
+  "kind": "office",
+  "sector": "office",
+  "entries": [
+   {
+    "y": null,
+    "t": "Weatherhaven Brazil",
+    "d": "Regional operation led by Managing Director Natalia Medeiros.",
+    "img": null
+   }
+  ]
+ }
+]

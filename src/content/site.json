@@ -1,0 +1,56 @@
+{
+ "tollFree": "1-888-346-1334",
+ "intl": "1-604-451-8900",
+ "email": "info@weatherhaven.com",
+ "address": [
+  "#130-8610 Glenlyon Parkway",
+  "Burnaby, BC",
+  "Canada, V5J 0B6"
+ ],
+ "rfpGuide": "https://eiec269001.blob.core.windows.net/site-content/Weatherhaven-RFP-Guide.pdf",
+ "instock": "https://eiec269001.blob.core.windows.net/site-content/Weatherhaven%20Inventoried%20Infrastructure.pdf",
+ "iso": "https://secure.weatherhaven.com/Resources?id=vXi1D8ixYC&name=FM%20613435%20ISO9001-2015%20Certificate%20Burnaby%20and%20Brockville%202026.pdf",
+ "book": "https://weatherhaven.com/40th-Anniversary-Book",
+ "supplier": "https://weatherhaven.com/Supplier-Information",
+ "newsArchive": "https://weatherhaven.com/News?page=1",
+ "regional": [
+  {
+   "name": "United Kingdom",
+   "url": "https://uk.weatherhaven.com"
+  },
+  {
+   "name": "Africa",
+   "url": "https://www.rcssa.com"
+  },
+  {
+   "name": "Brasil",
+   "url": "http://whdobrasil.com.br"
+  },
+  {
+   "name": "Peru",
+   "url": "https://peru.weatherhaven.com/"
+  }
+ ],
+ "social": [
+  {
+   "name": "LinkedIn",
+   "url": "https://www.linkedin.com/company/weatherhaven"
+  },
+  {
+   "name": "YouTube",
+   "url": "https://www.youtube.com/channel/UCRUNfYR5M2BsZtn56_BoApQ"
+  },
+  {
+   "name": "Instagram",
+   "url": "https://www.instagram.com/weatherhavenglobal"
+  },
+  {
+   "name": "Facebook",
+   "url": "https://www.facebook.com/weatherhaven"
+  },
+  {
+   "name": "X (Twitter)",
+   "url": "https://twitter.com/Weatherhavengr"
+  }
+ ]
+}

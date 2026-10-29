@@ -1,0 +1,8 @@
+---
+/* AR page: model-viewer + QR code, all assets served from this site. Static; rebuilt from src/ar-template.html. */
+import tpl from '../ar-template.html?raw';
+import IMG from '../generated/img.json';
+import fontsCss from '../styles/fonts.css?raw';
+const html = tpl.replace('/*FONTS*/', fontsCss).replace('/*LOGO*/', IMG.logo_w).replace('/*GLB*/', '/assets/models/trecc-open.glb').replace('/*DRACO*/', '/assets/draco-ar/').replace('/*QR*/', '/assets/ar/qrcode.js').replace('/*MV*/', '/assets/ar/model-viewer.min.js').replace('href="../#/products/trecc"', 'href="/products/trecc/"');
+---
+<Fragment set:html={html} />

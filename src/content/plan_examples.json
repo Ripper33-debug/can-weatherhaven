@@ -1,0 +1,134 @@
+[
+ {
+  "id": "c2",
+  "name": "Command post",
+  "d": "Two MECCs and an EHMECC, linked",
+  "items": [
+   [
+    "mecc",
+    10,
+    12,
+    0
+   ],
+   [
+    "ic-ss",
+    10,
+    25,
+    0
+   ],
+   [
+    "mecc",
+    10,
+    38,
+    0
+   ],
+   [
+    "ic-ee",
+    22.5,
+    38,
+    90
+   ],
+   [
+    "ehmecc",
+    35,
+    38,
+    0
+   ]
+  ]
+ },
+ {
+  "id": "hospital",
+  "name": "Field hospital block",
+  "d": "EHMECC operating room, MECCs and Series 8 wards",
+  "items": [
+   [
+    "ehmecc",
+    10,
+    12,
+    0
+   ],
+   [
+    "ic-ee",
+    22.5,
+    12,
+    90
+   ],
+   [
+    "mecc",
+    35,
+    12,
+    0
+   ],
+   [
+    "ic-ss",
+    35,
+    25,
+    0
+   ],
+   [
+    "mecc",
+    35,
+    38,
+    0
+   ],
+   [
+    "series8",
+    4,
+    64,
+    0,
+    40
+   ],
+   [
+    "series8",
+    4,
+    86,
+    0,
+    40
+   ]
+  ]
+ },
+ {
+  "id": "maint",
+  "name": "Maintenance site",
+  "d": "MEX-26 with MECC workshops and ATEPS",
+  "items": [
+   [
+    "mex26",
+    36,
+    13,
+    0,
+    64
+   ],
+   [
+    "mecc",
+    10,
+    48,
+    0
+   ],
+   [
+    "ic-ee",
+    22.5,
+    48,
+    90
+   ],
+   [
+    "mecc",
+    35,
+    48,
+    0
+   ],
+   [
+    "ateps",
+    52,
+    48,
+    0
+   ],
+   [
+    "ateps",
+    63,
+    48,
+    0
+   ]
+  ]
+ }
+]

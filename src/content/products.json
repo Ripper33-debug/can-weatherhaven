@@ -1,0 +1,1380 @@
+[
+ {
+  "id": "mecc",
+  "name": "MECC",
+  "full": "Mobile Expandable Container Configuration",
+  "family": "expandable",
+  "tagline": "Three times the floor area. Same shipping footprint.",
+  "stats": [
+   [
+    "3×",
+    "Floor area vs. shipping footprint"
+   ],
+   [
+    "10–15 min",
+    "Set-up time"
+   ],
+   [
+    "2",
+    "People to set up"
+   ],
+   [
+    "15–20 yrs",
+    "Built to last in the field"
+   ]
+  ],
+  "summary": "A fully assembled, self-contained unit that combines Weatherhaven fabric shelter technology with the ISO shipping container. Deployed, it offers three times the floor area of a conventional wood or steel module with the same shipping footprint.",
+  "imgs": [
+   "p_mecc",
+   "p_mecc4",
+   "p_mecc2",
+   "p_mecc6",
+   "p_mecc3",
+   "p_mecc7",
+   "p_mecc5"
+  ],
+  "facts": [
+   [
+    "Floor area",
+    "3× the shipping footprint"
+   ],
+   [
+    "Set-up",
+    "2 people, 10–15 minutes"
+   ],
+   [
+    "Field life",
+    "15–20 years"
+   ],
+   [
+    "Standard size",
+    "20' long × 8' high"
+   ],
+   [
+    "Certified",
+    "ISO and CSC for air, land and sea"
+   ]
+  ],
+  "list": {
+   "deploy": "2 people · 10–15 min",
+   "gain": "3× floor area",
+   "move": "ISO · truck · air"
+  },
+  "apps": [
+   "Command & control centres",
+   "Emergency response",
+   "Kitchens",
+   "Medical facilities",
+   "Ablutions",
+   "Laundry facilities",
+   "Workshops — tire changing, aircraft maintenance, electronic repair",
+   "HAZMAT response"
+  ],
+  "groups": [
+   [
+    "Built for efficient transport",
+    [
+     "One-third the shipping footprint of the deployed floor space",
+     "ISO and CSC certified for air, land or sea transport and stacking",
+     "Loads by forklift, crane, helicopter, PLS, bail bar, CHU or specialty jack stands",
+     "Travels by truck, trailer, rail, aircraft or ship",
+     "Locks during transit to secure equipment against theft"
+    ]
+   ],
+   [
+    "Readily deployed and redeployed",
+    [
+     "Set up by two people in 10–15 minutes, with no special skills",
+     "Expands without exposing personnel or contents to the weather",
+     "Can be deployed on a truck, trailer or wheel set",
+     "Built to last 15–20 years in the field"
+    ]
+   ],
+   [
+    "Rugged, heavy-duty construction",
+    [
+     "Latching and locking mechanisms resist theft and cargo damage",
+     "Insulated, spacious interior",
+     "Minimal maintenance",
+     "Tested to meet Milspec"
+    ]
+   ],
+   [
+    "Flexible by design",
+    [
+     "Interconnects to form larger, fully enclosed complexes",
+     "Fully outfitted with electrical, mechanical, HVAC and furnishings",
+     "Stacks for storage or tight sites",
+     "A 10' “Mini MECC” links to every Weatherhaven expandable and the MTS"
+    ]
+   ]
+  ],
+  "note": "First MECC units were delivered in 1994 to US Natick Labs and the Canadian Coast Guard.",
+  "viewer": "mecc",
+  "src": "https://weatherhaven.com/products/expandable-container/mecc",
+  "finder": {
+   "m": {
+    "c2": 3,
+    "medical": 3,
+    "camp": 2,
+    "workshop": 2,
+    "polar": 1
+   },
+   "t": {
+    "iso": 3,
+    "vehicle": 3,
+    "air": 1,
+    "bags": 0
+   },
+   "c": {
+    "cold": 2,
+    "hot": 2,
+    "temperate": 2,
+    "tropical": 2
+   },
+   "d": {
+    "short": 2,
+    "medium": 3,
+    "long": 3
+   }
+  },
+  "why": {
+   "iso": "ISO and CSC certified — ships like any 20' container",
+   "vehicle": "Can be deployed on a truck, trailer or wheel set",
+   "c2": "Built for command and control centres",
+   "medical": "Configured as medical facilities and labs",
+   "camp": "Kitchens, ablutions and laundry configurations",
+   "workshop": "Workshop configurations for vehicles and electronics",
+   "long": "Built to last 15–20 years in the field",
+   "medium": "Redeploys mission after mission"
+  }
+ },
+ {
+  "id": "ehmecc",
+  "name": "EHMECC",
+  "full": "Extended Height Mobile Expandable Container Configuration",
+  "family": "expandable",
+  "tagline": "The MECC, with a roof that rises another 4.5 feet.",
+  "stats": [
+   [
+    "12'6\"",
+    "Vertical space, deployed"
+   ],
+   [
+    "+4.5 ft",
+    "Roof raise over a MECC"
+   ],
+   [
+    "3×",
+    "Floor area vs. shipping footprint"
+   ]
+  ],
+  "summary": "All the benefits of the standard MECC, plus a roof that raises an additional 4.5 feet — 12'6\" of vertical space once deployed. Patent-protected, it gives operating rooms, command centres and simulators the headroom a standard container can’t.",
+  "imgs": [
+   "p_ehmecc",
+   "p_ehmecc2",
+   "p_ehmecc3",
+   "p_ehmecc4",
+   "p_ehmecc5"
+  ],
+  "facts": [
+   [
+    "Deployed height",
+    "12'6\" of vertical space"
+   ],
+   [
+    "Roof raise",
+    "+4.5 feet"
+   ],
+   [
+    "Floor area",
+    "3× the shipping footprint"
+   ],
+   [
+    "Lift",
+    "Forklift, crane, PLS or helicopter sling"
+   ],
+   [
+    "Certified",
+    "ISO and CSC for air, land and sea"
+   ]
+  ],
+  "list": {
+   "deploy": "No special tools",
+   "gain": "3× area · +4.5 ft",
+   "move": "ISO · helicopter"
+  },
+  "apps": [
+   "Command & control centres",
+   "Extended-height operating rooms",
+   "Vehicle maintenance",
+   "HAZMAT response",
+   "Specialty workshops",
+   "Simulation & training facilities"
+  ],
+  "examples": [
+   "A 16-person command centre with screens mounted above head height",
+   "A medical surgical theatre",
+   "A full-size helicopter cockpit simulator",
+   "A portable blackout garage for large vehicles"
+  ],
+  "groups": [
+   [
+    "Rapid transport and set-up",
+    [
+     "Transport-ready at one-third the footprint of the deployed floor space",
+     "Deploys without exposing personnel, components or equipment to the weather",
+     "Loads by forklift, crane or PLS, and can be underslung by helicopter",
+     "ISO and CSC certified for air, land and sea transport and stacking",
+     "No specialized knowledge or tools required"
+    ]
+   ],
+   [
+    "Flexibility and function",
+    [
+     "12'6\" of vertical space once deployed",
+     "Insulated fabric exterior with multiple window and door layouts",
+     "Optional electrical, mechanical, HVAC, generators and furnishings",
+     "Complexes with other expandables and softwall shelters into field hospitals or command centres"
+    ]
+   ],
+   [
+    "Rugged, durable design",
+    [
+     "Steel exterior and heavy-duty insulated vinyl cover",
+     "Weather-proof personnel doors",
+     "Fully insulated walls, floors and ceilings",
+     "Non-slip flooring, with optional floor systems"
+    ]
+   ]
+  ],
+  "quote": {
+   "q": "Love the EHMECC. Best bit of kit we’ve seen on this.",
+   "a": "United Kingdom Ministry of Defence"
+  },
+  "viewer": "ehmecc",
+  "src": "https://weatherhaven.com/products/expandable-container/ehmecc",
+  "finder": {
+   "m": {
+    "c2": 3,
+    "medical": 3,
+    "camp": 0,
+    "workshop": 3,
+    "polar": 0
+   },
+   "t": {
+    "iso": 3,
+    "vehicle": 2,
+    "air": 2,
+    "bags": 0
+   },
+   "c": {
+    "cold": 2,
+    "hot": 2,
+    "temperate": 2,
+    "tropical": 2
+   },
+   "d": {
+    "short": 2,
+    "medium": 3,
+    "long": 3
+   }
+  },
+  "why": {
+   "medical": "Extended-height operating rooms with room for a high surgical lamp",
+   "c2": "Room for a 16-person command centre with overhead screens",
+   "workshop": "Headroom for vehicle maintenance and specialty workshops",
+   "air": "Can be underslung by helicopter",
+   "iso": "ISO and CSC certified for air, land and sea"
+  }
+ },
+ {
+  "id": "trecc",
+  "name": "TRECC",
+  "full": "Tactical Redeployable Expanding Container Capability",
+  "family": "expandable",
+  "viewer": "trecc",
+  "tagline": "Pallet-sized, aircraft-ready, set up in minutes.",
+  "stats": [
+   [
+    "3×",
+    "Floor area vs. shipping footprint"
+   ],
+   [
+    "5 → 8 ft",
+    "Height as it expands"
+   ],
+   [
+    "1–2",
+    "People to set up"
+   ],
+   [
+    "1 or 2",
+    "463L pallet positions"
+   ]
+  ],
+  "summary": "A lightweight, extended-height expandable container that grows in both width and height. Built in sizes to suit helicopter, sealift, fixed-wing or vehicle transport — the TRECC-P fits a single 463L pallet and the TRECC-H takes two pallet positions.",
+  "imgs": [
+   "p_trecc",
+   "p_trecc2",
+   "p_trecc3",
+   "p_trecc4",
+   "p_trecc5"
+  ],
+  "facts": [
+   [
+    "Set-up",
+    "A few minutes, by 1–2 people"
+   ],
+   [
+    "Floor area",
+    "3× the shipping footprint"
+   ],
+   [
+    "Height",
+    "Extends from 5 to 8 feet"
+   ],
+   [
+    "Variants",
+    "TRECC-P (one 463L pallet), TRECC-H (two)"
+   ],
+   [
+    "Frame",
+    "High-strength, lightweight aluminum"
+   ]
+  ],
+  "list": {
+   "deploy": "1–2 people · minutes",
+   "gain": "3× area · 5→8 ft",
+   "move": "463L · helicopter · vehicle"
+  },
+  "apps": [
+   "Command posts",
+   "Forward operating bases",
+   "Communications",
+   "Workshops",
+   "Kitchens",
+   "Ablutions",
+   "Medical facilities",
+   "Forensic labs"
+  ],
+  "groups": [
+   [
+    "Built for efficient transport",
+    [
+     "Lightweight, and ships inside a standard 20' ISO container",
+     "One-third the footprint of the deployed floor space",
+     "Suits helicopter, sealift, fixed-wing and vehicle transport",
+     "Forklift pockets for loading and unloading",
+     "Furnishings ship inside the centre core, protected in transit",
+     "Optional wheel sets let an ATV tow it"
+    ]
+   ],
+   [
+    "Rugged design",
+    [
+     "High-strength, lightweight aluminum construction",
+     "Removable, adjustable-height wheel sets",
+     "Fully insulated, rugged fabric cover system",
+     "Interchangeable floor panels for workshops, offices and more",
+     "Weather-proof personnel doors on the expandable sides"
+    ]
+   ],
+   [
+    "Easy set-up",
+    [
+     "Set up in a few minutes by one or two people",
+     "Expands to three times its shipping footprint",
+     "Extends in height from five to eight feet",
+     "Interconnects with other shelters into a larger facility"
+    ]
+   ]
+  ],
+  "quote": {
+   "q": "We are shipping these TRECC-P’s out for Expeditionary Missions. These shelters are “hot” and the military are impressed with the concept, design and functionality of the units.",
+   "a": "Program manager, SOCOM MRAP FOV, US Army service contractor"
+  },
+  "note": "The TRECC patent was filed in 2014.",
+  "src": "https://weatherhaven.com/products/expandable-container/trecc",
+  "finder": {
+   "m": {
+    "c2": 3,
+    "medical": 2,
+    "camp": 2,
+    "workshop": 2,
+    "polar": 0
+   },
+   "t": {
+    "air": 3,
+    "vehicle": 3,
+    "iso": 2,
+    "bags": 0
+   },
+   "c": {
+    "cold": 2,
+    "hot": 2,
+    "temperate": 2,
+    "tropical": 2
+   },
+   "d": {
+    "short": 3,
+    "medium": 3,
+    "long": 1
+   }
+  },
+  "why": {
+   "air": "TRECC-P fits a single 463L pallet for air or helicopter",
+   "vehicle": "Optional wheel sets let an ATV tow it",
+   "c2": "Command posts and forward operating bases",
+   "short": "Set up in a few minutes by one or two people",
+   "iso": "Ships inside a standard 20' ISO container"
+  }
+ },
+ {
+  "id": "hercon",
+  "name": "HERCon",
+  "full": "Hardwall Expandable Redeployable Container",
+  "family": "expandable",
+  "viewer": "hercon",
+  "tagline": "Two 4' units ship as one. Up to six times the space.",
+  "stats": [
+   [
+    "Up to 6×",
+    "Living space vs. shipping footprint"
+   ],
+   [
+    "1/6",
+    "Packed size vs. deployed"
+   ],
+   [
+    "6",
+    "People to set up, in minutes"
+   ]
+  ],
+  "summary": "A hard-walled expandable container built to ISO shipping standards for semi-permanent sites. Two 4'-wide units couple together to ship for the price of one standard 8' container, then deploy separately on site — six to eight times more deployable space.",
+  "imgs": [
+   "p_hercon",
+   "p_hercon2",
+   "p_hercon3",
+   "p_hercon4"
+  ],
+  "facts": [
+   [
+    "Living space",
+    "Up to 6× the shipping footprint"
+   ],
+   [
+    "Packed",
+    "One-sixth of its deployed size"
+   ],
+   [
+    "Widths",
+    "4' and 8' configurations"
+   ],
+   [
+    "Set-up",
+    "A team of six, in minutes"
+   ],
+   [
+    "Site",
+    "Reasonably level ground — no foundations"
+   ]
+  ],
+  "list": {
+   "deploy": "Team of 6 · minutes",
+   "gain": "Up to 6× space",
+   "move": "ISO · its own container"
+  },
+  "apps": [
+   "Workforce & emergency response housing",
+   "Ablutions",
+   "Kitchens & dining halls",
+   "Offices",
+   "Dormitories & accommodation",
+   "Medical treatment centres"
+  ],
+  "groups": [
+   [
+    "Built for efficient transport",
+    [
+     "Two 4'-wide containers ship together like a single 8' ISO container",
+     "One-sixth of its deployable size when packed",
+     "Travels by road, rail, sea or air",
+     "Is its own container — no packaging required"
+    ]
+   ],
+   [
+    "Readily deployed and redeployed",
+    [
+     "Set up in minutes by a team of six",
+     "No special site preparation or foundations, just reasonably level ground",
+     "Packs up rapidly and redeploys to a new location"
+    ]
+   ],
+   [
+    "Ultimate flexibility",
+    [
+     "Living and working space up to six times its shipping footprint",
+     "Complexes end-to-end into a larger facility",
+     "Custom configured for any application, including full bathrooms"
+    ]
+   ]
+  ],
+  "src": "https://weatherhaven.com/products/expandable-container/hercon",
+  "finder": {
+   "m": {
+    "c2": 1,
+    "medical": 2,
+    "camp": 3,
+    "workshop": 0,
+    "polar": 0
+   },
+   "t": {
+    "iso": 3,
+    "vehicle": 1,
+    "air": 0,
+    "bags": 0
+   },
+   "c": {
+    "cold": 2,
+    "hot": 2,
+    "temperate": 2,
+    "tropical": 2
+   },
+   "d": {
+    "short": 1,
+    "medium": 2,
+    "long": 3
+   }
+  },
+  "why": {
+   "camp": "Workforce housing, dorms, kitchens and ablutions",
+   "long": "Designed for semi-permanent applications",
+   "iso": "Two units ship for the price of one 8' container",
+   "medical": "Configured as medical treatment centres"
+  }
+ },
+ {
+  "id": "ateps",
+  "name": "ATEPS",
+  "full": "Air-Transportable Expandable Pallet Shelter",
+  "family": "expandable",
+  "tagline": "One 463L pallet. Two people. Under ten minutes.",
+  "stats": [
+   [
+    "< 10 min",
+    "Set-up, two people"
+   ],
+   [
+    "1",
+    "463L pallet"
+   ],
+   [
+    "2,500 lb",
+    "Weight"
+   ],
+   [
+    "7,500 lb",
+    "Secured load, D-ring tie-downs"
+   ]
+  ],
+  "summary": "A tactical, quick-erect shelter for expeditionary and emergency response operations. The ATEPS fits a single 463L pallet and expands to nearly three times its footprint for forward operating bases, medical facilities and specialised shelters.",
+  "imgs": [
+   "p_ateps",
+   "p_ateps2"
+  ],
+  "facts": [
+   [
+    "Packed footprint",
+    "84\" × 104\" — one 463L pallet"
+   ],
+   [
+    "Deployed footprint",
+    "244\" × 104\""
+   ],
+   [
+    "External height",
+    "91\""
+   ],
+   [
+    "Weight",
+    "2,500 lb"
+   ],
+   [
+    "Set-up",
+    "2 people, under 10 minutes"
+   ],
+   [
+    "Secured load",
+    "Up to 7,500 lb with D-ring tie-downs"
+   ]
+  ],
+  "list": {
+   "deploy": "2 people · <10 min",
+   "gain": "84\" → 244\" wide",
+   "move": "463L · fixed-wing"
+  },
+  "apps": [
+   "Forward operating bases",
+   "Medical facilities",
+   "Specialised shelter capability",
+   "Expeditionary and emergency response operations"
+  ],
+  "groups": [
+   [
+    "Features",
+    [
+     "Fits a single 463L pallet at 84\" × 104\", expanding to 244\" × 104\" with an external height of 91\"",
+     "Insulated aluminum core (floor, walls and roof) with PVC covers and a removable zippered door on each side",
+     "Hard-wall entrance door with a built-in service door for an ECU",
+     "Military-grade aluminum at 2,500 lb, transportable on fixed-wing aircraft with height limits over 92\"",
+     "Top lift with 4-point sling provisions, and 4-way forklift pockets",
+     "Two-person set-up in under 10 minutes; interconnects with other structures",
+     "Non-slip floor with D-ring tie-downs for loads up to 7,500 lb",
+     "Built-in ports for electrical, communications and ECU connections"
+    ]
+   ]
+  ],
+  "src": "https://weatherhaven.com/products/expandable-container/ateps",
+  "finder": {
+   "m": {
+    "c2": 2,
+    "medical": 3,
+    "camp": 1,
+    "workshop": 1,
+    "polar": 0
+   },
+   "t": {
+    "air": 3,
+    "vehicle": 1,
+    "iso": 1,
+    "bags": 0
+   },
+   "c": {
+    "cold": 2,
+    "hot": 2,
+    "temperate": 2,
+    "tropical": 2
+   },
+   "d": {
+    "short": 3,
+    "medium": 2,
+    "long": 1
+   }
+  },
+  "why": {
+   "air": "Fits one 463L pallet; flies on fixed-wing aircraft",
+   "medical": "Built for expeditionary medical facilities",
+   "short": "Two people, under 10 minutes",
+   "c2": "Forward operating bases"
+  }
+ },
+ {
+  "id": "rdmss",
+  "name": "RDMSS",
+  "full": "Rapidly Deployed Modular Shelter System",
+  "family": "soft",
+  "tagline": "The most advanced softwall system in the Weatherhaven fleet.",
+  "stats": [
+   [
+    "−51°C",
+    "Lowest operating temperature"
+   ],
+   [
+    "+49°C",
+    "Highest operating temperature"
+   ],
+   [
+    "< 10 min",
+    "Set-up for most models"
+   ],
+   [
+    "3",
+    "People to set up"
+   ]
+  ],
+  "summary": "Driven by stringent military requirements, the RDMSS deploys in any geographic or climatic zone and lets commanders cover both initial (0–6 month) and temporary (6–24 month) missions with a single shelter system.",
+  "imgs": [
+   "p_rdmss"
+  ],
+  "facts": [
+   [
+    "Operating range",
+    "−51°C to +49°C"
+   ],
+   [
+    "Set-up",
+    "Under 10 minutes, 3 people (most models)"
+   ],
+   [
+    "Missions",
+    "0–6 months and 6–24 months"
+   ],
+   [
+    "Models",
+    "RDMSS-O, RDMSS-P and RDMSS-Op"
+   ],
+   [
+    "Blackout",
+    "Full blackout capability"
+   ]
+  ],
+  "list": {
+   "deploy": "3 people · <10 min",
+   "gain": "−51°C to +49°C",
+   "move": "Any climatic zone"
+  },
+  "apps": [
+   "Initial and temporary standard military missions",
+   "Interconnected complexes and vehicle links",
+   "Any geographic or climatic zone"
+  ],
+  "groups": [
+   [
+    "Standard components",
+    [
+     "Fully insulated",
+     "Solar shade",
+     "ECU and cable ports",
+     "Interchangeable, rapid-install soft and hard doors",
+     "Internal ducting",
+     "Rugged soft floor sealed against weather, vermin and vectors",
+     "Screened window vents with clear shields and blackout covers",
+     "Lightweight aluminum frame"
+    ]
+   ],
+   [
+    "Options",
+    [
+     "Tactical lighting kit",
+     "HVAC",
+     "Diesel-fired heater",
+     "Rapid-placement rigid flooring",
+     "Black-out vestibule",
+     "Shelter connector hub",
+     "Vehicle boot"
+    ]
+   ],
+   [
+    "Features",
+    [
+     "Full blackout",
+     "Operational from −51°C to +49°C",
+     "Frame parts interchange between models",
+     "Deploys in under 10 minutes by three people for most models",
+     "Multiple egress points to interconnect with shelters and vehicles"
+    ]
+   ]
+  ],
+  "src": "https://weatherhaven.com/products/soft-shelters/rdmss",
+  "finder": {
+   "m": {
+    "c2": 3,
+    "medical": 2,
+    "camp": 2,
+    "workshop": 1,
+    "polar": 1
+   },
+   "t": {
+    "bags": 2,
+    "air": 1,
+    "iso": 1,
+    "vehicle": 1
+   },
+   "c": {
+    "cold": 3,
+    "hot": 3,
+    "temperate": 2,
+    "tropical": 2
+   },
+   "d": {
+    "short": 3,
+    "medium": 3,
+    "long": 1
+   }
+  },
+  "why": {
+   "cold": "Operational down to −51°C",
+   "hot": "Operational up to +49°C",
+   "short": "Under 10 minutes with three people",
+   "medium": "One system for 0–6 and 6–24 month missions",
+   "bags": "Lightweight aluminum frame",
+   "c2": "Driven by stringent military requirements"
+  }
+ },
+ {
+  "id": "mts",
+  "name": "MTS",
+  "full": "Modular Tentage System",
+  "family": "soft",
+  "tagline": "One of the most thermally efficient tactical shelters in the world.",
+  "summary": "Robust, modular and fast to move. The MTS deploys in varying lengths and links into larger complexes such as operations centres and medical facilities — which is why it’s a favourite of military forces.",
+  "imgs": [
+   "p_mts",
+   "p_mts2",
+   "p_mts3",
+   "p_mts4"
+  ],
+  "facts": [
+   [
+    "Packing",
+    "Bags sized for a four-person lift"
+   ],
+   [
+    "Length",
+    "Varies, built from standard modules"
+   ],
+   [
+    "Pressure",
+    "Works over- and under-pressure"
+   ],
+   [
+    "Electrical",
+    "Code-compliant, pre-harnessed, modular"
+   ]
+  ],
+  "list": {
+   "deploy": "4-person lift bags",
+   "gain": "Modular lengths",
+   "move": "Bags · any mode"
+  },
+  "apps": [
+   "Kitchens & dining facilities",
+   "Offices",
+   "Accommodation",
+   "Recreation",
+   "Command posts",
+   "Workshops",
+   "Medical facilities"
+  ],
+  "groups": [
+   [
+    "Rapid deployment",
+    [
+     "Compact and lightweight for easy mobilization",
+     "Modular design for tactical versatility",
+     "Durable carry bags sized for a maximum four-person lift",
+     "Various packing options"
+    ]
+   ],
+   [
+    "Flexibility and performance",
+    [
+     "Deploys in varying lengths from standard modules",
+     "Performs in over-pressure and under-pressure conditions",
+     "Code-compliant, pre-harnessed electrical system",
+     "Interconnects with other shelters",
+     "ECU and cable ports, screened windows, hard and soft doors",
+     "Hard and fabric floor systems"
+    ]
+   ],
+   [
+    "Durable design",
+    [
+     "Framework under tension for strength",
+     "Fully insulated for all weather",
+     "Waterproof, fire-retardant, UV-stabilized, blackout cover",
+     "Rot and mildew proof",
+     "Pest-barrier floor keeps insects and rodents out"
+    ]
+   ]
+  ],
+  "src": "https://weatherhaven.com/products/soft-shelters/modular-tentage-system",
+  "finder": {
+   "m": {
+    "c2": 3,
+    "medical": 3,
+    "camp": 3,
+    "workshop": 2,
+    "polar": 1
+   },
+   "t": {
+    "bags": 3,
+    "air": 2,
+    "iso": 2,
+    "vehicle": 1
+   },
+   "c": {
+    "cold": 2,
+    "hot": 2,
+    "temperate": 2,
+    "tropical": 2
+   },
+   "d": {
+    "short": 2,
+    "medium": 3,
+    "long": 2
+   }
+  },
+  "why": {
+   "medical": "Links into medical complexes",
+   "c2": "Popular for operations centres",
+   "camp": "Kitchens, dining and accommodation",
+   "bags": "Bags sized for a four-person lift",
+   "cold": "Among the most thermally efficient tactical shelters"
+  }
+ },
+ {
+  "id": "series4",
+  "name": "Series 4",
+  "full": "The original Weatherhaven shelter",
+  "family": "soft",
+  "viewer": "series4",
+  "tagline": "High performance in every climate, polar regions included.",
+  "stats": [
+   [
+    "3",
+    "Versions: standard, tropical and shop"
+   ],
+   [
+    "1.9\"",
+    "O.D. steel arches on the Series 4 Shop"
+   ]
+  ],
+  "summary": "Used worldwide by commercial and military customers for workforce housing, accommodation, recreation and first-aid units. Available as standard, as a tropical version with side windows for ventilation, and as the extended-height Series 4 Shop.",
+  "imgs": [
+   "p_s4",
+   "p_s4b",
+   "p_s4c",
+   "p_s4d"
+  ],
+  "facts": [
+   [
+    "Climate",
+    "All climates, including polar"
+   ],
+   [
+    "Variants",
+    "Standard, Tropical and Shop"
+   ],
+   [
+    "Shop frame",
+    "1.9\" O.D. powder-coated steel arches"
+   ],
+   [
+    "Cover",
+    "UV-stabilized, fire-retardant, rot-resistant"
+   ]
+  ],
+  "list": {
+   "deploy": "Quick to set up",
+   "gain": "All climates",
+   "move": "Bags · crates"
+  },
+  "apps": [
+   "Kitchen & dining facilities",
+   "Offices",
+   "Accommodation",
+   "Washhouse & laundry",
+   "Recreation",
+   "First-aid facility",
+   "Equipment & storage",
+   "Water purification",
+   "Generator & systems buildings"
+  ],
+  "groups": [
+   [
+    "Features",
+    [
+     "Durable, engineered frame",
+     "Resistant to extreme heat and cold",
+     "Wind and rain proof",
+     "UV-light stabilized cover",
+     "Rot and mildew resistant",
+     "Fire retardant",
+     "Options for entries, floors, insulation and support systems"
+    ]
+   ],
+   [
+    "The Series 4 Shop",
+    [
+     "Extended-height structure for industrial use in all climates",
+     "Tensioned arches of 1.9\" O.D. powder-coated steel for high wind and snow loads",
+     "Tough, reinforced-vinyl fabric",
+     "Options for insulation, heating and lighting"
+    ]
+   ]
+  ],
+  "src": "https://weatherhaven.com/products/soft-shelters/series-4",
+  "finder": {
+   "m": {
+    "c2": 1,
+    "medical": 2,
+    "camp": 3,
+    "workshop": 2,
+    "polar": 2
+   },
+   "t": {
+    "bags": 2,
+    "iso": 2,
+    "air": 1,
+    "vehicle": 0
+   },
+   "c": {
+    "cold": 3,
+    "hot": 2,
+    "temperate": 2,
+    "tropical": 2
+   },
+   "d": {
+    "short": 1,
+    "medium": 3,
+    "long": 3
+   }
+  },
+  "why": {
+   "camp": "Widely used for workforce housing and camp kitchens",
+   "cold": "Performs in all climates, including the polar regions",
+   "long": "Semi-permanent workforce camps",
+   "workshop": "Series 4 Shop for industrial use"
+  }
+ },
+ {
+  "id": "series8",
+  "name": "Series 8",
+  "full": "The lightweight Series 4",
+  "family": "soft",
+  "tagline": "For warmer climates without high winds or snow loads.",
+  "stats": [
+   [
+    "16 ft",
+    "Standard width"
+   ],
+   [
+    "3",
+    "Versions: standard, tropical and shop"
+   ]
+  ],
+  "summary": "A lower price point and fewer components than the Series 4. Used for equipment maintenance, storage and temporary manufacturing. Tropical models add Cool White™ materials, maximum ventilation and a thermal cap.",
+  "imgs": [
+   "p_s8",
+   "p_s8b",
+   "p_s8c"
+  ],
+  "facts": [
+   [
+    "Standard width",
+    "16 feet (4.88 m)"
+   ],
+   [
+    "Climate",
+    "Warm, without high wind or snow loads"
+   ],
+   [
+    "Variants",
+    "Standard, Tropical and Shop"
+   ],
+   [
+    "Insulation",
+    "Tropical Thermal Cap option"
+   ]
+  ],
+  "list": {
+   "deploy": "Quick to set up",
+   "gain": "Tropical models",
+   "move": "Compact · light"
+  },
+  "apps": [
+   "Equipment & storage",
+   "Kitchen & dining facilities",
+   "Offices",
+   "Accommodation",
+   "Washhouse & laundry",
+   "Recreation",
+   "First-aid facility"
+  ],
+  "groups": [
+   [
+    "Features",
+    [
+     "Tropical models with maximum ventilation, Cool White™ materials and a Tropical Thermal Cap",
+     "Quick and easy to set up",
+     "Compact and lightweight",
+     "Waterproof, UV-stabilized cover",
+     "Rot and mildew resistant, fire retardant"
+    ]
+   ],
+   [
+    "The Series 8 Shop",
+    [
+     "Wider and taller than the 16' standard Series 8",
+     "Substitutes for the Series 4 Shop where snow and high winds aren’t a concern",
+     "Tropical model with screened barrel windows and awning flaps"
+    ]
+   ]
+  ],
+  "src": "https://weatherhaven.com/products/soft-shelters/series-8",
+  "finder": {
+   "m": {
+    "c2": 0,
+    "medical": 1,
+    "camp": 2,
+    "workshop": 2,
+    "polar": 0
+   },
+   "t": {
+    "bags": 2,
+    "iso": 2,
+    "air": 1,
+    "vehicle": 0
+   },
+   "c": {
+    "cold": 0,
+    "hot": 2,
+    "temperate": 2,
+    "tropical": 3
+   },
+   "d": {
+    "short": 2,
+    "medium": 2,
+    "long": 2
+   }
+  },
+  "why": {
+   "tropical": "Tropical models with Cool White™ materials and maximum ventilation",
+   "workshop": "Equipment maintenance and storage",
+   "camp": "An economical camp building"
+  }
+ },
+ {
+  "id": "mex26",
+  "name": "MEX-26",
+  "full": "Maintenance Extended Height, 26' wide",
+  "family": "soft",
+  "tagline": "Armoured vehicle and helicopter maintenance, including dust-free optics and weapons repair.",
+  "stats": [
+   [
+    "26 ft",
+    "Wide, extended height"
+   ],
+   [
+    "1",
+    "463L pallet, first-line system"
+   ],
+   [
+    "≤ 3 hrs",
+    "Set-up time"
+   ],
+   [
+    "10",
+    "People to set up"
+   ]
+  ],
+  "summary": "A modular fabric shelter for frontline and second-line vehicle and aircraft maintenance, including optics and weapons repairs that need a dust-free environment. Weatherhaven launched it in 1984, the year of its first Canadian military contract.",
+  "imgs": [
+   "p_mex",
+   "p_mex2"
+  ],
+  "facts": [
+   [
+    "Packed",
+    "First-line system fits one 463L pallet"
+   ],
+   [
+    "Pallet load",
+    "108\" × 88\" × 60\""
+   ],
+   [
+    "Set-up",
+    "10 people, 3 hours or less"
+   ],
+   [
+    "Frame",
+    "Aluminum, tensioned arches"
+   ],
+   [
+    "Site",
+    "No foundation — level, compact ground"
+   ]
+  ],
+  "list": {
+   "deploy": "10 people · ≤3 hrs",
+   "gain": "26' wide · extended height",
+   "move": "463L pallet"
+  },
+  "apps": [
+   "Armoured vehicle maintenance",
+   "Helicopter maintenance",
+   "Optics and weapons repairs needing a dust-free environment"
+  ],
+  "groups": [
+   [
+    "Heavy-duty design",
+    [
+     "Built for the logistics and rigorous use of military deployments",
+     "Aluminum frame pieces to reduce weight",
+     "Arches sprung into tension for high-wind and snow-load performance",
+     "Fire retardant, rot and mildew resistant",
+     "Hard and soft door options, including an industrial zipper kit for vehicle entry",
+     "Links together into longer complexes"
+    ]
+   ],
+   [
+    "Built for efficient transport",
+    [
+     "Packed in rugged, well-marked cases with load lists",
+     "First-line system fits a standard 463L pallet: 108\" × 88\" × 60\"",
+     "Components organised in labelled, person-portable nylon bags"
+    ]
+   ],
+   [
+    "Readily deployed",
+    [
+     "No foundation required — just a level, compact site",
+     "Stakes into soil, or sets up on asphalt or concrete",
+     "Set up by 10 people in three hours or less, without special tools"
+    ]
+   ]
+  ],
+  "src": "https://weatherhaven.com/products/soft-shelters/mex-26",
+  "finder": {
+   "m": {
+    "c2": 0,
+    "medical": 0,
+    "camp": 0,
+    "workshop": 3,
+    "polar": 0
+   },
+   "t": {
+    "air": 3,
+    "bags": 2,
+    "iso": 1,
+    "vehicle": 0
+   },
+   "c": {
+    "cold": 2,
+    "hot": 2,
+    "temperate": 2,
+    "tropical": 1
+   },
+   "d": {
+    "short": 2,
+    "medium": 3,
+    "long": 2
+   }
+  },
+  "why": {
+   "workshop": "Purpose-built for armoured vehicle and helicopter maintenance",
+   "air": "First-line system fits a 463L pallet",
+   "bags": "Person-portable, labelled bags"
+  }
+ },
+ {
+  "id": "polar",
+  "name": "Polar shelters",
+  "full": "Polarhaven, Polar Chief and Endurance",
+  "family": "soft",
+  "tagline": "Built for high winds, heavy snow and extreme cold.",
+  "stats": [
+   [
+    "3",
+    "Models: Polarhaven, Polar Chief, Endurance"
+   ],
+   [
+    "1988",
+    "First Antarctic camp, with the Polarhaven"
+   ],
+   [
+    "1,000 km",
+    "Dog-sled journey on Endurance shelters"
+   ]
+  ],
+  "summary": "Supplied to national science organisations and private operators in Antarctica, the High Canadian Arctic and Greenland. Polarhaven anchors long-term base camps, Polar Chief’s octagonal shape sheds swirling wind, and Endurance is a quick-erect expedition shelter.",
+  "imgs": [
+   "p_polar",
+   "p_polar4",
+   "p_polar2",
+   "p_polar3"
+  ],
+  "facts": [
+   [
+    "Regions",
+    "Antarctica, the High Arctic, Greenland"
+   ],
+   [
+    "Insulation",
+    "Translucent (solar gain) or foil-bubble"
+   ],
+   [
+    "In Antarctica since",
+    "1988"
+   ],
+   [
+    "In Antarctica",
+    "First camp built with the Polarhaven in 1988"
+   ]
+  ],
+  "list": {
+   "deploy": "Quick-erect",
+   "gain": "Extreme cold & wind",
+   "move": "Light · compact"
+  },
+  "apps": [
+   "Arctic expeditions",
+   "Advanced base camps",
+   "Scientific studies",
+   "Tourism",
+   "Workforce camps"
+  ],
+  "groups": [
+   [
+    "Polarhaven",
+    [
+     "A base camp shelter for the polar regions, set up for long periods",
+     "Performs in high winds, snow and extremely low temperatures",
+     "Lightweight and compact for efficient transport",
+     "Available in a selection of sizes"
+    ]
+   ],
+   [
+    "Polar Chief",
+    [
+     "The in-between option: quick-strike capability for camps with better logistics",
+     "Often the kitchen or office in a camp of Endurance sleepers",
+     "Fully insulated, with an insulated vestibule",
+     "Octagonal geometry leaves no large flat surface for wind, and eases drift management"
+    ]
+   ],
+   [
+    "Endurance",
+    [
+     "A quick-erect expedition shelter named after Shackleton’s ship",
+     "Resists extreme winds, cold and heavy snow loads",
+     "Used on a 1,000 km winter dog-sled journey across the pack ice north of Greenland"
+    ]
+   ]
+  ],
+  "src": "https://weatherhaven.com/products/soft-shelters/polar-shelters",
+  "finder": {
+   "m": {
+    "c2": 0,
+    "medical": 0,
+    "camp": 2,
+    "workshop": 0,
+    "polar": 3
+   },
+   "t": {
+    "bags": 2,
+    "air": 2,
+    "iso": 1,
+    "vehicle": 0
+   },
+   "c": {
+    "cold": 3,
+    "hot": 0,
+    "temperate": 0,
+    "tropical": 0
+   },
+   "d": {
+    "short": 3,
+    "medium": 2,
+    "long": 1
+   }
+  },
+  "why": {
+   "polar": "Supplied to national science organisations in Antarctica, the High Arctic and Greenland",
+   "cold": "Designed for extremely cold, dry, windy regions",
+   "short": "Endurance is a quick-erect expedition shelter"
+  }
+ }
+]

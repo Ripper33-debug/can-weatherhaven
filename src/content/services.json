@@ -1,0 +1,68 @@
+[
+ {
+  "id": "engineering",
+  "name": "Engineering & design",
+  "img": "sv_eng",
+  "text": "Product configurations, drawings and interoperability analysis — for a single shelter or an integrated turnkey camp — backed by an active R&D program.",
+  "detail": [
+   "Product configurations and drawings, through to interoperability analysis",
+   "From a single portable shelter to an integrated turnkey camp",
+   "An active R&D program that updates existing products and develops new shelter solutions"
+  ]
+ },
+ {
+  "id": "logistics",
+  "name": "Transportation & logistics",
+  "img": "sv_trans",
+  "text": "Timelines, routing, tracking, security and documentation handled. Packed for train, barge, Twin Otter or Antonov — from bulk containers to person-portable bags.",
+  "detail": [
+   "Timelines, routing, tracking, security and documentation handled by a team experienced in international shipping",
+   "Transportation efficiency built into the product and packaging design",
+   "Delivered to remote sites from Farnham Glacier to Peru"
+  ]
+ },
+ {
+  "id": "installation",
+  "name": "Installation & dismantling",
+  "img": "sv_install",
+  "text": "Prefabrication and quick-connect electrical, mechanical and furnishing components. Weatherhaven crews can run the full install or supervise yours.",
+  "detail": [
+   "Quick set-up and dismantle through prefabrication and quick-connect electrical, mechanical and furnishing components",
+   "Supervisors and a workforce for the full installation, or supervisors working with your personnel",
+   "Crews chosen for skill, experience and the ability to go anywhere, anytime"
+  ]
+ },
+ {
+  "id": "training",
+  "name": "Training & field service",
+  "img": "sv_train",
+  "text": "Classroom sessions and hands-on field exercises, Train-the-Trainer programs, and Field Service Representatives who visit or live in camp.",
+  "detail": [
+   "Custom training packages: a classroom session followed by a hands-on field exercise, with printed and soft-copy manuals",
+   "At Weatherhaven facilities, your site, or in the field",
+   "Preventive and corrective maintenance packages and “train the trainer” programs"
+  ]
+ },
+ {
+  "id": "repair",
+  "name": "Repair & overhaul",
+  "img": "sv_repair",
+  "text": "Inspection, a deficiency list, repairs to the maximum repair cost and return in the latest configuration, under Canada’s A-LM-184-00/JS-001.",
+  "detail": [
+   "Inspection, then complete repair and overhaul to the latest standard",
+   "In-service support facility operating to Canada’s A-LM-184-00/JS-001 publication for R&O contractors",
+   "Covers softwall and MECC shelters and associated systems, including refrigeration and HVAC"
+  ]
+ },
+ {
+  "id": "parts",
+  "name": "Parts",
+  "img": "sv_parts",
+  "text": "Repair parts and complete spares packages for every shelter and system — frame components, covers, electrical kits and backup generators.",
+  "detail": [
+   "Repair parts and complete spare-parts packages for every shelter and system supplied",
+   "Frame components, cover systems, electrical kits, backup generators and more",
+   "Requested through a sales request to the parts team"
+  ]
+ }
+]

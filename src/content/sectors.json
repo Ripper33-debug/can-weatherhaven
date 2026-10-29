@@ -1,0 +1,305 @@
+{
+ "military": {
+  "name": "Military",
+  "img": "mil_hero",
+  "lead": "Sheltering troops wherever they’re deployed. Weatherhaven shelters have been deployed on all seven continents, no matter how remote the location or harsh the climate.",
+  "stats": [
+   [
+    "20 min",
+    "From set-up to fully operational"
+   ],
+   [
+    "25+",
+    "Military customers for Weatherhaven expandable containers"
+   ],
+   [
+    "7",
+    "Continents with Weatherhaven military camps"
+   ]
+  ],
+  "apps": [
+   {
+    "id": "camps",
+    "name": "Military camps",
+    "img": "app_camp",
+    "text": "Softwall shelters and expandable containers for camps of any size, with ablutions, kitchens, laundry, sleeping quarters, power, water and waste systems. Expandables can arrive pre-wired and pre-plumbed so the camp is operational fast.",
+    "products": [
+     "mts",
+     "series4",
+     "hercon",
+     "mecc"
+    ]
+   },
+   {
+    "id": "c2",
+    "name": "Command & control",
+    "img": "app_c2",
+    "text": "Expandable containers protect sensitive electronics, carry equipment in the centre core so nothing is unpacked at set-up, and can be over-pressurized against dust and CBRN agents. Fibre, CAT 5 and video conferencing come plug-and-play.",
+    "products": [
+     "mecc",
+     "ehmecc",
+     "trecc",
+     "hercon"
+    ]
+   },
+   {
+    "id": "workshops",
+    "name": "Workshops",
+    "img": "app_ws",
+    "text": "First- and second-line maintenance for aircraft and vehicles: non-destructive inspection, hydraulics, avionics, rotor and powertrain repair, and tire facilities — on the ground or on the back of a truck.",
+    "products": [
+     "mex26",
+     "ehmecc",
+     "mecc",
+     "series4"
+    ]
+   },
+   {
+    "id": "simulation",
+    "name": "Simulation & training",
+    "img": "app_sim",
+    "text": "MECC and EHMECC units integrate simulation equipment mounted in the core or wheeled in after set-up — up to a full-size helicopter cockpit simulator.",
+    "products": [
+     "mecc",
+     "ehmecc"
+    ]
+   },
+   {
+    "id": "uav",
+    "name": "UAV & satellite systems",
+    "img": "app_uav",
+    "text": "Ground control stations, UAV maintenance workshops for in-service support, and redeployable satellite systems housed in expandable containers.",
+    "products": [
+     "mecc",
+     "ehmecc",
+     "trecc",
+     "hercon"
+    ]
+   }
+  ],
+  "pillars": [
+   [
+    "Rapid",
+    "With military camps on all seven continents, Weatherhaven knows how to move equipment anywhere. Shelters go from set-up to fully operational in 20 minutes.",
+    "mil_rapid"
+   ],
+   [
+    "Ecodesign",
+    "Features like solar shades keep shelters cool, reducing the need for power generation and fuel convoys.",
+    "mil_eco"
+   ],
+   [
+    "Redeployable",
+    "Accommodation, maintenance shops, tactical camps and operations centres engineered to be deployed again and again.",
+    "mil_hero"
+   ]
+  ],
+  "quotes": [
+   {
+    "q": "Weatherhaven shelters have been a tremendous success here. Absolutely one of the best pieces of gear we have acquired to date related to deployable C2 systems.",
+    "a": "Lt Col Bob Love, US Marine Corps, Kuwait"
+   },
+   {
+    "q": "These state-of-the-art units are part of the Government of Canada’s plan to replace the 30-year old technology now being used by our armed forces.",
+    "a": "Hon. James Moore, Minister of Industry, Government of Canada"
+   },
+   {
+    "q": "Love the EHMECC. Best bit of kit we’ve seen on this.",
+    "a": "United Kingdom Ministry of Defence"
+   },
+   {
+    "q": "You and WH’s dedication to DND has always been a strong bond and your products [have] always served DND well.",
+    "a": "Michael Vandepol, Master Warrant Officer, Canadian Forces"
+   }
+  ]
+ },
+ "medical": {
+  "name": "Medical",
+  "img": "med_hero",
+  "lead": "From mobile clinics to field hospitals, Weatherhaven medical shelters meet the guidelines set by organisations like the World Health Organization and the United Nations for foreign field hospitals.",
+  "stats": [
+   [
+    "24 hrs",
+    "For part of Canada’s Weatherhaven-built field hospital to become operational in Haiti"
+   ],
+   [
+    "Level I–III",
+    "Field hospital care, from triage to surgery"
+   ],
+   [
+    "+4.5 ft",
+    "Of operating-room headroom in the EHMECC"
+   ]
+  ],
+  "apps": [
+   {
+    "id": "field-hospitals",
+    "name": "Field hospitals",
+    "img": "app_fh",
+    "text": "Level I first aid and triage, Level II portable surgical centres and Level III military field hospitals — from 10 beds to hundreds. Shelters link to each other or a central corridor so patients and staff never step outside.",
+    "products": [
+     "mts",
+     "ehmecc",
+     "mecc"
+    ]
+   },
+   {
+    "id": "clinics",
+    "name": "Medical clinics",
+    "img": "app_clinic",
+    "text": "Out-patient care plus dental, ophthalmology, gynecology, vaccination and X-ray — reconfigured by adding or removing components or changing interior layouts.",
+    "products": [
+     "mecc",
+     "mts",
+     "hercon"
+    ]
+   },
+   {
+    "id": "emergency",
+    "name": "Emergency response",
+    "img": "app_er",
+    "text": "For earthquakes, floods, hurricanes and epidemics: command centres, medical staff camps, triage, surgical centres and fully equipped hospitals — plus custom cases to ship medical equipment safely.",
+    "products": [
+     "mts",
+     "mecc",
+     "ateps"
+    ]
+   },
+   {
+    "id": "cbrn",
+    "name": "CBRN",
+    "img": "app_cbrn",
+    "text": "Mobile shelters for CBRN protection and decontamination that safeguard against exposure and support decontamination, first aid and treatment.",
+    "products": [
+     "mecc",
+     "ehmecc",
+     "mts"
+    ]
+   }
+  ],
+  "pillars": [
+   [
+    "Rapid",
+    "Easy to transport and quick to install. Expandable containers can be fully deployed and working on the back of trucks and trailers.",
+    "med_redeploy"
+   ],
+   [
+    "EcoDesign",
+    "Designs that protect workers and patients from their environment — from extreme heat to mosquitoes.",
+    "med_eco"
+   ],
+   [
+    "Redeployable",
+    "Softwall shelters and expandable containers that let you set up camp wherever help is needed.",
+    "med_hero"
+   ]
+  ],
+  "quotes": [
+   {
+    "q": "Remarkable portable structures. Weatherhaven is gaining speed that is crucial, particularly when it comes to emergency management situations.",
+    "a": "Robert “Buzz” Kross, SVP Manufacturing Industry Group, Autodesk"
+   },
+   {
+    "q": "Very impressed with the set up and the quality of workmanship.",
+    "a": "Save the Children"
+   }
+  ]
+ },
+ "commercial": {
+  "name": "Commercial",
+  "img": "com_hero",
+  "lead": "Mining, construction, exploration or research — a comfortable, safe camp shows good faith to your customers, employees and other stakeholders.",
+  "stats": [
+   [
+    "−50°C to +50°C",
+    "Designed to protect from extreme temperature and weather"
+   ],
+   [
+    "50+",
+    "Countries with Weatherhaven workforce camps"
+   ],
+   [
+    "20+ of 32",
+    "Countries conducting climate change research in Antarctica use Weatherhaven"
+   ]
+  ],
+  "apps": [
+   {
+    "id": "workforce",
+    "name": "Workforce housing",
+    "img": "workforce",
+    "text": "Camps for mobile workforces in 50+ countries, from the Arctic islands of Canada to the rain forests of Papua New Guinea — engineered to international codes, with living quarters, kitchens and washhouses.",
+    "products": [
+     "series4",
+     "hercon",
+     "mts"
+    ]
+   },
+   {
+    "id": "antarctic",
+    "name": "Antarctic climate research",
+    "img": "antarctica",
+    "text": "More than 20 of the 32 countries conducting climate change research in Antarctica use Weatherhaven products — and the eco-design is one of the lowest-carbon shelter solutions on the planet.",
+    "products": [
+     "polar",
+     "series4"
+    ]
+   },
+   {
+    "id": "turnkey",
+    "name": "Turn-key camps",
+    "img": "turnkey",
+    "text": "Shelters plus camp layout and design, construction, and integrated power, water and waste management — supported by a global network of supply-chain partners.",
+    "products": [
+     "series4",
+     "hercon",
+     "mts"
+    ]
+   },
+   {
+    "id": "luxury",
+    "name": "Mobile luxury recreation container",
+    "img": "luxury",
+    "text": "A designer kitchen, full bathroom, queen bedroom and touch-screen controlled entertainment, in a container that goes anywhere — even the hot desert.",
+    "products": [
+     "mecc"
+    ]
+   }
+  ],
+  "pillars": [
+   [
+    "Rapid",
+    "No special tools, site preparation or foundations, and no expert knowledge beyond general construction.",
+    "com_rapid"
+   ],
+   [
+    "Ecodesign",
+    "No climate too harsh, no location too remote. From −50°C to +50°C, shelters protect from extreme temperature and weather.",
+    "com_hero"
+   ],
+   [
+    "Redeployable",
+    "Solutions that let you take your camp wherever you go.",
+    "com_redeploy"
+   ]
+  ],
+  "quotes": [
+   {
+    "q": "Severe winds over the winter had blown down all the plywood buildings and scattered the pieces all over the tundra. 11 fabric shelters from Weatherhaven were still standing, having withstood gales that had pulverized 7 wooden buildings.",
+    "a": "Mike Kenney, Operations Manager, Matrix Aviation Solutions, Baffinland Mining Camp"
+   },
+   {
+    "q": "In almost 30 years of working in the exploration milieu, there are few companies that have so thoroughly met my, and my company’s, considerable expectations.",
+    "a": "Jeremy Howe, Logistics Coordinator, BHP Billiton"
+   },
+   {
+    "q": "Big winter storm with 70mph winds at Red Mountain last night! Our crews were cozy in our tough Weatherhaven tents.",
+    "a": "IDM Mining Camp"
+   },
+   {
+    "q": "Brilliant shelter for the job. Withstood some windy days without a murmur.",
+    "a": "BAM Nuttall, Antarctica"
+   }
+  ]
+ }
+}

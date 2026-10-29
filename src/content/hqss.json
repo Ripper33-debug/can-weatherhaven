@@ -1,0 +1,55 @@
+{
+ "intro": "The Canadian Headquarters Shelter System program was seven years in development. Weatherhaven won it against four of its largest competitors from the USA and Europe, and in 2017 was awarded the HQSS acquisition and in-service support contracts worth $167M CDN.",
+ "specs": [
+  [
+   "Deployed dimensions",
+   "23.8 ft × 41.8 ft"
+  ],
+  [
+   "Effective floor area",
+   "995 ft²"
+  ],
+  [
+   "Snow load capacity",
+   "20 lb/ft²"
+  ],
+  [
+   "U factor",
+   "2.98 W/°C/m²"
+  ],
+  [
+   "Set-up time",
+   "Under 20 minutes"
+  ],
+  [
+   "Height at eaves",
+   "82\""
+  ],
+  [
+   "Doors",
+   "Up to 10, soft or hard"
+  ],
+  [
+   "Windows",
+   "Up to 14 large soft windows"
+  ],
+  [
+   "Interconnection points",
+   "10"
+  ],
+  [
+   "Packed",
+   "12 bags · 2,156 lb · 251 ft³"
+  ]
+ ],
+ "floor": [
+  "Deploys while standing",
+  "Static load up to 3.5 MPa",
+  "Fire and smoke retardant, antistatic",
+  "Lockable for uneven terrain",
+  "99% usable floor area",
+  "18\" × 18\" tiles at 6.6 lb",
+  "Deployable at −51°C",
+  "Cable channels built in"
+ ]
+}

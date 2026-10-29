@@ -1,0 +1,90 @@
+[
+ {
+  "key": "m",
+  "q": "What will the shelter be used for?",
+  "opts": [
+   [
+    "c2",
+    "Command, communications or operations"
+   ],
+   [
+    "medical",
+    "Medical care or a field hospital"
+   ],
+   [
+    "camp",
+    "Accommodation, kitchens or a full camp"
+   ],
+   [
+    "workshop",
+    "Vehicle or aircraft maintenance"
+   ],
+   [
+    "polar",
+    "A research or expedition base"
+   ]
+  ]
+ },
+ {
+  "key": "t",
+  "q": "How will it get there?",
+  "opts": [
+   [
+    "air",
+    "By air — pallet or helicopter"
+   ],
+   [
+    "iso",
+    "Sea, rail or road in ISO containers"
+   ],
+   [
+    "vehicle",
+    "Mounted on a truck or trailer"
+   ],
+   [
+    "bags",
+    "Packed in person-portable bags"
+   ]
+  ]
+ },
+ {
+  "key": "c",
+  "q": "What’s the climate on site?",
+  "opts": [
+   [
+    "cold",
+    "Polar or extreme cold"
+   ],
+   [
+    "hot",
+    "Desert or extreme heat"
+   ],
+   [
+    "temperate",
+    "Temperate"
+   ],
+   [
+    "tropical",
+    "Tropical, without high winds or snow"
+   ]
+  ]
+ },
+ {
+  "key": "d",
+  "q": "How long will it stay?",
+  "opts": [
+   [
+    "short",
+    "Under 6 months"
+   ],
+   [
+    "medium",
+    "6 to 24 months"
+   ],
+   [
+    "long",
+    "Years — semi-permanent"
+   ]
+  ]
+ }
+]

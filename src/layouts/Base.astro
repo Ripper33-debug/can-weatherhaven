@@ -1,0 +1,56 @@
+---
+import '../styles/fonts.css';
+import '../styles/site.css';
+import SITE from '../content/site.json';
+const { title, description, path, chrome, jsonld, image, noindex } = Astro.props;
+const site = Astro.site ? String(Astro.site).replace(/\/$/, '') : '';
+const url = site + path;
+const NOINDEX = noindex || import.meta.env.PUBLIC_NOINDEX === '1';
+const ogImage = site + (image || '/assets/img/og-default.jpg');
+const ANALYTICS = import.meta.env.PUBLIC_ANALYTICS || 'none';   // plausible | vercel | none — both are cookieless, no consent banner needed
+const SENTRY = import.meta.env.PUBLIC_SENTRY_DSN || '';
+const CONSENT = import.meta.env.PUBLIC_CONSENT === '1';          // set when a cookie-based tool is added later
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>{title}</title>
+<meta name="description" content={description}>
+<link rel="canonical" href={url}>
+{NOINDEX && <meta name="robots" content="noindex, nofollow">}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Weatherhaven">
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+<meta property="og:url" content={url}>
+<meta property="og:image" content={ogImage}>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#061A2F">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230D4275'/%3E%3Cpath d='M7 25V12c0-3 2-5 5-5h13v18H19V14h-6v11z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preload" href="/assets/js/three.min.js" as="script" media="(min-width: 760px)">
+{jsonld && (Array.isArray(jsonld) ? jsonld : [jsonld]).map(j => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
+{ANALYTICS === 'plausible' && <script defer data-domain={import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN} src="https://plausible.io/js/script.js"></script>}
+{ANALYTICS === 'vercel' && <script defer src="/_vercel/insights/script.js"></script>}
+{SENTRY && <script is:inline define:vars={{ SENTRY }}>window.sentryOnLoad = function () { Sentry.init({ dsn: SENTRY, tracesSampleRate: 0 }); };</script>}
+{SENTRY && <script defer src="https://browser.sentry-cdn.com/8.33.1/bundle.min.js" crossorigin="anonymous"></script>}
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="annc" id="annc" role="region" aria-label="Announcement" data-ssr="1" set:html={chrome.annc}></div>
+<header class="hdr" id="hdr" data-ssr="1" set:html={chrome.hdr}></header>
+<nav class="drawer" id="drawer" aria-label="Mobile" set:html={chrome.drawer}></nav>
+<main id="main" tabindex="-1" data-ssr="1" data-path={path}><slot /></main>
+<footer class="ftr" id="ftr" set:html={chrome.ftr}></footer>
+<div class="cmpbar" id="cmpbar" role="region" aria-label="Compare tray"><span style="font-size:14px;color:rgba(255,255,255,.7)">Compare</span><div class="names"></div><button class="clr" data-action="clear-compare">Clear</button><button class="btn btn-primary btn-sm" data-action="compare">Compare</button></div>
+<div class="overlay" id="modal-ov" aria-hidden="true"></div>
+<div class="overlay" id="pal-ov" aria-hidden="true"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+{CONSENT && <div class="consent" id="consent" role="region" aria-label="Cookies"><p>We use cookies for analytics. <a href="/privacy/">Privacy policy</a></p><button class="btn btn-primary btn-sm" data-consent="yes">Accept</button><button class="btn btn-line btn-sm" data-consent="no">Decline</button></div>}
+<script>
+  import { boot } from '../client/boot.js';
+  boot();
+</script>
+</body>
+</html>

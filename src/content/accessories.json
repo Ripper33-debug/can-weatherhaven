@@ -1,0 +1,23 @@
+[
+ {
+  "id": "solarshade",
+  "name": "Solarshades",
+  "img": "acc_solar",
+  "text": "Shade fabric over the shelter cuts direct solar load: 70% shade coverage, blocks 95% of UV, and 12\" vent holes reduce wind lift. Six standard colours, fire retardant.",
+  "src": "https://weatherhaven.com/products/accessories/solarshades"
+ },
+ {
+  "id": "interconnectors",
+  "name": "Interconnectors & corridors",
+  "img": "acc_inter",
+  "text": "Weather-protected links between shelters — from two buildings to a whole camp. Connect an operating room to central sterile supply, or a kitchen to dining, without stepping outside.",
+  "src": "https://weatherhaven.com/products/accessories/interconnectors-corridors"
+ },
+ {
+  "id": "covers",
+  "name": "Weather protection covers",
+  "img": "acc_cover",
+  "text": "Weather protection covers are part of the accessory range alongside Solarshades and interconnectors. Ask the team which options suit your site.",
+  "src": "https://weatherhaven.com/Products"
+ }
+]

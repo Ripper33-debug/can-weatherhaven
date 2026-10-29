@@ -1,0 +1,65 @@
+{
+ "exec": [
+  {
+   "n": "Ray Castelli",
+   "r": "Chief Executive Officer",
+   "b": "Joined as CEO in 2008 after a 20-year international career in technology, natural resources and government/defence. Co-founder and SVP of Quadrem; former Chief of Staff to Canada’s Minister of National Defence. Speaks five languages."
+  },
+  {
+   "n": "James Kirk",
+   "r": "Chief Operating Officer",
+   "b": "Joined in 2008 as Technical Director after a decade leading UK Defence procurement programmes. Managing Director UK from 2014, VP Global Sales from 2019 and COO since 2021."
+  },
+  {
+   "n": "Alberto Moreno",
+   "r": "Chief Business Development Officer",
+   "b": "Joined in 2012 to lead the new Project Management Office, then ran all production operations, supply chain, quality and engineering. CBDO since November 2020."
+  },
+  {
+   "n": "Jessica Au",
+   "r": "Chief Financial Officer",
+   "b": "Appointed CFO in 2025 after joining as Controller in 2018 and serving as VP Finance. Oversees finance, legal, HR and IT. CPA, CA."
+  },
+  {
+   "n": "Scott Jackson",
+   "r": "VP Business Development — USA",
+   "b": "Leads US business development across all branches of the Department of Defense and other government agencies. 18+ years in business development, strategic planning and program management; retired US Air Force SMSgt with 20 years of service."
+  }
+ ],
+ "regional": [
+  {
+   "n": "Dr. Susannah Kirk",
+   "r": "Managing Director, Weatherhaven Global Solutions (UK)"
+  },
+  {
+   "n": "Natalia Medeiros",
+   "r": "Managing Director, Weatherhaven Brazil"
+  },
+  {
+   "n": "Hugo Cueva",
+   "r": "Managing Director, Weatherhaven Peru"
+  }
+ ],
+ "advisory": [
+  {
+   "n": "Lt Gen Guy C. Swan III",
+   "r": "US Army (ret.) — former Commanding General, US Army North"
+  },
+  {
+   "n": "Lt Gen Mark A. Brilakis",
+   "r": "US Marine Corps (ret.) — former Commander, US Marine Corps Forces Command"
+  },
+  {
+   "n": "Lt Gen Mark C. “Chris” Nowland",
+   "r": "US Air Force (ret.) — former Deputy Chief of Staff for Operations, Plans and Requirements"
+  },
+  {
+   "n": "Brig Gen Leslie L. Fuller",
+   "r": "US Army (ret.) — former Commanding General, SOCEUR"
+  },
+  {
+   "n": "W. Craig Fugate",
+   "r": "Former Administrator, FEMA (2009–2017)"
+  }
+ ]
+}

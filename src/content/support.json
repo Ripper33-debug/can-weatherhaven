@@ -1,0 +1,50 @@
+[
+ {
+  "id": "ablutions",
+  "name": "Ablutions & washhouses",
+  "img": "ss_ablution",
+  "text": "From a single bathroom inside a shelter to full facilities with toilets, sinks and showers — with reverse-osmosis water systems and storage bladders."
+ },
+ {
+  "id": "kitchens",
+  "name": "Kitchens",
+  "img": "ss_kitchen",
+  "text": "Tactical kitchens up to full-service kitchens feeding 1,000 people three fresh meals a day. The MSVS kitchen built for Canada’s DND feeds 500 at once."
+ },
+ {
+  "id": "laundry",
+  "name": "Laundry",
+  "img": "ss_laundry",
+  "text": "Batch or self-serve laundry for 250–500 people, operational in under an hour once connected to power, water and effluent catchment."
+ },
+ {
+  "id": "sleeping",
+  "name": "Sleeping quarters",
+  "img": "ss_sleeping",
+  "text": "Climate-controlled accommodation in Series 4, Series 8, MTS or HERCon shelters — single rooms to dormitory bunks, fully furnished."
+ },
+ {
+  "id": "floors",
+  "name": "Floors",
+  "img": "ss_floors",
+  "text": "Tactical floors for frequent moves, economical floors for long deployments, anti-static tile for medical and checker-plate for workshops."
+ },
+ {
+  "id": "emw",
+  "name": "Electrical, mechanical & water",
+  "img": "ss_emw",
+  "text": "Pre-assembled, code-certified electrical kits, heating and ventilation, water purification, sewage treatment and medical-waste incineration."
+ },
+ {
+  "id": "mobilizers",
+  "name": "Mobilizers & trailers",
+  "img": "ss_mobilizer",
+  "text": "The LH55 mobilizer moves 10' or 20' ISO containers over rough terrain — or on the highway at up to 55 mph (89 km/h) once converted."
+ },
+ {
+  "id": "security",
+  "name": "Security",
+  "img": "ss_security",
+  "text": "Redeployable perimeter and electric fencing, lighting towers and defensive barriers, sourced through Weatherhaven’s supply network."
+ }
+]

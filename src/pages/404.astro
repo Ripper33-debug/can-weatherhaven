@@ -1,0 +1,8 @@
+---
+import Base from '../layouts/Base.astro';
+import { ssrRender } from '../client/app.js';
+const { chrome } = ssrRender('/');
+---
+<Base title="Page not found — Weatherhaven" description="That page has moved." path="/404/" chrome={chrome} noindex={true}>
+  <section class="phero"><div class="wrap" style="padding:120px 0 96px"><h1 class="h-xl">That page has moved.</h1><p class="lead" style="margin:18px 0 28px">Search the site or head back to the start.</p><div class="hero-cta"><button class="btn btn-primary" data-action="search">Search the site</button><a class="btn btn-ghost" href="/">Go to the home page</a></div></div></section>
+</Base>

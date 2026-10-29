@@ -1,0 +1,26 @@
+{
+ "command": {
+  "label": "Command post",
+  "t": "Command post",
+  "d": "Expandable containers protect sensitive electronic equipment from the elements, with fibre optics, CAT 5 and video conferencing \u2014 plus server racks, desks, map boards and TV screens.",
+  "eh": false
+ },
+ "medical": {
+  "label": "Field hospital",
+  "t": "Operating room \u00b7 EHMECC",
+  "d": "The EHMECC extends an additional 4.5 feet in height: extra head room, a higher-hanging operating-room lamp and a climate-controlled working environment.",
+  "eh": true
+ },
+ "kitchen": {
+  "label": "Kitchen",
+  "t": "Field kitchen",
+  "d": "Kitchens are one of the MECC\u2019s listed configurations. Weatherhaven kitchens range from small self-serve facilities to full-service kitchens that feed a camp of 500 or more.",
+  "eh": false
+ },
+ "workshop": {
+  "label": "Workshop",
+  "t": "Workshop",
+  "d": "MECC workshops are configured for tire changing, aircraft maintenance and electronic repair \u2014 and can be set up and operated on the back of a truck or trailer.",
+  "eh": false
+ }
+}

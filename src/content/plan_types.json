@@ -1,0 +1,97 @@
+[
+ {
+  "id": "mecc",
+  "name": "MECC",
+  "kind": "exp",
+  "a": 20,
+  "b": 24,
+  "approx": true,
+  "size": "20' × ≈24' deployed",
+  "ships": "iso",
+  "setup": "2 people · 10–15 min",
+  "blurb": "Three times the floor space of its shipping footprint."
+ },
+ {
+  "id": "ehmecc",
+  "name": "EHMECC",
+  "kind": "exp",
+  "a": 20,
+  "b": 24,
+  "approx": true,
+  "size": "20' × ≈24' · 12'6\" high",
+  "ships": "iso",
+  "setup": "No special tools or knowledge",
+  "blurb": "A MECC whose roof rises another 4.5 feet."
+ },
+ {
+  "id": "ateps",
+  "name": "ATEPS",
+  "kind": "exp",
+  "a": 8.666666666666666,
+  "b": 20.333333333333332,
+  "size": "104\" × 244\" deployed",
+  "ships": "pallet",
+  "setup": "2 people · under 10 min",
+  "blurb": "Ships on one 463L pallet."
+ },
+ {
+  "id": "series8",
+  "name": "Series 8",
+  "kind": "soft",
+  "a": 32,
+  "b": 16,
+  "mod": true,
+  "size": "16' wide · you set the length",
+  "ships": "soft",
+  "setup": "Quick and easy to set up",
+  "blurb": "For warm climates without high winds or snow loads."
+ },
+ {
+  "id": "mex26",
+  "name": "MEX-26",
+  "kind": "soft",
+  "a": 40,
+  "b": 26,
+  "mod": true,
+  "size": "26' wide · you set the length",
+  "ships": "mex",
+  "setup": "10 people · 3 hours or less",
+  "blurb": "Extended-height maintenance shelter."
+ },
+ {
+  "id": "ic-mm",
+  "name": "MECC/MECC interconnector",
+  "short": "MECC/MECC",
+  "kind": "conn",
+  "a": 4,
+  "b": 4,
+  "size": "4' wide × 4' long"
+ },
+ {
+  "id": "ic-ee",
+  "name": "MECC end/end interconnector",
+  "short": "End/end",
+  "kind": "conn",
+  "a": 7,
+  "b": 5,
+  "size": "7' wide × 5' long"
+ },
+ {
+  "id": "ic-es",
+  "name": "MECC end/side interconnector",
+  "short": "End/side",
+  "kind": "conn",
+  "a": 7,
+  "b": 12,
+  "size": "7' wide × 12' long"
+ },
+ {
+  "id": "ic-ss",
+  "name": "MECC side/side interconnector",
+  "short": "Side/side",
+  "kind": "conn",
+  "a": 7,
+  "b": 2,
+  "size": "7' wide × 2' long"
+ }
+]

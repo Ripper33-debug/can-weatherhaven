@@ -1,0 +1,27 @@
+[
+ {
+  "n": "Burnaby",
+  "s": "Head office",
+  "tz": "America/Vancouver"
+ },
+ {
+  "n": "Brockville",
+  "s": "ISO 9001 site",
+  "tz": "America/Toronto"
+ },
+ {
+  "n": "United Kingdom",
+  "s": "Global Solutions",
+  "tz": "Europe/London"
+ },
+ {
+  "n": "Brazil",
+  "s": "Weatherhaven Brazil",
+  "tz": "America/Sao_Paulo"
+ },
+ {
+  "n": "Peru",
+  "s": "Weatherhaven Peru",
+  "tz": "America/Lima"
+ }
+]
