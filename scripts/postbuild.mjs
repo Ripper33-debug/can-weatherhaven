@@ -9,7 +9,7 @@ const routes = [
   { src: '/_astro/(.*)', headers: { 'Cache-Control': 'public, max-age=31536000, immutable' }, continue: true },
   { src: '/(.*)', headers: sec, continue: true }
 ];
-cfg.routes = [...routes, ...(cfg.routes || []).filter(r => !r.__wh)];
-routes.forEach(r => r.__wh = 1);
+const mine = new Set(routes.map(r => r.src));
+cfg.routes = [...routes, ...(cfg.routes || []).filter(r => !(mine.has(r.src) && r.continue && r.headers))];
 fs.writeFileSync(p, JSON.stringify(cfg, null, 2));
 console.log('postbuild: headers added');
