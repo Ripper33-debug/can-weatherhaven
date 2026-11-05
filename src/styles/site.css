@@ -1306,3 +1306,53 @@ body.presenting .hero-foot{display:none}
 @media (max-width:759px){.scl-scroll .scl-svg{min-width:880px}}
 @media (prefers-reduced-motion:reduce){.scl-svg .sc-body,.scl-svg .sc-ghost,.scl-svg .sc-d tspan{transition:none}}
 .scl .seg button[aria-pressed="false"]:hover{color:var(--navy);background:rgba(13,66,117,.07)}
+
+/* compare page */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.cmp-bar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px;margin-bottom:34px}
+.cmp-sel{display:flex;flex-direction:column;gap:6px;position:relative}
+.cmp-sel span{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#4c5f73}
+.cmp-sel select{height:46px;min-width:220px;padding:0 40px 0 14px;border:1px solid rgba(13,66,117,.3);border-radius:6px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%230d4275' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 14px center;appearance:none;font:inherit;font-size:16px;font-weight:600;color:var(--navy)}
+.cmp-x{position:absolute;right:-10px;top:14px;width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;font-size:15px;line-height:1}
+.cmp-vs{font-family:var(--f-head);font-size:18px;color:#b35f00;font-weight:600;padding-bottom:12px}
+.cmp-bar .btn svg{width:16px;height:16px;margin-right:6px}
+.cmp-copy{margin-left:auto}
+.cmp-scroll{overflow-x:auto}
+.cmp-page{width:100%;border-collapse:collapse;min-width:calc(180px + var(--n) * 240px);table-layout:fixed}
+.cmp-page th,.cmp-page td{text-align:left;vertical-align:top;padding:16px 18px 16px 0;border-bottom:1px solid var(--rule)}
+.cmp-page thead th{border-bottom:2px solid var(--navy)}
+.cmp-page tbody th{width:180px;font-size:14px;font-weight:600;color:#4c5f73;letter-spacing:.02em}
+.cmp-page thead th:first-child{width:180px}
+.cmp-page thead a{display:block;color:var(--navy)}
+.cmp-page .cmp-img{aspect-ratio:16/10;border-radius:6px;overflow:hidden;background:var(--ice);margin-bottom:12px}
+.cmp-page .cmp-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.cmp-page thead a:hover img{transform:scale(1.04)}
+.cmp-page thead b{display:block;font-family:var(--f-head);font-size:26px;font-weight:600}
+.cmp-page thead small{display:block;font-size:14px;color:#4c5f73;margin-top:2px;font-weight:400}
+.cmp-page td{font-size:16px;line-height:1.5;color:var(--ink)}
+.cmp-page td small{color:#4c5f73}
+.cmp-facts{margin:0;display:grid;gap:8px}
+.cmp-facts dt{font-size:13px;color:#4c5f73}
+.cmp-facts dd{margin:0;font-size:15.5px}
+.cmp-apps{margin:0;padding-left:18px;font-size:15px;display:grid;gap:3px}
+.cmp-acts td{display:table-cell}
+.cmp-acts .btn{margin:0 14px 8px 0}
+.cmp-scale{margin-top:56px}
+.cmp-scale .h-m{color:var(--navy);margin-bottom:8px}
+.cmp-scale>p{margin-bottom:22px}
+@media (max-width:759px){.cmp-sel select{min-width:0;width:100%}.cmp-sel{flex:1 1 140px}.cmp-copy{margin-left:0}.cmp-vs{display:none}}
+.cmp-page thead a{text-decoration:none}
+.cmp-page thead a:hover b{text-decoration:underline;text-decoration-color:var(--orange);text-underline-offset:4px}
+@media (max-width:759px){
+  .cmp-page{min-width:0;display:block}
+  .cmp-page thead,.cmp-page tbody{display:block}
+  .cmp-page tr{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));column-gap:14px;border-bottom:1px solid var(--rule)}
+  .cmp-page th,.cmp-page td{display:block;border:0;padding:8px 0 12px}
+  .cmp-page tbody th{grid-column:1/-1;width:auto;padding:14px 0 0;font-size:12.5px;text-transform:uppercase;letter-spacing:.06em}
+  .cmp-page thead th:first-child,.cmp-acts th{display:none}
+  .cmp-page thead tr{border-bottom:2px solid var(--navy)}
+  .cmp-page thead b{font-size:20px}.cmp-page thead small{font-size:12.5px}
+  .cmp-page td{font-size:14.5px}.cmp-facts dd{font-size:14px}
+  .cmp-acts .btn{width:100%;justify-content:center}
+}
+@media (max-width:759px){.cmp-page thead th{border-bottom:0}}

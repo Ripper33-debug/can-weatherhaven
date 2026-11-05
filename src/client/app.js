@@ -761,20 +761,68 @@ function syncCompare() {
   $('[data-action="compare"]', bar).textContent = compare.size > 1 ? `Compare ${compare.size}` : 'Compare';
 }
 function openCompare() {
-  const list = [...compare].map(P);
-  if (!list.length) { navigate('/products/all'); toast('Pick up to three systems to compare.'); return; }
+  const ids = [...compare];
+  if (!ids.length) { navigate('/products/compare/'); return; }
+  navigate(`/products/compare/?ids=${ids.concat(ids.length < 2 ? [PRODUCTS.find(p => p.id !== ids[0]).id] : []).join(',')}`);
+}
+/* ---------------- COMPARE PAGE ---------------- */
+const CMP_DEFAULT = ['mecc', 'trecc'];
+function cmpIds(q) {
+  let ids = ((q && q.get('ids')) || '').split(',').map(x => x.trim()).filter((x, i, a) => P(x) && a.indexOf(x) === i).slice(0, 3);
+  CMP_DEFAULT.concat(PRODUCTS.map(p => p.id)).forEach(d => { if (ids.length < 2 && !ids.includes(d)) ids.push(d); });
+  return ids;
+}
+function cmpSelect(slot, id, ids) {
+  const fams = Object.keys(FAMILIES);
+  return `<label class="cmp-sel"><span>System ${slot + 1}</span><select data-slot="${slot}" aria-label="System ${slot + 1}">${fams.map(f => `<optgroup label="${esc(FAMILIES[f].name)}">${PRODUCTS.filter(p => p.family === f).map(p => `<option value="${p.id}"${p.id === id ? ' selected' : ''}${p.id !== id && ids.includes(p.id) ? ' disabled' : ''}>${esc(p.name)}</option>`).join('')}</optgroup>`).join('')}</select>${slot === 2 ? `<button class="cmp-x" data-cmp-remove aria-label="Remove system 3">×</button>` : ''}</label>`;
+}
+function cmpBody(ids) {
+  const list = ids.map(P);
+  const dims = p => { const sy = SCALE_SYS.find(s => s.id === p.id); return sy ? `${dimTxt(sy, sy.fix)} × ${dimTxt(sy, sy.exp[0])} → ${dimTxt(sy, sy.fix)} × ${sy.approx ? '≈' : ''}${dimTxt(sy, sy.exp[1])}${sy.h[1] ? `<br><small>${sy.h[0] === sy.h[1] ? '' : dimTxt(sy, sy.h[0]) + ' → '}${dimTxt(sy, sy.h[1])} high</small>` : ''}` : '<span class="muted">Not published</span>'; };
   const rows = [
-    ['Type', p => FAMILIES[p.family].name],
-    ['Set-up', p => p.list.deploy],
-    ['Space', p => p.list.gain],
-    ['Transport', p => p.list.move],
-    ['Key facts', p => `<ul class="ticks">${p.facts.slice(0, 3).map(f => `<li><b>${esc(f[0])}:</b> ${esc(f[1])}</li>`).join('')}</ul>`],
-    ['Best for', p => p.apps.slice(0, 4).map(esc).join(', ')]
+    ['Type', p => esc(FAMILIES[p.family].name)],
+    ['Set-up', p => esc(p.list.deploy)],
+    ['Space', p => esc(p.list.gain)],
+    ['Transport', p => esc(p.list.move)],
+    ['Packed → deployed', dims],
+    ['Published facts', p => `<dl class="cmp-facts">${p.facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>`],
+    ['Applications', p => `<ul class="cmp-apps">${p.apps.map(a => `<li>${esc(a)}</li>`).join('')}</ul>`]
   ];
-  openModal('Compare systems', `<div style="overflow-x:auto"><table class="cmp-table"><thead><tr><th></th>${list.map(p => `<th><div class="cmp-img">${img(p.imgs[0], p.name)}</div>${esc(p.name)}<small>${esc(p.full)}</small></th>`).join('')}</tr></thead>
+  const drawn = list.map(p => SCALE_SYS.find(s => s.id === p.id)).filter(Boolean);
+  return `<div class="cmp-scroll"><table class="cmp-page" style="--n:${list.length}"><thead><tr><th scope="col"><span class="sr-only">Attribute</span></th>${list.map(p => `<th scope="col"><a href="/products/${p.id}"><div class="cmp-img">${img(p.imgs[0], p.name)}</div><b>${esc(p.name)}</b><small>${esc(p.full)}</small></a></th>`).join('')}</tr></thead>
     <tbody>${rows.map(([h, f]) => `<tr><th scope="row">${h}</th>${list.map(p => `<td>${f(p)}</td>`).join('')}</tr>`).join('')}
-    <tr><th></th>${list.map(p => `<td><a class="btn btn-line btn-sm" href="/products/${p.id}" data-close>View ${esc(p.name)}</a></td>`).join('')}</tr></tbody></table></div>
-    ${list.length < 3 ? `<p class="note">Add ${3 - list.length === 1 ? 'one more system' : 'up to two more systems'} from the <a class="link" href="/products/all" data-close>product list</a>.</p>` : ''}`);
+    <tr class="cmp-acts"><th scope="row"><span class="sr-only">Actions</span></th>${list.map(p => `<td><a class="btn btn-primary btn-sm" href="/contact?product=${p.id}">Request a quote</a><a class="link" href="/products/${p.id}">Full details</a></td>`).join('')}</tr></tbody></table></div>
+    ${drawn.length ? `<div class="cmp-scale"><h2 class="h-m">At one scale</h2><p class="muted">${drawn.length < list.length ? `${list.filter(p => !SCALE_SYS.find(s => s.id === p.id)).map(p => esc(p.name)).join(' and ')} ${list.length - drawn.length > 1 ? 'aren’t' : 'isn’t'} drawn — dimensions aren’t published. ` : ''}Drawn from published dimensions, next to a 20' ISO container.</p>
+      <div class="scl" data-state="packed"><div class="scl-bar"><div class="seg" role="group" aria-label="Show"><button data-scl="packed" aria-pressed="true">Packed</button><button data-scl="deployed" aria-pressed="false">Deployed</button></div></div>
+      <figure class="scl-fig"><figcaption>From above</figcaption><div class="scl-scroll">${scaleSvg('plan', drawn, { noLink: 1 })}</div></figure></div></div>` : ''}`;
+}
+function pageCompare(q) {
+  const ids = cmpIds(q);
+  return `${pageHero({ crumb: [['Products', '/products'], ['Compare', null]], title: 'Compare systems', lead: 'Put any two or three Weatherhaven systems side by side, on the facts each one publishes. The link updates as you choose, so you can send the comparison on.', imgKey: 'rapid_forest' })}
+  <section class="sec" id="compare"><div class="wrap"><div class="cmp-bar" id="cmp-bar">${cmpPickers(ids)}</div><div id="cmp-body">${cmpBody(ids)}</div></div></section>${ctaBand()}`;
+}
+function cmpPickers(ids) {
+  return `${ids.map((id, i) => cmpSelect(i, id, ids)).join('<span class="cmp-vs" aria-hidden="true">vs</span>')}${ids.length < 3 ? `<button class="btn btn-line btn-sm" data-cmp-add>${I.plus}Add a third</button>` : ''}<button class="btn btn-line btn-sm cmp-copy" data-cmp-copy>${I.doc}Copy link</button>`;
+}
+function initCompare(q) {
+  const bar = $('#cmp-bar'), body = $('#cmp-body'); if (!bar) return;
+  let ids = cmpIds(q);
+  const sync = (push) => {
+    bar.innerHTML = cmpPickers(ids); body.innerHTML = cmpBody(ids); initScale();
+    const url = `/products/compare/?ids=${ids.join(',')}`;
+    if (push !== false) history.replaceState(history.state, '', url);
+    document.title = `${ids.map(id => P(id).name).join(' vs ')} — Compare — Weatherhaven`;
+  };
+  bar.addEventListener('change', e => { const sel = e.target.closest('select[data-slot]'); if (!sel) return; ids[+sel.dataset.slot] = sel.value; sync(); });
+  bar.addEventListener('click', e => {
+    if (e.target.closest('[data-cmp-add]')) { ids.push(PRODUCTS.find(p => !ids.includes(p.id)).id); sync(); $('select[data-slot="2"]', bar).focus(); }
+    else if (e.target.closest('[data-cmp-remove]')) { ids = ids.slice(0, 2); sync(); }
+    else if (e.target.closest('[data-cmp-copy]')) {
+      const u = location.origin + `/products/compare/?ids=${ids.join(',')}`;
+      (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => toast('Link copied — paste it anywhere.'), () => toast(u));
+    }
+  });
+  if (q.get('ids')) sync(false); else initScale();
 }
 
 /* ---------------- one-scale lineup (drawn in inches; 1 SVG unit = 1 inch) ---------------- */
@@ -1525,13 +1573,12 @@ function route() {
   const [path] = raw.split('?'); const qs = location.search.replace(/^\?/, ''); const q = new URLSearchParams(qs || '');
   const seg = path.split('/').filter(Boolean);
   const page = seg[0] || '';
-  let section = (page === 'products' && P(seg[1])) ? (seg[2] || null) : (seg[1] || null);
+  let section = (page === 'products' && (P(seg[1]) || seg[1] === 'compare')) ? (seg[2] || null) : (seg[1] || null);
   $$('.overlay.on').forEach(o => { o.classList.remove('on'); o.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; });
   if ($('#hdr').classList.contains('open')) setDrawer(false);
-  const pageKey = page + (page === 'products' && P(seg[1]) ? '/' + seg[1] : '') + (qs ? '?' + qs : '');
+  const pageKey = page + (page === 'products' && (P(seg[1]) || seg[1] === 'compare') ? '/' + seg[1] : '') + (qs ? '?' + qs : '');
   // same page, only a section change → just scroll
   if (lastPage === pageKey && section) { scrollToSection(section, page); return; }
-  if (page === 'products' && seg[1] === 'compare') { if (lastPage && lastPage.startsWith('products')) { openCompare(); history.replaceState(null, '', '/products/'); return; } section = 'all'; setTimeout(openCompare, 400); }
   const render = () => renderPage(page, seg, q, qs, section, pageKey);
   // cross-page transition: the old page slides away while the new one rises in (header stays put)
   if (document.startViewTransition && lastPage !== null && !reduceMotion) {
@@ -1548,7 +1595,8 @@ export function pageFor(page, seg, q, section = null) {
     case 'military': case 'medical': case 'commercial': html = pageSector(page); init = initSubnav; title = `${SECTORS[page].name} shelter solutions — Weatherhaven`; break;
     case 'products': {
       const p = P(seg[1]);
-      if (p) { html = pageProduct(p); init = () => { initProduct(p); if (!p.viewer) initSubnav(); }; title = `${p.name} — ${p.full} — Weatherhaven`; }
+      if (seg[1] === 'compare') { html = pageCompare(q); init = () => initCompare(q); title = 'Compare systems — Weatherhaven'; }
+      else if (p) { html = pageProduct(p); init = () => { initProduct(p); if (!p.viewer) initSubnav(); }; title = `${p.name} — ${p.full} — Weatherhaven`; }
       else { html = pageProducts(q); init = () => { initProducts(q); initSubnav(); }; title = 'Products — Weatherhaven'; }
       break; }
     case 'services': html = pageServices(); init = () => { initLifecycle(SERVICES.some(s => s.id === section) ? section : null); initSubnav(); }; title = 'Services & support — Weatherhaven'; if (SERVICES.some(s => s.id === section)) section = 'lifecycle-sec'; if (section === 'lifecycle') section = 'lifecycle-sec'; break;
