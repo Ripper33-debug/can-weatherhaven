@@ -728,7 +728,7 @@ function pageProducts(q) {
     <div class="reg"><div class="reg-list" id="reg">${regRows(PRODUCTS)}</div>
       <aside class="reg-preview" aria-hidden="true"><div class="pv-img">${PRODUCTS.map((p, i) => img(p.imgs[0], '', `data-pv="${p.id}" class="${i === 0 ? 'on' : ''}"`)).join('')}</div><div class="pv-body"><h3 id="pv-t">${PRODUCTS[0].name}</h3><p id="pv-d">${esc(PRODUCTS[0].summary)}</p></div></aside>
     </div></div></section>
-  <section class="sec ice" id="scale"><div class="wrap"><div class="sec-head"><h2 class="h-l">Ships small, opens big.</h2><p class="lead">Expandables travel at a fraction of their working size. Drag the slider to unfold each one. Plans are drawn to scale where dimensions are published, and proportional elsewhere.</p></div>${scaleExplorer()}</div></section>
+  <section class="sec ice" id="scale"><div class="wrap"><div class="sec-head"><h2 class="h-l">Ships small, opens big.</h2><p class="lead">Every system with published dimensions, drawn to one scale — packed for shipping, then deployed. Tap a name to open its page.</p></div>${scaleLineup()}</div></section>
   <section class="sec" id="accessories"><div class="wrap"><div class="sec-head"><h2 class="h-l">Accessories</h2><p class="lead">Every shelter can be as unique as the mission. Accessories tune it to the climate and link it into a complex.</p></div>
     <div class="acc">${ACCESSORIES.map(a => `<div><div class="aimg">${img(a.img, a.name)}</div><h3>${esc(a.name)}</h3><p>${esc(a.text)}</p><a class="link" href="${a.src}" target="_blank" rel="noopener">Full details</a></div>`).join('')}</div>
     <p class="note">Looking for kitchens, ablutions, laundry, power or water? See <a class="link" href="/services/support">support systems</a>.</p></div></section>
@@ -777,66 +777,95 @@ function openCompare() {
     ${list.length < 3 ? `<p class="note">Add ${3 - list.length === 1 ? 'one more system' : 'up to two more systems'} from the <a class="link" href="/products/all" data-close>product list</a>.</p>` : ''}`);
 }
 
-/* scale explorer */
-const SCALE = [
-  { id: 'mecc', name: 'MECC', sub: '20\u0027 × 8\u0027 → ≈20\u0027 × 24\u0027', note: 'Three times the floor space of a conventional module with the same shipping footprint. Drawn from a standard 20\u0027 × 8\u0027 ISO footprint; deployed width is approximate.', L: 240, W0: 96, W1: 288, unit: 'in', toScale: true, packed: '≈160 ft²', open: '≈480 ft²', mult: '3×' },
-  { id: 'ateps', name: 'ATEPS', sub: '84\u0022 × 104\u0022 → 244\u0022 × 104\u0022', note: 'One 463L pallet position, expanding to 244\u0022 wide in under ten minutes. Drawn to scale.', L: 104, W0: 84, W1: 244, unit: 'in', toScale: true, packed: '61 ft²', open: '176 ft²', mult: '2.9×' },
-  { id: 'trecc', name: 'TRECC', sub: '3× footprint, 5\u0027 → 8\u0027 high', note: 'Expands to three times its shipping footprint and rises from five to eight feet. Proportional — exact dimensions vary by model.', L: 150, W0: 60, W1: 180, toScale: false, packed: '1×', open: '3×', mult: '3×' },
-  { id: 'hercon', name: 'HERCon', sub: 'Up to 6× its shipping footprint', note: 'Two 4\u0027-wide units ship together as one 8\u0027 container, then deploy separately — up to six times the living space of their shipping footprint. Proportional.', L: 200, W0: 48, W1: 288, toScale: false, packed: '1×', open: 'Up to 6×', mult: '6×', twin: true }
+/* ---------------- one-scale lineup (drawn in inches; 1 SVG unit = 1 inch) ---------------- */
+// fix = length that doesn't change; exp = expanding dimension, packed → deployed; h = height, packed → deployed
+const SCALE_SYS = [
+  { id: 'trecc', name: 'TRECC', fix: 94.2, exp: [85.4, 178], h: [57, 92.5], fmt: 'in', src: 'Measured from Weatherhaven’s TRECC CAD model' },
+  { id: 'ateps', name: 'ATEPS', fix: 104, exp: [84, 244], h: [91, 91], fmt: 'in', src: 'Published: 84\u0022 × 104\u0022 packed, 244\u0022 × 104\u0022 deployed, 91\u0022 external height' },
+  { id: 'mecc', name: 'MECC', fix: 240, exp: [96, 288], h: [96, 96], fmt: 'ft', approx: true, src: 'Published: 20\u0027 long × 8\u0027 high, three times the floor area deployed' },
+  { id: 'ehmecc', name: 'EHMECC', fix: 240, exp: [96, 288], h: [96, 150], fmt: 'ft', approx: true, src: 'Published: 12\u00276\u0022 of vertical space, a 4.5 ft roof raise, three times the floor area' },
+  { id: 'hqss', name: 'HQSS operations shelter', fix: 501.6, exp: [null, 285.6], h: [null, null], fmt: 'ft', href: '/innovation/hqss', src: 'Published: deployed 23.8 ft × 41.8 ft, 995 ft²' }
 ];
-function scaleExplorer() {
-  return `<div class="scale"><div><div class="scale-tabs" role="group" aria-label="Product">${SCALE.map((s, i) => `<button data-scale="${s.id}" aria-pressed="${i === 0}"><b>${s.name}</b><span>${esc(s.sub)}</span><em>${esc(s.note)}</em></button>`).join('')}</div>
-    <p style="margin-top:20px"><a class="link" href="/products/mecc/viewer">See the MECC deploy in 3D</a></p></div>
-    <div class="scale-stage"><svg id="scale-svg" viewBox="0 0 640 420" role="img" aria-label="Top-down plan of the product, packed and deployed"></svg>
-      <div class="scale-ctl"><span style="font-size:14px;color:rgba(222,233,244,.7)">Packed</span><input type="range" min="0" max="100" value="100" id="scale-r" aria-label="Packed to deployed"><span style="font-size:14px;color:rgba(222,233,244,.7)">Deployed</span></div>
-      <div class="scale-read"><div><b id="sr-a">—</b><span>Shipping footprint</span></div><div><b id="sr-b">—</b><span>Deployed floor</span></div><div><b id="sr-c">—</b><span>Gain</span></div></div></div></div>`;
+const ISO20 = { fix: 240, exp: 96, h: 102 };
+const ftin = v => { const f = Math.floor(v / 12 + 1e-6), i = Math.round(v - f * 12); return i === 12 ? `${f + 1}\u0027` : i ? `${f}\u0027${i}\u0022` : `${f}\u0027`; };
+const dimTxt = (s, v) => v == null ? '' : s.fmt === 'in' ? `${Math.round(v)}\u0022` : (s.id === 'hqss' ? `${(v / 12).toFixed(1)} ft` : ftin(v));
+const PERSON = 'M10 0a6 6 0 1 1 0 12a6 6 0 1 1 0-12zM3 15h14a3 3 0 0 1 3 3v22h-4v32h-5V44h-2v28H4V40H0V18a3 3 0 0 1 3-3z'; // 20\u0022 wide × 72\u0022 tall
+function scaleSvg(view, list, opts = {}) {
+  const gap = opts.gap || 60, mx = 30, top = opts.top || 30, lab = 78;
+  const cells = []; let x = mx;
+  const push = (w, draw) => { cells.push({ x, w, draw }); x += w + gap; };
+  const plan = view === 'plan';
+  if (plan) push(ISO20.fix, () => 0);
+  else { push(20, () => 0); push(ISO20.exp, () => 0); }
+  list.forEach(sy => push(plan ? sy.fix : (sy.exp[1] || 0), () => 0));
+  const W = Math.max(x - gap + mx, opts.minW || 0);
+  const maxH = plan ? Math.max(ISO20.exp, ...list.map(s => s.exp[1] || 0)) : Math.max(ISO20.h, 72, ...list.map(s => s.h[1] || 0));
+  const H = top + maxH + lab;
+  const base = top + maxH; // baseline (end view) / centre line (plan)
+  const mid = top + maxH / 2;
+  let g = `<defs><pattern id="sg1-${view}" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M12 0H0V12" fill="none" stroke="currentColor" stroke-opacity=".07" stroke-width="1"/></pattern><pattern id="sg5-${view}" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" fill="none" stroke="currentColor" stroke-opacity=".13" stroke-width="1.2"/></pattern></defs>
+    <rect x="0" y="${top - 12}" width="${W}" height="${maxH + 24}" fill="url(#sg1-${view})"/><rect x="0" y="${top - 12}" width="${W}" height="${maxH + 24}" fill="url(#sg5-${view})"/>`;
+  if (!plan) g += `<line x1="0" x2="${W}" y1="${base}" y2="${base}" class="sc-ground"/>`;
+  const label = (cx, name, a, b2, href) => `<g class="sc-lab" transform="translate(${cx} ${base + 34})">${href ? `<a href="${href}">` : ''}<text class="sc-n" text-anchor="middle">${esc(name)}</text>${href ? '</a>' : ''}<text class="sc-d" y="30" text-anchor="middle"><tspan class="sc-pk">${a}</tspan><tspan class="sc-dp" x="0">${b2}</tspan></text></g>`;
+  let i = 0;
+  // references
+  if (plan) {
+    const c = cells[i++], h = ISO20.exp;
+    g += `<rect class="sc-ref" x="${c.x}" y="${mid - h / 2}" width="${c.w}" height="${h}"/>` + label(c.x + c.w / 2, '20\u0027 ISO container', '20\u0027 × 8\u0027', '20\u0027 × 8\u0027');
+  } else {
+    const p = cells[i++]; g += `<path class="sc-person" transform="translate(${p.x} ${base - 72})" d="${PERSON}"/>` + `<g class="sc-lab" transform="translate(${p.x + 10} ${base + 34})"><text class="sc-n" text-anchor="middle">6 ft</text></g>`;
+    const c = cells[i++]; g += `<rect class="sc-ref" x="${c.x}" y="${base - ISO20.h}" width="${c.w}" height="${ISO20.h}"/>` + label(c.x + c.w / 2, '20\u0027 ISO', '8\u0027 × 8\u00276\u0022', '8\u0027 × 8\u00276\u0022');
+  }
+  list.forEach(sy => {
+    const c = cells[i++], cx = c.x + c.w / 2, href = opts.noLink ? null : sy.href || `/products/${sy.id}`;
+    if (plan) {
+      const d = sy.exp[1], k = sy.exp[0] ? sy.exp[0] / d : 1;
+      g += `<rect class="sc-ghost" x="${c.x}" y="${mid - d / 2}" width="${c.w}" height="${d}"/>`;
+      g += `<rect class="sc-body${sy.exp[0] ? '' : ' sc-fixed'}" style="--ky:${k.toFixed(4)}" x="${c.x}" y="${mid - d / 2}" width="${c.w}" height="${d}"/>`;
+      const ax = sy.approx ? '≈' : '';
+      g += label(cx, sy.name, sy.exp[0] ? `${dimTxt(sy, sy.fix)} × ${dimTxt(sy, sy.exp[0])}` : 'Shown deployed', `${dimTxt(sy, sy.fix)} × ${ax}${dimTxt(sy, d)}`, href);
+    } else {
+      const w = sy.exp[1], h = sy.h[1], kx = sy.exp[0] / w, ky = sy.h[0] / h;
+      g += `<rect class="sc-ghost" x="${c.x}" y="${base - h}" width="${w}" height="${h}"/>`;
+      g += `<rect class="sc-body sc-end" style="--kx:${kx.toFixed(4)};--ky:${ky.toFixed(4)}" x="${c.x}" y="${base - h}" width="${w}" height="${h}"/>`;
+      g += label(cx, sy.name, `${dimTxt(sy, sy.h[0])} high`, `${dimTxt(sy, sy.h[1])} high`, href);
+    }
+  });
+  return `<svg class="scl-svg" viewBox="0 0 ${W} ${H}" role="${opts.noLink ? 'img' : 'group'}" aria-label="${plan ? 'Plan view from above' : 'End view'}, drawn to one scale: ${list.map(s => s.name).join(', ')}, with ${plan ? 'a 20-foot ISO container' : 'a 6-foot person and a 20-foot ISO container'} for reference.">${g}</svg>`;
+}
+function scaleLineup() {
+  const ends = SCALE_SYS.filter(s => s.h[1]);
+  return `<div class="scl" data-state="packed" id="scl">
+    <div class="scl-bar"><div class="seg" role="group" aria-label="Show"><button data-scl="packed" aria-pressed="true">Packed</button><button data-scl="deployed" aria-pressed="false">Deployed</button></div><button class="btn btn-line btn-sm" data-scl="play">${I.up}Play</button></div>
+    <figure class="scl-fig"><figcaption>From above</figcaption><div class="scl-scroll">${scaleSvg('plan', SCALE_SYS)}</div></figure>
+    <figure class="scl-fig"><figcaption>From the end</figcaption><div class="scl-scroll">${scaleSvg('end', ends)}</div></figure>
+    <details class="scl-src"><summary>Where the numbers come from</summary><ul>${SCALE_SYS.map(s => `<li><b>${esc(s.name)}:</b> ${esc(s.src)}.</li>`).join('')}<li>MECC and EHMECC deployed width is drawn at three times the 8\u0027 shipping width, from the published “three times the floor area”. The HQSS operations shelter is shown deployed; its packed size isn’t published. HERCon and the softwall shelters aren’t drawn because their dimensions aren’t published.</li></ul></details>
+  </div>`;
+}
+function scaleSingle(id) {
+  const sy = SCALE_SYS.find(s => s.id === id); if (!sy || !sy.exp[0]) return '';
+  const m = v => `${(v * 0.0254).toFixed(2)} m`;
+  const row = (k, a, b2) => `<div><dt>${k}</dt><dd><span class="sc-pk">${a}</span><span class="sc-dp">${b2}</span></dd></div>`;
+  return `<section class="sec-tight" id="scale-one"><div class="wrap"><div class="sec-head"><h2 class="h-l">Packed and deployed, to scale.</h2><p class="lead">${esc(sy.src)}. Next to a 20\u0027 ISO container and a 6 ft person.</p></div>
+    <div class="scl scl-one" data-state="packed" id="scl">
+      <div class="scl-bar"><div class="seg" role="group" aria-label="Show"><button data-scl="packed" aria-pressed="true">Packed</button><button data-scl="deployed" aria-pressed="false">Deployed</button></div></div>
+      <div class="scl-one-grid">
+        <figure class="scl-fig"><figcaption>From above</figcaption>${scaleSvg('plan', [sy], { gap: 50, noLink: 1 })}</figure>
+        <figure class="scl-fig"><figcaption>From the end</figcaption>${scaleSvg('end', [sy], { gap: 40, noLink: 1 })}</figure>
+        <dl class="facts scl-dl">${row('Footprint', `${dimTxt(sy, sy.fix)} × ${dimTxt(sy, sy.exp[0])}`, `${dimTxt(sy, sy.fix)} × ${sy.approx ? '≈' : ''}${dimTxt(sy, sy.exp[1])}`)}${row('Footprint, metric', `${m(sy.fix)} × ${m(sy.exp[0])}`, `${m(sy.fix)} × ${sy.approx ? '≈' : ''}${m(sy.exp[1])}`)}${row('Height', `${dimTxt(sy, sy.h[0])} (${m(sy.h[0])})`, `${dimTxt(sy, sy.h[1])} (${m(sy.h[1])})`)}</dl>
+      </div><p class="note"><a class="link" href="/products/scale">See every system at one scale</a></p></div></div></section>`;
 }
 function initScale() {
-  const svg = $('#scale-svg'); if (!svg) return;
-  const r = $('#scale-r'); let cur = SCALE[0];
-  const draw = () => {
-    const t = r.value / 100, s = cur; r.style.setProperty('--v', r.value + '%');
-    const maxW = 520, maxH = 290;
-    const k = Math.min(maxW / Math.max(s.L, 1), maxH / s.W1);
-    const L = s.L * k, w0 = s.W0 * k, w = (s.W0 + (s.W1 - s.W0) * t) * k;
-    const cx = 340, cy = 180;
-    let g = '';
-    // grid
-    for (let x = 20; x < 640; x += 20) g += `<line x1="${x}" y1="20" x2="${x}" y2="360" stroke="rgba(141,179,218,.08)"/>`;
-    for (let y = 20; y < 360; y += 20) g += `<line x1="20" y1="${y}" x2="620" y2="${y}" stroke="rgba(141,179,218,.08)"/>`;
-    const units = s.twin ? [-1, 1] : [0];
-    units.forEach(u => {
-      const ox = s.twin ? u * (L / 4 + 6) * (t) : 0;
-      const Lu = s.twin ? L / 2 - 6 : L;
-      const x0 = cx - Lu / 2 + ox;
-      const ww = s.twin ? (w0 / 2 + (s.W1 * k / 2 - w0 / 2) * t) : w;
-      const ww0 = s.twin ? w0 / 2 : w0;
-      const yOff = s.twin ? (t < 1 ? u * (ww0 / 2) * (1 - t) : 0) : 0;
-      g += `<rect x="${x0}" y="${cy - ww / 2 + yOff}" width="${Lu}" height="${ww}" fill="rgba(13,66,117,.55)" stroke="#8db3da" stroke-width="1.5"/>`;
-      g += `<rect x="${x0}" y="${cy - ww0 / 2 + yOff}" width="${Lu}" height="${ww0}" fill="rgba(238,132,0,.18)" stroke="#EE8400" stroke-width="2"/>`;
+  $$('.scl').forEach(root => {
+    const set = st => { root.dataset.state = st; $$('[data-scl="packed"],[data-scl="deployed"]', root).forEach(b => b.setAttribute('aria-pressed', b.dataset.scl === st)); };
+    root.addEventListener('click', e => {
+      const b = e.target.closest('[data-scl]'); if (!b) return;
+      if (b.dataset.scl === 'play') { set('packed'); setTimeout(() => set('deployed'), 900); } else set(b.dataset.scl);
     });
-    // dimension labels
-    if (s.toScale) {
-      const inch = (v, w) => s.unit === 'in' && s.id !== 'mecc' ? `${Math.round(v)}\u0022` : `${w && s.id === 'mecc' && v > s.W0 + 1 ? '≈' : ''}${Math.round(v / 12)}\u0027`;
-      const curW = s.W0 + (s.W1 - s.W0) * t;
-      g += `<line x1="${cx - L / 2}" y1="${cy + w / 2 + 22}" x2="${cx + L / 2}" y2="${cy + w / 2 + 22}" stroke="#cfe0f0" stroke-width="1"/><text x="${cx}" y="${cy + w / 2 + 40}" fill="#cfe0f0" font-size="14" text-anchor="middle" font-family="Barlow">${inch(s.L)}</text>`;
-      g += `<line x1="${cx + L / 2 + 22}" y1="${cy - w / 2}" x2="${cx + L / 2 + 22}" y2="${cy + w / 2}" stroke="#cfe0f0" stroke-width="1"/><text x="${cx + L / 2 + 30}" y="${cy + 5}" fill="#fff" font-size="16" font-weight="600" font-family="Barlow">${inch(curW, 1)}</text>`;
-      // a person for scale (≈ 24\u0022 shoulder width)
-      const pr = 12 * k;
-      g += `<circle cx="${cx - L / 2 - 26}" cy="${cy}" r="${Math.max(3, pr)}" fill="#EE8400"/><text x="${cx - L / 2 - 26}" y="${cy + Math.max(3, pr) + 16}" fill="rgba(222,233,244,.7)" font-size="12" text-anchor="middle" font-family="Barlow">person</text>`;
-    } else {
-      g += `<text x="${cx}" y="${cy + w / 2 + 34}" fill="rgba(222,233,244,.7)" font-size="13" text-anchor="middle" font-family="Barlow">Proportional — not to scale</text>`;
-    }
-    g += `<g font-family="Barlow" font-size="13"><rect x="24" y="394" width="14" height="10" fill="rgba(238,132,0,.3)" stroke="#EE8400"/><text x="44" y="403" fill="rgba(222,233,244,.8)">Shipping footprint</text><rect x="180" y="394" width="14" height="10" fill="rgba(13,66,117,.7)" stroke="#8db3da"/><text x="200" y="403" fill="rgba(222,233,244,.8)">Deployed floor</text></g>`;
-    svg.innerHTML = g;
-    $('#sr-a').textContent = s.packed; $('#sr-b').textContent = t > 0.98 ? s.open : '…'; $('#sr-c').textContent = t > 0.98 ? s.mult : `${(1 + (parseFloat(s.mult) - 1) * t).toFixed(1)}×`;
-  };
-  $$('[data-scale]').forEach(b => b.addEventListener('click', () => {
-    cur = SCALE.find(s => s.id === b.dataset.scale); $$('[data-scale]').forEach(x => x.setAttribute('aria-pressed', x === b));
-    if (reduceMotion) { r.value = 100; draw(); return; }
-    r.value = 0; draw(); let v = 0; const step = () => { v = Math.min(100, v + 2.5); r.value = v; draw(); if (v < 100) requestAnimationFrame(step); }; requestAnimationFrame(step);
-  }));
-  r.addEventListener('input', draw); draw();
+    if (reduceMotion) { set('deployed'); return; }
+    const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); setTimeout(() => set('deployed'), 700); } }, { threshold: 0.45 });
+    io.observe(root); cleanups.push(() => io.disconnect());
+  });
 }
 
 /* ---------------- PRODUCT DETAIL ---------------- */
@@ -855,6 +884,7 @@ function pageProduct(p) {
       ${p.note ? `<p class="note">${esc(p.note)}</p>` : ''}
       <div class="pd-acts"><a class="btn btn-primary" href="/contact?product=${p.id}">Request a quote</a><a class="btn btn-line" href="${SITE.rfpGuide}" target="_blank" rel="noopener">${I.doc}RFP guide</a></div></div>
   </div></section>
+  ${scaleSingle(p.id)}
   ${p.viewer ? (() => { const isM = p.viewer === 'mecc' || p.viewer === 'ehmecc', V = VIEWER_COPY[p.viewer]; return `<section class="sec-tight ice" id="viewer"><div class="wrap"><div class="sec-head"><h2 class="h-l">See it deploy.</h2><p class="lead">${esc(V.lead)} Drag to look around.</p></div>
     <div class="viewer-card" id="pd-card"><div class="stage" id="pd-stage" style="background:url(${IMG[p.imgs[0]]}) center/cover"></div>${isM ? insideUI() : p.viewer === 'trecc' ? insideUI('trecc') : ''}<div class="vbar" id="pd-vbar"><button class="deploy-btn" data-deploy aria-pressed="false"><span class="ic">${I.up}</span><span class="t">Deploy</span></button>${p.viewer === 'trecc' ? paintPick() + `<label class="xr-ctl" title="Section cut"><span>Section cut</span><input type="range" min="0" max="100" value="0" data-xray aria-label="Section cut depth"></label>` : ''}
       ${p.viewer === 'trecc' ? `<div class="readout"><div><small>Floor area vs. footprint</small><b data-area>1.0×</b></div><div><small>Height</small><b data-height>5\u0027</b></div></div>` : isM ? `<div class="readout"><div><small>Floor area, approx.</small><b data-area>160 ft²</b></div><div><small>Height</small><b data-height>8\u0027</b></div></div>` : `<div class="readout"><div><small>${esc(V.k)}</small><b>${esc(V.v)}</b></div></div>`}
@@ -879,6 +909,7 @@ const VIEWER_COPY = {
   hercon: { lead: "An illustrative model of the HERCon: two 4'-wide units ship together like one 8'-wide container, then deploy separately. Proportions and fold sequence are illustrative.", k: 'Living space', v: 'Up to 6×' }
 };
 function initProduct(p) {
+  initScale();
   const main = $('#gmain');
   $$('[data-g]').forEach(b => b.addEventListener('click', () => { main.src = IMG[b.dataset.g]; $$('[data-g]').forEach(x => x.setAttribute('aria-pressed', x === b)); }));
   if (p.viewer) {
