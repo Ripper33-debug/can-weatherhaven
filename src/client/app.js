@@ -13,6 +13,7 @@ import PEOPLE from '../content/people.json';
 import CONTACTS from '../content/contacts.json';
 import NEWS from '../content/news.json';
 import SITES from '../content/sites.json';
+import RFP from '../content/rfp.json';
 import PLACES from '../content/places.json';
 import FINDER from '../content/finder.json';
 import TRUSTED from '../content/trusted.json';
@@ -67,7 +68,7 @@ const NAV = [
   { key: 'products', label: 'Products', routes: ['products'], cols: [
     { title: FAMILIES.expandable.name, href: '/products?f=expandable', blurb: 'Ship compact, open big. ISO-standard and pallet-sized.', items: PRODUCTS.filter(p => p.family === 'expandable').map(p => ({ t: p.name, s: p.list.gain, href: `/products/${p.id}` })) },
     { title: FAMILIES.soft.name, href: '/products?f=soft', blurb: 'Tensioned fabric shelters for every climate on Earth.', items: PRODUCTS.filter(p => p.family === 'soft').map(p => ({ t: p.name, s: p.list.gain, href: `/products/${p.id}` })) },
-    { title: 'Complete the system', href: '/services', blurb: 'Everything that turns shelters into a working camp.', items: [{ t: 'Camp planner', s: 'New', href: '/plan' }, { t: 'Accessories', href: '/products/accessories' }, { t: 'Support systems', href: '/services/support' }, { t: 'Compare products', href: '/products/compare' }, { t: 'In-stock inventory', s: 'PDF', href: SITE.instock, ext: 1 }, { t: 'RFP guide', s: 'PDF', href: SITE.rfpGuide, ext: 1 }] }
+    { title: 'Complete the system', href: '/services', blurb: 'Everything that turns shelters into a working camp.', items: [{ t: 'Camp planner', s: 'New', href: '/plan' }, { t: 'Accessories', href: '/products/accessories' }, { t: 'Support systems', href: '/services/support' }, { t: 'Compare products', href: '/products/compare' }, { t: 'How to buy & RFP checklist', s: 'New', href: '/buy' }, { t: 'In-stock inventory', href: '/buy/instock' }] }
   ], feature: { t: 'Watch a MECC deploy', d: 'Fold it out in real time, raise the roof as an EHMECC, and change the climate around it.', a: 'Open the 3D model', href: '/products/mecc/viewer', img: 'p_mecc' } },
   { key: 'services', label: 'Services', routes: ['services'], href: '/services' },
   { key: 'company', label: 'Company', routes: ['company', 'innovation', 'news'], cols: [
@@ -107,7 +108,7 @@ function chromeHTML() {
       <div><img src="${IMG.logo_w}" alt="Weatherhaven" style="height:26px;width:auto"><div class="addr">${SITE.address.join('<br>')}<br><br>Toll free (Canada & USA) <a href="tel:${SITE.tollFree}">${SITE.tollFree}</a><br>International <a href="tel:${SITE.intl}">${SITE.intl}</a><br><a href="mailto:${SITE.email}">${SITE.email}</a></div></div>
       <div><h2 class="ftr-h">Solutions</h2><ul><li><a href="/military">Military</a></li><li><a href="/medical">Medical</a></li><li><a href="/commercial">Commercial</a></li><li><a href="#" data-action="finder">Find a shelter</a></li></ul></div>
       <div><h2 class="ftr-h">Products</h2><ul><li><a href="/products?f=expandable">Expandable containers</a></li><li><a href="/products?f=soft">Softwall shelters</a></li><li><a href="/plan">Camp planner</a></li><li><a href="/products/accessories">Accessories</a></li><li><a href="/services/support">Support systems</a></li><li><a href="${SITE.instock}" target="_blank" rel="noopener">In-stock inventory</a></li></ul></div>
-      <div><h2 class="ftr-h">Company</h2><ul><li><a href="/company">About</a></li><li><a href="/innovation">Innovation</a></li><li><a href="/services">Services</a></li><li><a href="/news">News</a></li><li><a href="${SITE.supplier}" target="_blank" rel="noopener">Supplier information</a></li><li><a href="${SITE.iso}" target="_blank" rel="noopener">ISO 9001:2015 certificate</a></li></ul></div>
+      <div><h2 class="ftr-h">Company</h2><ul><li><a href="/company">About</a></li><li><a href="/innovation">Innovation</a></li><li><a href="/services">Services</a></li><li><a href="/news">News</a></li><li><a href="/buy">How to buy</a></li><li><a href="/buy/suppliers">Supplier information</a></li><li><a href="${SITE.iso}" target="_blank" rel="noopener">ISO 9001:2015 certificate</a></li></ul></div>
       <div><h2 class="ftr-h">Regional websites</h2><ul>${SITE.regional.map(r => `<li><a href="${r.url}" target="_blank" rel="noopener">${r.name}</a></li>`).join('')}</ul><h2 class="ftr-h" style="margin-top:24px">Follow</h2><ul>${SITE.social.map(r => `<li><a href="${r.url}" target="_blank" rel="noopener">${r.name}</a></li>`).join('')}</ul></div>
     </div>
     <div class="ftr-bot"><span>© 2026 Weatherhaven Global Resources Ltd. All rights reserved.</span><span class="concept"><i></i>Website redesign concept — content from weatherhaven.com</span></div>
@@ -1102,10 +1103,14 @@ function pageContact(q) {
     <aside class="cside"><div class="cblock"><h3>Who to talk to</h3><div class="who">${CONTACTS.map((c, i) => `<details ${i === 0 ? 'open' : ''}><summary>${esc(c.region)}${I.chev}</summary><ul>${c.people.map(([n, r]) => `<li><b>${esc(n)}</b><span>${esc(r)}</span></li>`).join('')}</ul></details>`).join('')}</div></div>
     <div class="cblock"><h3>Head office</h3><p>${SITE.address.join('<br>')}</p></div>
     <div class="cblock"><h3>Regional websites</h3><p>${SITE.regional.map(r => `<a href="${r.url}" target="_blank" rel="noopener">${r.name}</a>`).join(' · ')}</p></div>
-    <div class="cblock"><h3>Before you write</h3><p>The <a href="${SITE.rfpGuide}" target="_blank" rel="noopener">RFP guide</a> lists everything worth including, and the <a href="${SITE.instock}" target="_blank" rel="noopener">in-stock inventory</a> shows what can ship now.</p></div></aside></div></section>`;
+    <div class="cblock"><h3>Before you write</h3><p>The <a href="/buy/rfp">RFP checklist</a> lists everything worth including, and the <a href="${SITE.instock}" target="_blank" rel="noopener">in-stock inventory</a> shows what can ship now.</p></div></aside></div></section>`;
 }
 function initContact() {
   const f = $('#cform'); if (!f) return;
+  if (/[?&]from=rfp/.test(location.search)) {
+    let note = window.__rfpNote; try { note = note || sessionStorage.getItem('wh-rfp-note'); } catch (_) { }
+    if (note) f.message.value = 'Please quote against this requirement. Mission, number of people, location and timeline:\n\n' + note;
+  }
   if (/[?&]plan=1/.test(location.search)) {
     let note = window.__planNote; try { note = note || sessionStorage.getItem('wh-plan-note'); } catch (_) { }
     if (note) { f.message.value = note; f.product.value = 'camp'; }
@@ -1127,6 +1132,85 @@ function initContact() {
       $('#sent').focus();
     });
   });
+}
+
+/* ---------------- HOW TO BUY (RFP checklist, in-stock, quality, suppliers) ---------------- */
+const SUP = {
+  commodities: ['Aluminum extrusions', 'Aluminum bar cutting', 'Sheet metal fabrication', 'Electrical installation to CSA', 'Vinyl-coated polyester fabric', 'Fabric manufacturing with RF welding', 'Powder coat painting', 'In-service support'],
+  forms: [['Vendor qualification survey', 'https://eiec269001.blob.core.windows.net/site-content/WHCAN-53-100-Vendor-Qualification-Survey.pdf'], ['Distributor qualification survey', 'https://eiec269001.blob.core.windows.net/site-content/WHCAN-53-298-Distributor-Qualification-Survey.pdf'], ['Service provider qualification survey', 'https://eiec269001.blob.core.windows.net/site-content/WHCAN-53-303-Service-Provider-Qualification-Survey.pdf'], ['Vendor requirements manual', 'https://eiec269001.blob.core.windows.net/site-content/WHCAN-54-253-Vendor-Requirements-Manual.pdf']],
+  people: [['Terry Annas', 'Corporate Quality Manager', 'tannas@Weatherhaven.com', '604-636-1320'], ['Karen Wright', 'Supply Chain Manager', 'kwright@Weatherhaven.com', '']],
+  principles: [['Best total value', 'Total cost of ownership, quality, responsiveness, speed to market, localized supply and willingness to share risk.'], ['Honest, ethical and fair dealings', 'Suppliers are treated with respect, honestly, ethically and fairly, in compliance with the law wherever Weatherhaven operates.'], ['Externally-linked supply solutions', 'Deep supply and market knowledge, and access to supplier competencies around the globe.'], ['Competition and collaboration', 'Competition for innovation and efficiency, collaboration to engage suppliers’ core capabilities — or a blend of the two.'], ['Supplier incumbency', 'Stability in the supply base, balanced with new suppliers who offer meaningfully better total value.']]
+};
+function pageBuy() {
+  const total = RFP.reduce((n, c) => n + c.items.length, 0);
+  return `${pageHero({ crumb: [['How to buy', null]], title: 'How to buy', lead: 'Preparing an RFP? Start with a free initial consultation. Weatherhaven helps develop the specification from your planned concept of operations, then designs, ships, installs and supports the whole system.', imgKey: 'sv_install', stats: [['Free', 'Initial consultation'], [String(total), 'Capabilities on the RFP checklist'], ['100–300', 'Person modules held in inventory']] })}
+  <nav class="subnav" aria-label="On this page"><div class="wrap"><a href="/buy/rfp" data-sub="rfp">RFP checklist</a><a href="/buy/instock" data-sub="instock">In stock</a><a href="/buy/quality" data-sub="quality">Quality</a><a href="/buy/suppliers" data-sub="suppliers">For suppliers</a></div></nav>
+  <section class="sec" id="rfp"><div class="wrap">
+    <div class="sec-head"><h2 class="h-l">Build your requirement.</h2><p class="lead">Every product and capability from Weatherhaven’s RFP guide. Tick what your mission needs, then send the list with your request — or copy it into your own RFP.</p></div>
+    <div class="rfp" id="rfp-tool">
+      <div class="rfp-cats">${RFP.map(c => `<fieldset class="rfp-cat" data-cat="${c.id}"><legend><span>${esc(c.t)}</span><button type="button" class="rfp-all" data-rfp-all="${c.id}">Select all</button></legend><div class="rfp-items">${c.items.map((it, i) => `<label class="rfp-it"><input type="checkbox" data-rfp="${c.id}:${i}"><span>${esc(it)}</span></label>`).join('')}</div></fieldset>`).join('')}</div>
+      <aside class="rfp-sum" aria-live="polite"><div class="rfp-sum-in">
+        <h3>Your requirement</h3><p class="rfp-count" id="rfp-count">Nothing selected yet</p>
+        <div class="rfp-list" id="rfp-list"><p class="muted">Tick items on the left. Your list stays on this device until you clear it.</p></div>
+        <div class="rfp-acts"><button class="btn btn-primary" data-rfp-send disabled>Send with a request</button><button class="btn btn-line btn-sm" data-rfp-copy disabled>${I.doc}Copy list</button><button class="btn btn-line btn-sm" data-rfp-dl disabled>Download .txt</button><button class="rfp-clear" data-rfp-clear disabled>Clear</button></div>
+        <p class="rfp-src">From the <a class="link" href="${SITE.rfpGuide}" target="_blank" rel="noopener">Weatherhaven RFP guide</a> (PDF).</p>
+      </div></aside>
+    </div>
+  </div></section>
+  <section class="sec ice" id="instock"><div class="wrap two">
+    <div><h2 class="h-l">In stock, ready to deploy.</h2><p class="lead" style="margin:18px 0 22px">Inventoried infrastructure available for rapid deployment in 100–300 person modules, held at several facilities to support global operations.</p>
+      <a class="btn btn-primary" href="${SITE.instock}" target="_blank" rel="noopener">${I.doc}In-stock inventory (PDF)</a></div>
+    <div class="buy-cols"><div><h3>Inventory</h3><ul class="ticks"><li>Shelters, softwall and hardwall</li><li>Power generation and distribution</li><li>Medical equipment</li><li>Water and waste systems</li><li>Lighting systems</li><li>Flooring systems</li></ul></div>
+      <div><h3>Applications</h3><ul class="ticks"><li>Humanitarian relief</li><li>Mobile medical units</li><li>Military base camps</li><li>Disaster relief</li></ul><p class="note">The PDF includes the layout of a 150-person base camp.</p></div></div>
+  </div></section>
+  <section class="sec" id="quality"><div class="wrap">
+    <div class="sec-head"><h2 class="h-l">Quality you can put in a contract.</h2><p class="lead">Certified quality management at the plants, certified containers for every mode of transport.</p></div>
+    <div class="buy-q">
+      <div><b>ISO 9001:2015</b><p>Quality management certified for the Burnaby and Brockville facilities.</p><a class="link" href="${SITE.iso}" target="_blank" rel="noopener">Certificate (PDF)</a></div>
+      <div><b>ISO and CSC</b><p>Expandable containers certified for air, land and sea transport and stacking.</p><a class="link" href="/products/mecc">MECC specifications</a></div>
+      <div><b>Tested to Milspec</b><p>Rugged, heavy-duty construction tested to meet military specifications.</p><a class="link" href="/products/mecc">How the MECC is built</a></div>
+      <div><b>Field life 15–20 years</b><p>Built to last in the field, with repair, overhaul and parts from the same team.</p><a class="link" href="/services">Services and support</a></div>
+    </div>
+  </div></section>
+  <section class="sec dark" id="suppliers"><div class="wrap">
+    <div class="sec-head"><h2 class="h-l">For suppliers.</h2><p class="lead">Weatherhaven works with small and medium enterprises through supplier workshops and its supplier portal, and wants to hear about your products and services.</p></div>
+    <div class="sup-grid">
+      <div><h3>What Weatherhaven buys</h3><ul class="ticks">${SUP.commodities.map(c => `<li>${esc(c)}</li>`).join('')}</ul></div>
+      <div><h3>Apply</h3><p>Fill out the qualification survey that fits, and send it to the quality department.</p><ul class="sup-forms">${SUP.forms.map(([t, u]) => `<li><a href="${u}" target="_blank" rel="noopener">${I.doc}${esc(t)}</a></li>`).join('')}</ul></div>
+      <div><h3>Contacts</h3>${SUP.people.map(([n, r, e, ph]) => `<p class="sup-p"><b>${esc(n)}</b><span>${esc(r)}</span><a href="mailto:${e}">${esc(e)}</a>${ph ? `<span>${ph}</span>` : ''}</p>`).join('')}</div>
+    </div>
+    <h3 class="sup-h">Global sourcing principles</h3>
+    <ol class="sup-pr">${SUP.principles.map(([t, d]) => `<li><b>${esc(t)}</b><span>${esc(d)}</span></li>`).join('')}</ol>
+    <p style="margin-top:28px"><a class="link" href="${SITE.supplier}" target="_blank" rel="noopener">Full supplier information and sustainability guidelines on weatherhaven.com</a></p>
+  </div></section>
+  ${ctaBand()}`;
+}
+function initBuy() {
+  initSubnav();
+  const root = $('#rfp-tool'); if (!root) return;
+  const KEY = 'wh-rfp';
+  let sel = new Set(); try { sel = new Set(JSON.parse(localStorage.getItem(KEY) || '[]')); } catch (_) { }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify([...sel])); } catch (_) { } };
+  const groups = () => RFP.map(c => [c, c.items.map((t, i) => [t, `${c.id}:${i}`]).filter(([, k]) => sel.has(k)).map(([t]) => t)]).filter(([, a]) => a.length);
+  const asText = () => `Requirement from the Weatherhaven RFP checklist\n\n${groups().map(([c, a]) => `${c.t}\n${a.map(t => `  - ${t}`).join('\n')}`).join('\n\n')}\n`;
+  const draw = () => {
+    $$('[data-rfp]', root).forEach(i => { i.checked = sel.has(i.dataset.rfp); });
+    $$('[data-rfp-all]', root).forEach(b => { const c = RFP.find(x => x.id === b.dataset.rfpAll), all = c.items.every((_, i) => sel.has(`${c.id}:${i}`)); b.textContent = all ? 'Clear' : 'Select all'; });
+    const g = groups(), n = sel.size;
+    $('#rfp-count').textContent = n ? `${n} item${n > 1 ? 's' : ''} in ${g.length} categor${g.length > 1 ? 'ies' : 'y'}` : 'Nothing selected yet';
+    $('#rfp-list').innerHTML = n ? g.map(([c, a]) => `<div><b>${esc(c.t)}</b><p>${a.map(esc).join(' · ')}</p></div>`).join('') : '<p class="muted">Tick items on the left. Your list stays on this device until you clear it.</p>';
+    $$('[data-rfp-send],[data-rfp-copy],[data-rfp-dl],[data-rfp-clear]', root).forEach(b => b.disabled = !n);
+  };
+  root.addEventListener('change', e => { const i = e.target.closest('[data-rfp]'); if (!i) return; i.checked ? sel.add(i.dataset.rfp) : sel.delete(i.dataset.rfp); save(); draw(); });
+  root.addEventListener('click', e => {
+    const all = e.target.closest('[data-rfp-all]');
+    if (all) { const c = RFP.find(x => x.id === all.dataset.rfpAll), keys = c.items.map((_, i) => `${c.id}:${i}`), on = keys.every(k => sel.has(k)); keys.forEach(k => on ? sel.delete(k) : sel.add(k)); save(); draw(); return; }
+    if (e.target.closest('[data-rfp-clear]')) { sel.clear(); save(); draw(); return; }
+    if (e.target.closest('[data-rfp-copy]')) { const t = asText(); (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast('List copied — paste it into your RFP.'), () => toast('Copy didn’t work here — use Download instead.')); return; }
+    if (e.target.closest('[data-rfp-dl]')) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([asText()], { type: 'text/plain' })); a.download = 'weatherhaven-requirement.txt'; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); return; }
+    if (e.target.closest('[data-rfp-send]')) { try { sessionStorage.setItem('wh-rfp-note', asText()); } catch (_) { } window.__rfpNote = asText(); navigate('/contact?from=rfp'); }
+  });
+  draw();
 }
 
 /* ---------------- RECORD (globe as its own page) ---------------- */
@@ -1165,7 +1249,7 @@ function buildIndex() {
   PRODUCTS.forEach(p => add(p.name, p.full, `/products/${p.id}`, 'Product', p.tagline + ' ' + p.apps.join(' ') + ' ' + p.family));
   add('HQSS', 'Headquarters Shelter System — Canada', '/innovation/hqss', 'Product', 'canada program spec sheet headquarters');
   Object.entries(SECTORS).forEach(([k, s]) => { add(s.name, 'Solutions', `/${k}`, 'Page', s.lead); s.apps.forEach(a => add(a.name, s.name, `/${k}/${a.id}`, 'Mission', a.text)); });
-  [['Products', '/products'], ['Services & support', '/services'], ['Innovation', '/innovation'], ['Company', '/company'], ['History', '/company/history'], ['Leadership', '/company/leadership'], ['News', '/news'], ['Contact us', '/contact'], ['Where we’ve worked', '/record']].forEach(([t, h]) => add(t, 'Page', h, 'Page'));
+  [['Products', '/products'], ['Services & support', '/services'], ['Innovation', '/innovation'], ['Company', '/company'], ['History', '/company/history'], ['Leadership', '/company/leadership'], ['News', '/news'], ['Contact us', '/contact'], ['Where we’ve worked', '/record'], ['How to buy', '/buy'], ['RFP checklist', '/buy/rfp'], ['In-stock inventory', '/buy/instock'], ['Supplier information', '/buy/suppliers'], ['Compare systems', '/products/compare']].forEach(([t, h]) => add(t, 'Page', h, 'Page'));
   SERVICES.forEach(s => add(s.name, 'Service', `/services/${s.id}`, 'Service', s.text));
   SUPPORT.forEach(s => add(s.name, 'Support system', `/services/support`, 'Service', s.text));
   ACCESSORIES.forEach(a => add(a.name, 'Accessory', `/products/accessories`, 'Service', a.text));
@@ -1607,6 +1691,7 @@ export function pageFor(page, seg, q, section = null) {
     case 'news': html = pageNews(); title = 'News — Weatherhaven'; break;
     case 'contact': html = pageContact(q); init = initContact; title = 'Contact — Weatherhaven'; break;
     case 'record': html = pageRecord(); init = initGlobe; title = 'Where we’ve worked — Weatherhaven'; break;
+    case 'buy': html = pageBuy(); init = initBuy; title = 'How to buy — Weatherhaven'; break;
     case 'plan': html = pagePlan(); init = initPlan; title = 'Camp planner — Weatherhaven'; break;
     default: html = `<section class="phero"><div class="wrap" style="padding:120px 0 96px"><h1 class="h-xl">That page has moved.</h1><p class="lead" style="margin:18px 0 28px">Search the site or head back to the start.</p><div class="hero-cta"><button class="btn btn-primary" data-action="search">Search the site</button><a class="btn btn-ghost" href="/">Go to the home page</a></div></div></section>`; title = 'Page not found — Weatherhaven';
   }

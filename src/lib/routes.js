@@ -31,11 +31,12 @@ export function metaFor(path, title) {
     if (p) { description = p.summary; image = IMG[p.imgs[0]]; jsonld = { '@context': 'https://schema.org', '@type': 'Product', name: `${p.name} — ${p.full}`, description: p.summary, image: image, brand: { '@type': 'Brand', name: 'Weatherhaven' }, manufacturer: site, url: path }; }
   } else if (SECTORS[seg[0]]) { description = SECTORS[seg[0]].lead; image = IMG[SECTORS[seg[0]].img]; }
   else if (seg[0] === 'products') description = 'Eleven shelter systems: expandable containers and softwall shelters, compared side by side.';
+  else if (seg[0] === 'buy') description = 'How to buy from Weatherhaven: an RFP checklist of every product and capability, in-stock inventory, quality certifications and supplier information.';
   else if (seg[0] === 'plan') description = 'Sketch a camp with MECCs, EHMECCs, ATEPS and softwall shelters, then see it in 3D.';
   else if (seg[0] === 'services') description = 'Engineering and design, logistics, installation, training, repair and parts — one integrated service from start to finish.';
   // breadcrumbs for sub-pages
   if (seg.length >= 1) {
-    const names = { products: 'Products', services: 'Services', company: 'Company', innovation: 'Innovation', news: 'News', contact: 'Contact', record: 'Where we’ve worked', plan: 'Camp planner', military: 'Military', medical: 'Medical', commercial: 'Commercial' };
+    const names = { products: 'Products', services: 'Services', company: 'Company', innovation: 'Innovation', news: 'News', contact: 'Contact', record: 'Where we’ve worked', buy: 'How to buy', rfp: 'RFP checklist', instock: 'In stock', quality: 'Quality', suppliers: 'For suppliers', compare: 'Compare', plan: 'Camp planner', military: 'Military', medical: 'Medical', commercial: 'Commercial' };
     const items = [{ '@type': 'ListItem', position: 1, name: 'Home', item: '/' }];
     let acc = '';
     seg.forEach((sg, i) => { acc += '/' + sg; const p = PRODUCTS.find(x => x.id === sg); items.push({ '@type': 'ListItem', position: i + 2, name: p ? p.name : (names[sg] || sg.replace(/-/g, ' ')), item: acc + '/' }); });
