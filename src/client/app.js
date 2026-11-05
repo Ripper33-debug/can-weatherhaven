@@ -568,12 +568,12 @@ const TYPE_DOT = Object.fromEntries(SITE_TYPES.map(t => [t[0], t[2]]));
 const SECTOR_TYPE = { military: 'def', medical: 'med', commercial: 'com', office: 'office' };
 const PLACE_COUNTRY = { 'canada-dnd': 'Canada', natick: 'United States', baffin: 'Canada', greenland: 'Greenland', antarctica: 'Antarctica', kuwait: 'Kuwait', kosovo: 'Kosovo', afghanistan: 'Afghanistan', haiti: 'Haiti', peru: 'Peru', chile: 'Chile', australia: 'Australia', davos: 'Switzerland', uk: 'United Kingdom', brasil: 'Brazil', burnaby: 'Canada' };
 const countryOf = s => s.c.replace(/\s*\(.*\)\s*/, '').trim();
-const SITE_COUNTRIES = new Set(SITES.map(countryOf)).size;
+const SITE_COUNTRIES = new Set(SITES.map(countryOf).filter(c => c !== 'Antarctica')).size;
 function globeSection() {
   const n = t => SITES.filter(s => s.t === t).length;
   return `<section class="sec dark globe-sec" id="record">
     <div class="wrap">
-      <div class="sec-head"><h2 class="h-l">A field record on every continent.</h2><p class="lead">${SITES.length} sites in ${SITE_COUNTRIES} countries and territories, Antarctica included, from Weatherhaven’s own deployment map — plus the stories behind them, from the Kuwait–Iraq demilitarized zone to the Antarctic ice.</p></div>
+      <div class="sec-head"><h2 class="h-l">A field record on every continent.</h2><p class="lead">${SITES.length} sites in ${SITE_COUNTRIES} countries and territories plus Antarctica, from Weatherhaven’s own deployment map — plus the stories behind them, from the Kuwait–Iraq demilitarized zone to the Antarctic ice.</p></div>
       <div class="globe-grid">
         <div class="globe-side">
           <div class="gfilter" role="group" aria-label="Filter by mission type">
@@ -795,7 +795,7 @@ function cmpBody(ids) {
   return `<div class="cmp-scroll"><table class="cmp-page" style="--n:${list.length}"><thead><tr><th scope="col"><span class="sr-only">Attribute</span></th>${list.map(p => `<th scope="col"><a href="/products/${p.id}"><div class="cmp-img">${img(p.imgs[0], p.name)}</div><b>${esc(p.name)}</b><small>${esc(p.full)}</small></a></th>`).join('')}</tr></thead>
     <tbody>${rows.map(([h, f]) => `<tr><th scope="row">${h}</th>${list.map(p => `<td>${f(p)}</td>`).join('')}</tr>`).join('')}
     <tr class="cmp-acts"><th scope="row"><span class="sr-only">Actions</span></th>${list.map(p => `<td><a class="btn btn-primary btn-sm" href="/contact?product=${p.id}">Request a quote</a><a class="link" href="/products/${p.id}">Full details</a></td>`).join('')}</tr></tbody></table></div>
-    ${drawn.length ? `<div class="cmp-scale"><h2 class="h-m">At one scale</h2><p class="muted">${drawn.length < list.length ? `${list.filter(p => !SCALE_SYS.find(s => s.id === p.id)).map(p => esc(p.name)).join(' and ')} ${list.length - drawn.length > 1 ? 'aren’t' : 'isn’t'} drawn — dimensions aren’t published. ` : ''}Drawn from published dimensions, next to a 20' ISO container.</p>
+    ${drawn.length ? `<div class="cmp-scale"><h2 class="h-m">At one scale</h2><p class="muted">${drawn.length < list.length ? `${list.filter(p => !SCALE_SYS.find(s => s.id === p.id)).map(p => esc(p.name)).join(' and ')} ${list.length - drawn.length > 1 ? 'aren’t' : 'isn’t'} drawn — dimensions aren’t published. ` : ''}Drawn from published dimensions where they exist; the TRECC is measured from Weatherhaven’s CAD model, and MECC and EHMECC deployed width is estimated (≈). Next to a 20' ISO container.</p>
       <div class="scl" data-state="packed"><div class="scl-bar"><div class="seg" role="group" aria-label="Show"><button data-scl="packed" aria-pressed="true">Packed</button><button data-scl="deployed" aria-pressed="false">Deployed</button></div></div>
       <figure class="scl-fig"><figcaption>From above</figcaption><div class="scl-scroll">${scaleSvg('plan', drawn, { noLink: 1 })}</div></figure></div></div>` : ''}`;
 }
@@ -832,9 +832,9 @@ function initCompare(q) {
 // fix = length that doesn't change; exp = expanding dimension, packed → deployed; h = height, packed → deployed
 const SCALE_SYS = [
   { id: 'trecc', name: 'TRECC', fix: 94.2, exp: [85.4, 178], h: [57, 92.5], fmt: 'in', src: 'Measured from Weatherhaven’s TRECC CAD model' },
-  { id: 'ateps', name: 'ATEPS', fix: 104, exp: [84, 244], h: [91, 91], fmt: 'in', src: 'Published: 84\u0022 × 104\u0022 packed, 244\u0022 × 104\u0022 deployed, 91\u0022 external height' },
-  { id: 'mecc', name: 'MECC', fix: 240, exp: [96, 288], h: [96, 96], fmt: 'ft', approx: true, src: 'Published: 20\u0027 long × 8\u0027 high, three times the floor area deployed' },
-  { id: 'ehmecc', name: 'EHMECC', fix: 240, exp: [96, 288], h: [96, 150], fmt: 'ft', approx: true, src: 'Published: 12\u00276\u0022 of vertical space, a 4.5 ft roof raise, three times the floor area' },
+  { id: 'ateps', name: 'ATEPS', fix: 104, exp: [84, 244], h: [91, 91], fmt: 'in', src: 'Published: 84\u0022 × 104\u0022 packed, 244\u0022 × 104\u0022 deployed, 91\u0022 external height (packed height taken as the same)' },
+  { id: 'mecc', name: 'MECC', fix: 240, exp: [96, 288], h: [96, 96], fmt: 'ft', approx: true, src: 'Published: 20\u0027 long × 8\u0027 high, three times the floor area deployed; deployed width estimated at three times the 8\u0027 shipping width' },
+  { id: 'ehmecc', name: 'EHMECC', fix: 240, exp: [96, 288], h: [96, 150], fmt: 'ft', approx: true, src: 'Published: 12\u00276\u0022 of vertical space, a 4.5 ft roof raise, three times the floor area; length and width estimated from the 20\u0027 MECC' },
   { id: 'hqss', name: 'HQSS operations shelter', fix: 501.6, exp: [null, 285.6], h: [null, null], fmt: 'ft', href: '/innovation/hqss', src: 'Published: deployed 23.8 ft × 41.8 ft, 995 ft²' }
 ];
 const ISO20 = { fix: 240, exp: 96, h: 102 };
@@ -890,12 +890,12 @@ function scaleLineup() {
     <div class="scl-bar"><div class="seg" role="group" aria-label="Show"><button data-scl="packed" aria-pressed="true">Packed</button><button data-scl="deployed" aria-pressed="false">Deployed</button></div><button class="btn btn-line btn-sm" data-scl="play">${I.up}Play</button></div>
     <figure class="scl-fig"><figcaption>From above</figcaption><div class="scl-scroll">${scaleSvg('plan', SCALE_SYS)}</div></figure>
     <figure class="scl-fig"><figcaption>From the end</figcaption><div class="scl-scroll">${scaleSvg('end', ends)}</div></figure>
-    <details class="scl-src"><summary>Where the numbers come from</summary><ul>${SCALE_SYS.map(s => `<li><b>${esc(s.name)}:</b> ${esc(s.src)}.</li>`).join('')}<li>MECC and EHMECC deployed width is drawn at three times the 8\u0027 shipping width, from the published “three times the floor area”. The HQSS operations shelter is shown deployed; its packed size isn’t published. HERCon and the softwall shelters aren’t drawn because their dimensions aren’t published.</li></ul></details>
+    <details class="scl-src"><summary>Where the numbers come from</summary><ul>${SCALE_SYS.map(s => `<li><b>${esc(s.name)}:</b> ${esc(s.src)}.</li>`).join('')}<li>MECC and EHMECC deployed width is drawn at three times the 8\u0027 shipping width, from the published “three times the floor area”. The HQSS operations shelter is shown deployed; its packed size isn’t published. HERCon and the softwall shelters aren’t drawn because complete packed and deployed dimensions aren’t published.</li></ul></details>
   </div>`;
 }
 function scaleSingle(id) {
   const sy = SCALE_SYS.find(s => s.id === id); if (!sy || !sy.exp[0]) return '';
-  const m = v => `${(v * 0.0254).toFixed(2)} m`;
+  const m = (v, ax) => `${(v * 0.0254).toFixed(ax ? 1 : 2)} m`;
   const row = (k, a, b2) => `<div><dt>${k}</dt><dd><span class="sc-pk">${a}</span><span class="sc-dp">${b2}</span></dd></div>`;
   return `<section class="sec-tight" id="scale-one"><div class="wrap"><div class="sec-head"><h2 class="h-l">Packed and deployed, to scale.</h2><p class="lead">${esc(sy.src)}. Next to a 20\u0027 ISO container and a 6 ft person.</p></div>
     <div class="scl scl-one" data-state="packed" id="scl">
@@ -903,7 +903,7 @@ function scaleSingle(id) {
       <div class="scl-one-grid">
         <figure class="scl-fig"><figcaption>From above</figcaption>${scaleSvg('plan', [sy], { gap: 50, noLink: 1 })}</figure>
         <figure class="scl-fig"><figcaption>From the end</figcaption>${scaleSvg('end', [sy], { gap: 40, noLink: 1 })}</figure>
-        <dl class="facts scl-dl">${row('Footprint', `${dimTxt(sy, sy.fix)} × ${dimTxt(sy, sy.exp[0])}`, `${dimTxt(sy, sy.fix)} × ${sy.approx ? '≈' : ''}${dimTxt(sy, sy.exp[1])}`)}${row('Footprint, metric', `${m(sy.fix)} × ${m(sy.exp[0])}`, `${m(sy.fix)} × ${sy.approx ? '≈' : ''}${m(sy.exp[1])}`)}${row('Height', `${dimTxt(sy, sy.h[0])} (${m(sy.h[0])})`, `${dimTxt(sy, sy.h[1])} (${m(sy.h[1])})`)}</dl>
+        <dl class="facts scl-dl">${row('Footprint', `${dimTxt(sy, sy.fix)} × ${dimTxt(sy, sy.exp[0])}`, `${dimTxt(sy, sy.fix)} × ${sy.approx ? '≈' : ''}${dimTxt(sy, sy.exp[1])}`)}${row('Footprint, metric', `${m(sy.fix)} × ${m(sy.exp[0])}`, `${m(sy.fix)} × ${sy.approx ? '≈' : ''}${m(sy.exp[1], sy.approx)}`)}${row('Height', `${dimTxt(sy, sy.h[0])} (${m(sy.h[0])})`, `${dimTxt(sy, sy.h[1])} (${m(sy.h[1])})`)}</dl>
       </div><p class="note"><a class="link" href="/products/scale">See every system at one scale</a></p></div></div></section>`;
 }
 function initScale() {
@@ -1139,7 +1139,7 @@ const SUP = {
   commodities: ['Aluminum extrusions', 'Aluminum bar cutting', 'Sheet metal fabrication', 'Electrical installation to CSA', 'Vinyl-coated polyester fabric', 'Fabric manufacturing with RF welding', 'Powder coat painting', 'In-service support'],
   forms: [['Vendor qualification survey', 'https://eiec269001.blob.core.windows.net/site-content/WHCAN-53-100-Vendor-Qualification-Survey.pdf'], ['Distributor qualification survey', 'https://eiec269001.blob.core.windows.net/site-content/WHCAN-53-298-Distributor-Qualification-Survey.pdf'], ['Service provider qualification survey', 'https://eiec269001.blob.core.windows.net/site-content/WHCAN-53-303-Service-Provider-Qualification-Survey.pdf'], ['Vendor requirements manual', 'https://eiec269001.blob.core.windows.net/site-content/WHCAN-54-253-Vendor-Requirements-Manual.pdf']],
   people: [['Terry Annas', 'Corporate Quality Manager', 'tannas@Weatherhaven.com', '604-636-1320'], ['Karen Wright', 'Supply Chain Manager', 'kwright@Weatherhaven.com', '']],
-  principles: [['Best total value', 'Total cost of ownership, quality, responsiveness, speed to market, localized supply and willingness to share risk.'], ['Honest, ethical and fair dealings', 'Suppliers are treated with respect, honestly, ethically and fairly, in compliance with the law wherever Weatherhaven operates.'], ['Externally-linked supply solutions', 'Deep supply and market knowledge, and access to supplier competencies around the globe.'], ['Competition and collaboration', 'Competition for innovation and efficiency, collaboration to engage suppliers’ core capabilities — or a blend of the two.'], ['Supplier incumbency', 'Stability in the supply base, balanced with new suppliers who offer meaningfully better total value.']]
+  principles: [['Best total value', 'Total cost of ownership, quality, responsiveness, speed to market, minority/women ownership, localized supply and willingness to share risk.'], ['Honest, ethical and fair dealings', 'Suppliers are treated with respect, honestly, ethically and fairly, in compliance with the law wherever Weatherhaven operates.'], ['Externally-linked supply solutions', 'Deep supply and market knowledge, and access to supplier competencies around the globe.'], ['Competition and collaboration', 'Competition for innovation and efficiency, collaboration to engage suppliers’ core capabilities — or a blend of the two.'], ['Supplier incumbency', 'Stability in the supply base, balanced with new suppliers who offer meaningfully better total value.']]
 };
 function pageBuy() {
   const total = RFP.reduce((n, c) => n + c.items.length, 0);
@@ -1164,12 +1164,12 @@ function pageBuy() {
       <div><h3>Applications</h3><ul class="ticks"><li>Humanitarian relief</li><li>Mobile medical units</li><li>Military base camps</li><li>Disaster relief</li></ul><p class="note">The PDF includes the layout of a 150-person base camp.</p></div></div>
   </div></section>
   <section class="sec" id="quality"><div class="wrap">
-    <div class="sec-head"><h2 class="h-l">Quality you can put in a contract.</h2><p class="lead">Certified quality management at the plants, certified containers for every mode of transport.</p></div>
+    <div class="sec-head"><h2 class="h-l">Quality you can put in a contract.</h2><p class="lead">Certified quality management at its facilities, and containers certified for every mode of transport.</p></div>
     <div class="buy-q">
       <div><b>ISO 9001:2015</b><p>Quality management certified for the Burnaby and Brockville facilities.</p><a class="link" href="${SITE.iso}" target="_blank" rel="noopener">Certificate (PDF)</a></div>
-      <div><b>ISO and CSC</b><p>Expandable containers certified for air, land and sea transport and stacking.</p><a class="link" href="/products/mecc">MECC specifications</a></div>
-      <div><b>Tested to Milspec</b><p>Rugged, heavy-duty construction tested to meet military specifications.</p><a class="link" href="/products/mecc">How the MECC is built</a></div>
-      <div><b>Field life 15–20 years</b><p>Built to last in the field, with repair, overhaul and parts from the same team.</p><a class="link" href="/services">Services and support</a></div>
+      <div><b>ISO and CSC</b><p>MECC and EHMECC: certified for air, land and sea transport and stacking.</p><a class="link" href="/products/mecc">MECC specifications</a></div>
+      <div><b>Tested to Milspec</b><p>MECC: rugged, heavy-duty construction tested to meet military specifications.</p><a class="link" href="/products/mecc">How the MECC is built</a></div>
+      <div><b>15–20 years</b><p>MECC: built to last 15–20 years in the field. Repair, overhaul and parts come from the same team.</p><a class="link" href="/services">Services and support</a></div>
     </div>
   </div></section>
   <section class="sec dark" id="suppliers"><div class="wrap">
