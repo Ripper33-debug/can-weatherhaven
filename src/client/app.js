@@ -346,7 +346,7 @@ function pageHome() {
   <section class="sec">
     <div class="wrap">
       <div class="sec-head"><h2 class="h-l">Latest news</h2><p class="lead"><a class="link" href="${SITE.newsArchive}" target="_blank" rel="noopener">Read the full news archive</a></p></div>
-      ${newsList()}
+      ${newsList(3)}
       <div class="res">
         <a href="${SITE.rfpGuide}" target="_blank" rel="noopener"><span class="ri">${I.doc}</span><span><b>RFP guide</b><span>Everything to include when you specify a shelter system.</span></span><em>PDF</em></a>
         <a href="${SITE.instock}" target="_blank" rel="noopener"><span class="ri">${I.box}</span><span><b>In-stock inventory</b><span>Infrastructure ready to ship now.</span></span><em>PDF</em></a>
@@ -628,7 +628,7 @@ function initLifecycle(sel) {
   });
   if (sel) pick(sel);
 }
-function newsList() { return `<div class="news">${NEWS.map(n => `<a href="${n.url}" target="_blank" rel="noopener"><time>${n.date}</time><h3>${esc(n.t)}</h3><p>${esc(n.d)}</p></a>`).join('')}</div>`; }
+function newsList(max = 99) { return `<div class="news">${NEWS.slice(0, max).map(n => `<a href="${n.url}" target="_blank" rel="noopener"><time>${n.date}</time><h3>${esc(n.t)}</h3><p>${esc(n.d)}</p></a>`).join('')}</div>`; }
 
 /* ---------------- SECTOR ---------------- */
 function pageSector(key) {
