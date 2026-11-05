@@ -31,7 +31,10 @@ def main():
         pins.append((typ, pm.findtext('k:name', default='', namespaces=ns), loc))
     page = get(f'https://www.google.com/maps/d/viewer?mid={MID}')
     i = page.find('_pageData = "'); j = page.find('";', i)
-    data = page[i + 13:j].encode('utf-8').decode('unicode_escape').replace('\\"', '"').replace('\\u0026', '&')
+    raw = page[i + 13:j]
+    try: data = json.loads('"' + raw + '"')  # the page data is a JSON-escaped string
+    except ValueError: data = raw.encode('latin-1', 'ignore').decode('unicode_escape').replace('\\"', '"')
+    data = data.replace('\\u0026', '&').replace('\\"', '"')
     heads = [(m.start(), m.group(1)) for m in re.finditer(r'\[\["(' + '|'.join(map(re.escape, TYPES)) + r')"\]\]', data)]
     pat = re.compile(r'\[\[\],null,1,1,\[\[null,\[(-?[\d.]+),(-?[\d.]+)\]\],"0",null,"[^"]*",\[[^\]]*\],\[0,0\],"([0-9A-F]+)"\],\[\["((?:[^"\\]|\\.)*)"\]\]\]')
     geo = []
