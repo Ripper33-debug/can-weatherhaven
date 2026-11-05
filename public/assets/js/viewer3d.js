@@ -39,8 +39,11 @@
     draco.setDecoderConfig({ type: 'wasm' });
     if (M.dracoPath) draco.setDecoderPath(M.dracoPath);
     else { const lib = { 'draco_wasm_wrapper.js': M.draco.wrapper, 'draco_decoder.wasm': b64buf(M.draco.wasm) }; draco._loadLibrary = url => Promise.resolve(lib[url]); }
+    const pre = window.__whPre;
+    if (pre && M.dracoPath) { const orig = draco._loadLibrary.bind(draco); draco._loadLibrary = (url, type) => pre[url] ? pre[url].catch(() => orig(url, type)) : orig(url, type); }
     const gl = new THREE.GLTFLoader(); gl.setDRACOLoader(draco);
-    const one = url => new Promise((res, rej) => gl.load(url, g => res(g.scene), undefined, rej));
+    const fromUrl = url => new Promise((res, rej) => gl.load(url, g => res(g.scene), undefined, rej));
+    const one = url => pre && pre[url] ? pre[url].then(buf => new Promise((res, rej) => gl.parse(buf, url.replace(/[^/]*$/, ''), g => res(g.scene), rej)), () => fromUrl(url)) : fromUrl(url);
     treccAssets = Promise.all([one(M.open), one(M.stowed)]).then(([open, stowed]) => { draco.dispose(); return { open, stowed }; });
     return treccAssets;
   }

@@ -420,7 +420,7 @@ function initHero(stage, hero, fromMobile) {
         v.intro(3.8);
         const t0 = performance.now();
         ready.then(() => setTimeout(() => { if (v.container === stage && v.pT === 0) v.deploy(true); }, Math.max(0, 900 - (performance.now() - t0))));
-      });
+      }, ready);
     } else { v.scrub(1); hero.classList.add('go', 'no-anim'); }
     bindViewerControls(hero, v);
     const pb = $('.present-btn', hero); pb && pb.addEventListener('click', () => startPresent(v, hero));
@@ -541,7 +541,7 @@ function initStory() {
 }
 
 /* ---------------- intro (once per session) ---------------- */
-function playIntro(done) {
+function playIntro(done, ready) {
   let seen = false; try { seen = sessionStorage.getItem('wh-intro') === '1'; sessionStorage.setItem('wh-intro', '1'); } catch (_) { }
   if (seen || reduceMotion) { done(); return; }
   const el = document.createElement('div'); el.className = 'intro'; el.setAttribute('aria-hidden', 'true');
@@ -554,7 +554,9 @@ function playIntro(done) {
     el.classList.add('out'); document.documentElement.classList.remove('intro-on'); done();
     setTimeout(() => el.remove(), 1000);
   };
-  const t1 = setTimeout(finish, 2100);
+  const t0 = performance.now(); let t1 = setTimeout(finish, 3500);
+  if (ready) ready.then(() => { clearTimeout(t1); t1 = setTimeout(finish, Math.max(0, 1600 - (performance.now() - t0))); }, () => { clearTimeout(t1); t1 = setTimeout(finish, Math.max(0, 1600 - (performance.now() - t0))); });
+  else { clearTimeout(t1); t1 = setTimeout(finish, 2100); }
   el.addEventListener('click', finish); addEventListener('keydown', finish); addEventListener('wheel', finish, { passive: true }); addEventListener('touchstart', finish, { passive: true });
 }
 
