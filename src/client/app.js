@@ -12,6 +12,7 @@ import TIMELINE from '../content/timeline.json';
 import PEOPLE from '../content/people.json';
 import CONTACTS from '../content/contacts.json';
 import NEWS from '../content/news.json';
+import SITES from '../content/sites.json';
 import PLACES from '../content/places.json';
 import FINDER from '../content/finder.json';
 import TRUSTED from '../content/trusted.json';
@@ -558,55 +559,105 @@ function playIntro(done) {
 }
 
 /* ---------------- globe section ---------------- */
+const SITE_TYPES = [['def', 'Defence & peacekeeping', '#EE8400'], ['med', 'Medical & disaster relief', '#FF5A5F'], ['com', 'Commercial & scientific', '#3FC1C9']];
+const TYPE_NAME = Object.fromEntries(SITE_TYPES.map(t => [t[0], t[1]]));
+const TYPE_DOT = Object.fromEntries(SITE_TYPES.map(t => [t[0], t[2]]));
+const SECTOR_TYPE = { military: 'def', medical: 'med', commercial: 'com', office: 'office' };
+const PLACE_COUNTRY = { 'canada-dnd': 'Canada', natick: 'United States', baffin: 'Canada', greenland: 'Greenland', antarctica: 'Antarctica', kuwait: 'Kuwait', kosovo: 'Kosovo', afghanistan: 'Afghanistan', haiti: 'Haiti', peru: 'Peru', chile: 'Chile', australia: 'Australia', davos: 'Switzerland', uk: 'United Kingdom', brasil: 'Brazil', burnaby: 'Canada' };
+const countryOf = s => s.c.replace(/\s*\(.*\)\s*/, '').trim();
+const SITE_COUNTRIES = new Set(SITES.map(countryOf)).size;
 function globeSection() {
+  const n = t => SITES.filter(s => s.t === t).length;
   return `<section class="sec dark globe-sec" id="record">
     <div class="wrap">
-      <div class="sec-head"><h2 class="h-l">A field record on every continent.</h2><p class="lead">Four decades of camps, hospitals and research bases — from the Kuwait–Iraq demilitarized zone to the Antarctic ice. Drag the globe or pick a location.</p></div>
+      <div class="sec-head"><h2 class="h-l">A field record on every continent.</h2><p class="lead">${SITES.length} sites in ${SITE_COUNTRIES} countries and territories, Antarctica included, from Weatherhaven’s own deployment map — plus the stories behind them, from the Kuwait–Iraq demilitarized zone to the Antarctic ice.</p></div>
       <div class="globe-grid">
         <div class="globe-side">
-          <div class="gfilter" role="group" aria-label="Filter locations">
-            <button data-gf="all" aria-pressed="true">All</button>
-            <button data-gf="military" aria-pressed="false"><i style="background:#EE8400"></i>Military</button>
-            <button data-gf="medical" aria-pressed="false"><i style="background:#EE8400"></i>Medical</button>
-            <button data-gf="commercial" aria-pressed="false"><i style="background:#EE8400"></i>Commercial & research</button>
+          <div class="gfilter" role="group" aria-label="Filter by mission type">
+            <button data-gf="all" aria-pressed="true">All <span>${SITES.length}</span></button>
+            ${SITE_TYPES.map(([k, l, c]) => `<button data-gf="${k}" aria-pressed="false"><i style="background:${c}"></i>${l} <span>${n(k)}</span></button>`).join('')}
             <button data-gf="office" aria-pressed="false"><i style="background:#fff"></i>Offices</button>
           </div>
+          <div class="gside-h"><h3>Stories</h3><button class="gtour" id="gtour" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg><span>Play tour</span></button></div>
           <div class="glist" id="glist"></div>
           <div class="gcard" id="gcard" aria-live="polite"></div>
         </div>
-        <div class="globe-box" id="globe-box"><div class="globe-tip" id="gtip"></div></div>
+        <div class="globe-box" id="globe-box">
+          <div class="gtools">
+            <div class="gview" role="group" aria-label="Globe view"><button data-gv="satellite" aria-pressed="true">Satellite</button><button data-gv="night" aria-pressed="false">Night</button><button data-gv="field" aria-pressed="false">Field</button></div>
+            <div class="gzoom"><button data-gz="in" aria-label="Zoom in">+</button><button data-gz="out" aria-label="Zoom out">−</button></div>
+          </div>
+          <div class="globe-tip" id="gtip"></div>
+          <p class="gcredit">Sites: Weatherhaven deployment map. Earth imagery: NASA.</p>
+        </div>
       </div>
       <div class="gstats">${STATS.map(s => `<div><b class="num">${s.n}</b><span>${s.l}</span></div>`).join('')}</div>
     </div>
   </section>`;
 }
-let globe = null;
+let globe = null, tourTimer = null;
 function initGlobe() {
   const box = $('#globe-box'); if (!box) return;
-  const list = $('#glist'), card = $('#gcard'), tip = $('#gtip');
-  let filter = 'all', current = 'burnaby';
+  const list = $('#glist'), card = $('#gcard'), tip = $('#gtip'), tourBtn = $('#gtour');
+  let filter = 'all', current = 'burnaby', touring = false, tourI = 0;
   const yearOf = p => { const ys = p.entries.map(e => e.y).filter(Boolean); return ys.length ? ys.length > 1 ? `${ys[0]}–${ys[ys.length - 1]}` : ys[0] : (p.kind === 'office' ? 'Office' : 'Field'); };
+  const placeOn = p => filter === 'all' || SECTOR_TYPE[p.sector] === filter;
+  const tourStops = () => PLACES.filter(p => p.kind !== 'office' && placeOn(p)).sort((a, b) => (a.entries[0].y || '9999').localeCompare(b.entries[0].y || '9999'));
   const draw = () => {
-    const items = PLACES.filter(p => filter === 'all' || p.sector === filter).sort((a, b) => (a.entries[0].y || '9999').localeCompare(b.entries[0].y || '9999'));
-    list.innerHTML = items.map(p => `<button data-place="${p.id}" aria-current="${p.id === current}">${esc(p.name)}<span>${yearOf(p)}</span></button>`).join('');
+    const items = PLACES.filter(placeOn).sort((a, b) => (a.entries[0].y || '9999').localeCompare(b.entries[0].y || '9999'));
+    list.innerHTML = items.length ? items.map(p => `<button data-place="${p.id}" aria-current="${p.id === current}"><i style="background:${TYPE_DOT[SECTOR_TYPE[p.sector]] || '#fff'}"></i>${esc(p.name)}<span>${yearOf(p)}</span></button>`).join('') : '<p class="gempty">No stories in this filter yet — pick a site on the globe.</p>';
   };
+  const sitesIn = c => SITES.map((s, i) => [s, i]).filter(([s]) => countryOf(s) === c);
   const show = (id, fromGlobe) => {
     current = id; const p = PLACES.find(x => x.id === id);
-    const pic = p.entries.find(e => e.img);
-    card.innerHTML = `${pic ? `<div class="gimg">${img(pic.img, p.name)}</div>` : ''}<div class="gbody"><h3>${esc(p.name)}</h3><ol>${p.entries.map(e => `<li><b>${e.y || '—'}</b><span><strong>${esc(e.t)}</strong>${esc(e.d)}</span></li>`).join('')}</ol></div>`;
+    const pic = p.entries.find(e => e.img), c = PLACE_COUNTRY[id], more = c ? sitesIn(c) : [];
+    card.innerHTML = `${pic ? `<div class="gimg">${img(pic.img, p.name)}</div>` : ''}<div class="gbody"><h3>${esc(p.name)}</h3><ol>${p.entries.map(e => `<li><b>${e.y || '—'}</b><span><strong>${esc(e.t)}</strong>${esc(e.d)}</span></li>`).join('')}</ol>${more.length ? `<p class="gmore">${more.length} site${more.length > 1 ? 's' : ''} in ${esc(c)} on the deployment map: ${more.map(([s, i]) => `<button data-site="${i}">${esc(s.loc.replace(/,\s*[^,]*$/, '') || s.loc)}</button>`).join(', ')}</p>` : ''}</div>`;
     $$('button', list).forEach(b => b.setAttribute('aria-current', b.dataset.place === id));
     globe && globe.focus(id);
     if (fromGlobe) { const b = $(`[data-place="${id}"]`, list); b && b.scrollIntoView({ block: 'nearest' }); }
   };
-  list.addEventListener('click', e => { const b = e.target.closest('[data-place]'); if (b) show(b.dataset.place); });
-  $$('[data-gf]').forEach(b => b.addEventListener('click', () => { filter = b.dataset.gf; $$('[data-gf]').forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); }));
+  const showSite = i => {
+    const s = SITES[i]; if (!s) return; current = null;
+    const c = countryOf(s), pid = Object.keys(PLACE_COUNTRY).find(k => PLACE_COUNTRY[k] === c && PLACES.find(p => p.id === k && p.kind !== 'office'));
+    const others = sitesIn(c).filter(([, j]) => j !== i);
+    card.innerHTML = `<div class="gbody"><p class="gkind"><i style="background:${TYPE_DOT[s.t]}"></i>${TYPE_NAME[s.t]}</p><h3>${esc(s.c)}</h3><p class="gloc">${esc(s.loc)}</p>
+      ${others.length ? `<p class="gmore">Also in ${esc(c)}: ${others.map(([o, j]) => `<button data-site="${j}">${esc(o.loc.replace(/,\s*[^,]*$/, '') || o.loc)}</button> <span>(${TYPE_NAME[o.t].split(' ')[0].toLowerCase()})</span>`).join(', ')}</p>` : ''}
+      ${pid ? `<p><button class="link" data-place="${pid}">Read the ${esc(c)} story</button></p>` : ''}
+      <p class="gsrc">One of ${SITES.length} sites on Weatherhaven’s deployment map.</p></div>`;
+    $$('button', list).forEach(b => b.setAttribute('aria-current', 'false'));
+    globe && globe.focusSite(i);
+  };
+  const icon = on => $('path', tourBtn).setAttribute('d', on ? 'M7 5h4v14H7zM13 5h4v14h-4z' : 'M8 5v14l11-7z');
+  const stopTour = () => { touring = false; clearTimeout(tourTimer); tourBtn.setAttribute('aria-pressed', 'false'); $('span', tourBtn).textContent = 'Play tour'; icon(false); if (globe) globe.hold = false; };
+  const stepTour = () => {
+    const stops = tourStops(); if (!stops.length) return stopTour();
+    tourI = tourI % stops.length; show(stops[tourI].id, true); tourI++;
+    tourTimer = setTimeout(stepTour, 7000);
+  };
+  tourBtn.addEventListener('click', () => {
+    if (touring) return stopTour();
+    touring = true; tourBtn.setAttribute('aria-pressed', 'true'); $('span', tourBtn).textContent = 'Pause tour'; icon(true); if (globe) globe.hold = true;
+    const stops = tourStops(), k = stops.findIndex(p => p.id === current); tourI = k >= 0 ? k + 1 : 0; stepTour();
+  });
+  list.addEventListener('click', e => { const b = e.target.closest('[data-place]'); if (b) { stopTour(); show(b.dataset.place); } });
+  card.addEventListener('click', e => {
+    const b = e.target.closest('[data-site],[data-place]'); if (!b) return; stopTour();
+    b.dataset.site ? showSite(+b.dataset.site) : show(b.dataset.place);
+  });
+  $$('[data-gf]').forEach(b => b.addEventListener('click', () => {
+    filter = b.dataset.gf; $$('[data-gf]').forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); globe && globe.setFilter(filter);
+    if (touring) { tourI = 0; clearTimeout(tourTimer); stepTour(); }
+  }));
+  $$('[data-gv]').forEach(b => b.addEventListener('click', () => { $$('[data-gv]').forEach(x => x.setAttribute('aria-pressed', x === b)); globe && globe.setView(b.dataset.gv); }));
+  $$('[data-gz]').forEach(b => b.addEventListener('click', () => { globe && globe.zoomBy(b.dataset.gz === 'in' ? 1.35 : 1 / 1.35); }));
   draw();
   if (window.Globe) {
-    globe = new Globe(box, PLACES, (id) => show(id, true), (p, x, y) => {
-      if (!p) { tip.classList.remove('on'); return; }
-      tip.textContent = p.name; tip.style.left = x + 'px'; tip.style.top = y + 'px'; tip.classList.add('on');
-    });
-    if (!globe.ok) { globe = null; box.style.display = 'none'; }
+    globe = new Globe(box, PLACES, (id) => show(id, true), (hit, x, y) => {
+      if (!hit) { tip.classList.remove('on'); return; }
+      tip.innerHTML = hit.kind === 'place' ? `<b>${esc(hit.p.name)}</b><span>Story</span>` : `<b>${esc(hit.s.c)}</b><span>${esc(hit.s.loc)} · ${TYPE_NAME[hit.s.t]}</span>`;
+      tip.style.left = x + 'px'; tip.style.top = y + 'px'; tip.classList.add('on');
+    }, { sites: SITES, onSite: showSite, onUser: () => touring && stopTour(), texBase: '/assets/globe/' });
+    if (!globe.ok) { globe = null; box.classList.add('noglobe'); }
   }
   show(current);
 }
@@ -1430,7 +1481,7 @@ ${lines.map((l, i) => `<text x="${B.x0 - m + 2}" y="${B.y1 + m + 4 + i * 2.6}" f
 let cleanups = [];
 function teardown() {
   cleanups.forEach(f => { try { f(); } catch (_) { } }); cleanups = [];
-  if (globe) { globe.destroy(); globe = null; }
+  if (globe) { globe.destroy(); globe = null; } clearTimeout(tourTimer);
   [viewer, storyViewer].forEach(vw => { if (vw) { vw.visible = false; if (vw.container && !document.body.contains(vw.container)) vw.container = null; } });
   viewerUI = null;
 }
