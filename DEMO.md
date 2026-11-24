@@ -28,6 +28,10 @@ Live: https://can-weatherhaven.vercel.app
 - Every system with published dimensions, next to a 20′ container and a 6 ft person.
 - Hit **Play**: everything unfolds from packed to deployed.
 
+## 4b. Every mission has its own page (45 s) — **new**
+- **Solutions → Medical**. Each application shows key facts. Click **Field hospitals**: the full weatherhaven.com content, key facts, the systems used, and the other medical applications down the side.
+- **Company → News**: all 61 articles from 2008 on, each with its own page here instead of links out to the old site.
+
 ## 5. Compare (45 s) — **new**
 - **Products → Compare**. Pick ATEPS vs EHMECC vs RDMSS: every published fact side by side.
 - **Copy link**: "You can send this exact comparison to a customer."
@@ -44,7 +48,7 @@ Live: https://can-weatherhaven.vercel.app
 - Every product has **See it full size** for AR.
 
 ## 7. Camp planner (45 s)
-- **Products → Camp planner**. Pick an example layout, tap **3D**, drag a unit, tap **Quote**.
+- **Products → Camp planner**. It opens on the command post example. Tap **3D**, drag a unit, tap **Quote**.
 
 ## 8. Present mode and AR (1 min)
 - Back on the home page, press **P**. Captioned scenes loop on their own. Good to leave running while people talk. Press Esc to stop.
@@ -52,7 +56,8 @@ Live: https://can-weatherhaven.vercel.app
 
 ## If something goes wrong
 - **Page looks frozen:** press F5.
-- **3D doesn't appear:** the page shows photos instead. Carry on with the globe, compare and how-to-buy pages.
+- **3D doesn't appear:** the computer has no graphics card, so the page shows the deploy video and photos with an **Open 3D model** button. Tap it, or carry on with the globe, compare and how-to-buy pages.
+- **Don't send the contact form live** unless email has been set up on Vercel. Without it, the form says the preview isn't connected and nothing was sent.
 
 ## What to say when asked
 - **"Is that our real product?"**

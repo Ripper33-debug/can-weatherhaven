@@ -1859,7 +1859,7 @@ function renderPage(page, seg, q, qs, section, pageKey) {
   const R = pageFor(page, seg, q, section); let { html, init, title } = R; section = R.section;
   const firstLoad = main.dataset.ssr === '1';
   if (firstLoad) { delete main.dataset.ssr; } else { main.innerHTML = html; if (R.remote) loadRemote(main, pageKey); }
-  const needs3d = (page === '' && (!lite() || asked3d())) || page === 'plan' || page === 'record' || (page === 'products' && P(seg[1]) && P(seg[1]).viewer && seg.length === 2 && (!lite() || asked3d()));
+  const needs3d = (page === '' && (!lite() || asked3d())) || page === 'plan' || page === 'record' || (page === 'products' && P(seg[1]) && P(seg[1]).viewer && (!lite() || asked3d()));
   const init0 = init, run = init0 ? () => { if (lastPage === pageKey) init0(); } : () => { };
   if (needs3d && !win.ShelterViewer && win.__whLoadEngine) { init = null; win.__whLoadEngine().then(run, run); }
   main.classList.remove('page-enter'); void main.offsetWidth; if (!reduceMotion) main.classList.add('page-enter');
