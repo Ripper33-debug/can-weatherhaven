@@ -29,6 +29,9 @@ export function canUseWebGL() {
 
 export const modelName = id => MODEL_NAMES[id] || (SYSTEM_MODELS[id] && SYSTEM_MODELS[id].ar ? SYSTEM_MODELS[id].ar.title.replace(/^See the | at full size$/g, '').replace(/^See an? /, '') : id);
 
+/** The line under the viewer: where the model comes from, and what "inside" shows. */
+const noteHTML = (m, esc) => `${esc(m.source)}.${m.cad ? '' : ' Not engineering CAD.'}${m.inside ? ` Inside: an example ${esc(m.inside.label.toLowerCase())} fit-out.` : ''}`;
+
 /** Markup for the viewer (rendered at build time). */
 export function systemViewerHTML(ids, esc) {
   const m = SYSTEM_MODELS[ids[0]]; if (!m) return '';
@@ -49,12 +52,12 @@ export function systemViewerHTML(ids, esc) {
       <div class="sv-seg sv-3d sv-view" role="group" aria-label="Background"><button data-sv-view="site" aria-pressed="true" data-sv-sitelabel>${esc(SITE_LABEL[SITE_FOR[ids[0]] || 'temperate'])}</button><button data-sv-view="studio" aria-pressed="false">Studio</button></div>
       <span class="sv-fin sv-3d" role="group" aria-label="Finish" ${fin ? '' : 'hidden'}>${FINISHES.map(([k, l, c], i) => `<button data-sv-fin="${k}" aria-pressed="${i === 0}" title="${l}" aria-label="${l}"><i style="background:${c}"></i></button>`).join('')}</span>
       <button class="sv-btn sv-2d" data-sv-video>Watch it deploy</button>
-      <button class="sv-btn sv-2d" data-sv-still aria-pressed="false">Inside</button>
+      <button class="sv-btn sv-2d" data-sv-still aria-pressed="false"${m.interiorStill ? '' : ' hidden'}>Inside</button>
       <span class="sv-sp"></span>
-      <a class="sv-btn sv-ar" data-sv-ar href="/ar/${ids[0]}/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 3 7v10l9 5 9-5V7zM12 12 3 7M12 12l9-5M12 12v10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>See it full size</a>
+      <a class="sv-btn sv-ar" data-sv-ar href="${m.arPage || `/ar/${ids[0]}/`}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 3 7v10l9 5 9-5V7zM12 12 3 7M12 12l9-5M12 12v10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>See it full size</a>
       <button class="sv-btn sv-icon" data-sv-fs aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
     </div>
-    <p class="sv-note"><span data-sv-src>${esc(m.source)}</span>. Not engineering CAD. Inside: an example <span data-sv-label>${esc(m.inside ? m.inside.label.toLowerCase() : '')}</span> fit-out.</p>
+    <p class="sv-note">${noteHTML(m, esc)}</p>
   </div>`;
 }
 
@@ -206,7 +209,7 @@ export function mountSystemViewer(root, { reduced = false } = {}) {
     id = next; root.dataset.sv = id; const m = SYSTEM_MODELS[id];
     $$('[data-svm]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.svm === id)));
     poster.src = m.poster; poster.alt = m.ar ? m.ar.alt : ''; stageEl.querySelector('video')?.remove();
-    $('[data-sv-ar]').href = `/ar/${id}/`; $('[data-sv-src]').textContent = m.source; $('[data-sv-label]').textContent = m.inside ? m.inside.label.toLowerCase() : '';
+    $('[data-sv-ar]').href = m.arPage || `/ar/${id}/`; $('.sv-note').innerHTML = noteHTML(m, t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;')); const stl = $('[data-sv-still]'); stl && (stl.hidden = !m.interiorStill);
     $('.sv-fin').hidden = !m.finishMaterials; $$('[data-sv-fin]').forEach((x, i) => x.setAttribute('aria-pressed', String(i === 0)));
     const st = $('[data-sv-still]'); st && st.setAttribute('aria-pressed', 'false');
     firstPlay = true;

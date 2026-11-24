@@ -1529,7 +1529,6 @@ body.presenting .hero-foot{display:none}
   .viewer-card{aspect-ratio:auto;min-height:0;height:min(118vw,520px)}
   .contact a[href^="tel:"]{white-space:nowrap}
 }
-.sv-open3d{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;box-shadow:0 8px 28px rgba(0,0,0,.35)}
 /* 404 */
 .nf-page .wrap{padding-block:64px 96px}
 .nf-page .eyebrow{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--orange,#f7941d);margin:0 0 12px}

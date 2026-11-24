@@ -48,6 +48,7 @@ Live: https://can-weatherhaven.vercel.app
 ## 6b. Any product in 3D (1 min) — **new**
 - **Products → MECC → 3D model**. It unfolds from a 20′ container on a forest site. Tap **Show inside**: the roof cuts away to a command post. Tap **Step inside** and drag to look round. **Back outside**.
 - Tap **Studio** for the clean engineering view, then back to **Forest**. Say: "Every system stands where it's used: ATEPS and RDMSS in desert, the polar shelters on snow, Series 8 in the tropics."
+- **Products → TRECC → 3D model**: Weatherhaven's own CAD on a desert site. Tap **Packed**, then **Deployed**: an orange scan line sweeps across as the packed unit becomes the open one. Try **Desert tan**.
 - **Products → Polar shelters**: switch between Polarhaven, Polar Chief and Endurance.
 - Every product has **See it full size** for AR.
 

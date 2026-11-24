@@ -15,7 +15,8 @@ export function prefetchTrecc() {
   Object.values(pre).forEach(p => p.catch(() => { }));
   window.__whPre = pre;
 }
-const treccPage = () => { const p = location.pathname; return p === '/' || p.startsWith('/products/trecc'); };
+// the home hero is the only place the old engine shows the TRECC (the product page uses the product viewer)
+const treccPage = () => location.pathname === '/';
 export function loadEngine() {
   if (enginePromise) return enginePromise;
   if (treccPage()) prefetchTrecc();

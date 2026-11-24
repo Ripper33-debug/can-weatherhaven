@@ -117,6 +117,15 @@ export type SystemModel = {
   walk?: true | { start?: [number, number]; yaw?: number; pitch?: number; eye?: number };
   /** The AR page's copy. */
   ar?: { title: string; lead: string; facts: string[]; alt: string };
+  /**
+   * Deployed and packed are separate CAD exports sharing an origin (the TRECC): deploying is a scan
+   * along x from `from` to `to` (metres), the packed file giving way to the deployed one behind it.
+   */
+  reveal?: { from: number; to: number };
+  /** The model is Weatherhaven's own CAD (simplified), not built from specifications and photos. */
+  cad?: boolean;
+  /** An AR page of its own instead of /ar/<id>/ (the TRECC keeps /ar/). */
+  arPage?: string;
 };
 
 /** Barry's site-sourced models (weatherhaven.com pages and photos, not engineering CAD). */
@@ -195,13 +204,19 @@ export const SYSTEM_MODELS: Record<string, SystemModel> = {
   polarchief: { slug: "polarchief", ...files("polarchief"), source: builtFrom("Polar Chief"),
     inside: { src: "/models/polarchief/polarchief-fitout.glb", node: "POLARCHIEF_fitout", label: "Kitchen and mess", baked: {} }, walk: standAt([-0.5, -1.6, 1.6], [-0.5, 2.4, 1]),
     ar: ar("Polar Chief", `Place the deployed Polar Chief ${LEAD_SOFT}`, ["Octagonal: no large flat surface for the wind", "Often the kitchen or office of a camp", "Fully insulated, with an insulated vestibule"], "Weatherhaven Polar Chief octagonal polar shelter, deployed") },
+  // Weatherhaven's own CAD of the TRECC (the files the home page's hero uses): a scan reveals the deployed
+  // unit from the packed one. No interior file, so no "Show inside"; the home page hero has its walk-in.
+  trecc: { slug: "trecc", deployed: "/assets/models/trecc-open.glb", stowed: "/assets/models/trecc-stowed.glb", compression: "draco",
+    reveal: { from: -2.45, to: 2.45 }, cad: true, source: "Weatherhaven’s own CAD model of the TRECC, simplified for the web; the motion between packed and deployed is illustrative",
+    finishMaterials: { paint: ["paint"], fabric: [] }, poster: "/models/trecc/trecc-poster-deployed.jpg", deployVideo: "/assets/img/hero-deploy.mp4", arPage: "/ar/",
+    ar: ar("TRECC", `Place the deployed TRECC ${LEAD_HARD}`, ["One 463L pallet packed (TRECC-P)", "Extends from 5 to 8 feet high", "Set up in minutes by 1–2 people"], "Weatherhaven TRECC expandable container, deployed") },
   endurance: { slug: "endurance", ...files("endurance"), source: builtFrom("Endurance"),
     inside: { src: "/models/endurance/endurance-fitout.glb", node: "ENDURANCE_fitout", label: "Sleeping quarters", baked: {} }, cutHeight: 0.95, walk: { ...standAt([0, 1.9, 1.2], [0, -1.5, 0.5]), eye: 1.1 },
     ar: ar("Endurance", `Place the deployed Endurance ${LEAD_SOFT}`, ["A quick-erect expedition shelter", "Resists extreme winds, cold and heavy snow loads", "Used on a 1,000 km dog-sled journey north of Greenland"], "Weatherhaven Endurance expedition shelter, deployed") },
 };
 /** Which models each product page shows (the Polar page switches between three). */
 export const PRODUCT_MODELS: Record<string, string[]> = {
-  mecc: ["mecc"], ehmecc: ["ehmecc"], ateps: ["ateps"], hercon: ["hercon"], series4: ["series4"], series8: ["series8"],
+  trecc: ["trecc"], mecc: ["mecc"], ehmecc: ["ehmecc"], ateps: ["ateps"], hercon: ["hercon"], series4: ["series4"], series8: ["series8"],
   rdmss: ["rdmss"], mts: ["mts"], mex26: ["mex26"], polar: ["polarhaven", "polarchief", "endurance"],
 };
 export const MODEL_NAMES: Record<string, string> = { polarhaven: "Polarhaven", polarchief: "Polar Chief", endurance: "Endurance" };

@@ -453,7 +453,8 @@ export async function createSystemStage(
     const hfov = 2 * Math.atan(Math.tan(vfov / 2) * camera.aspect);
     const fitR = Math.hypot(size.x, size.z, size.y) / 2;
     // A little wider on the phones' 4:3 box, where the controls cover more of the picture.
-    dist = (fitR / Math.sin(Math.min(vfov, hfov) / 2)) * (camera.aspect < 1.5 ? 0.92 : 0.82);
+    // (the TRECC stands tall on a small footprint, so it gets a little more room)
+    dist = (fitR / Math.sin(Math.min(vfov, hfov) / 2)) * (camera.aspect < 1.5 ? 0.92 : 0.82) * (model.reveal ? 1.14 : 1);
     // There's no zoom, so the near plane can sit well in front of the model; a tight near plane keeps
     // the depth precision that stops close layers (fabric over liner) flickering mid-unfold.
     camera.near = Math.max(0.1, dist * 0.2);
@@ -473,6 +474,52 @@ export async function createSystemStage(
   resize();
 
   // ---- deploy state -----------------------------------------------------------------
+  // ---- reveal: two CAD exports that share an origin (the TRECC) ----------------------
+  // Deploying is a scan, as on the US site: an orange plane sweeps along the length, the packed file
+  // clipped away on one side and the deployed file on the other, with a glow where it crosses surfaces.
+  const reveal = model.reveal && stowedGltf ? model.reveal : null;
+  const clipStowed = new THREE.Plane(new THREE.Vector3(1, 0, 0), 0);
+  const clipOpen = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0);
+  const scanU = { uScanX: { value: 0 }, uScanOn: { value: 0 } };
+  let scanGroup: THREE.Group | null = null;
+  if (reveal && stowedGltf) {
+    const patch = (obj: THREE.Object3D, plane: THREE.Plane) =>
+      obj.traverse((o) => {
+        const mesh = o as THREE.Mesh;
+        if (!mesh.isMesh) return;
+        (Array.isArray(mesh.material) ? mesh.material : [mesh.material]).forEach((m) => {
+          const mat = m as THREE.MeshStandardMaterial;
+          mat.clippingPlanes = [plane];
+          mat.clipShadows = true;
+          mat.onBeforeCompile = (sh) => {
+            sh.uniforms.uScanX = scanU.uScanX;
+            sh.uniforms.uScanOn = scanU.uScanOn;
+            sh.vertexShader = sh.vertexShader
+              .replace("#include <common>", "#include <common>\nvarying float vScanWX;")
+              .replace("#include <worldpos_vertex>", "#include <worldpos_vertex>\nvScanWX = (modelMatrix * vec4(transformed, 1.0)).x;");
+            sh.fragmentShader = sh.fragmentShader
+              .replace("#include <common>", "#include <common>\nvarying float vScanWX;\nuniform float uScanX;\nuniform float uScanOn;")
+              .replace("#include <emissivemap_fragment>", "#include <emissivemap_fragment>\ntotalEmissiveRadiance += vec3(0.95, 0.42, 0.08) * 2.2 * uScanOn * (1.0 - smoothstep(0.0, 0.14, abs(vScanWX - uScanX)));");
+          };
+          mat.customProgramCacheKey = () => "wh-reveal";
+          mat.needsUpdate = true;
+        });
+      });
+    patch(root, clipOpen);
+    patch(stowedGltf.scene, clipStowed);
+    // hairline frame plus a faint additive sheet, across the width and height of the unit
+    const W = size.z + 0.5, H = size.y + 0.4;
+    scanGroup = new THREE.Group();
+    scanGroup.add(
+      new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(W, H)), new THREE.LineBasicMaterial({ color: 0xf18522, transparent: true, opacity: 0.95 })),
+      new THREE.Mesh(new THREE.PlaneGeometry(W, H), new THREE.MeshBasicMaterial({ color: 0xf18522, transparent: true, opacity: 0.08, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending })),
+    );
+    scanGroup.rotation.y = Math.PI / 2;
+    scanGroup.position.set(reveal.from, H / 2 - 0.05, center.z);
+    scanGroup.visible = false;
+    scene.add(scanGroup);
+  }
+
   let deploy = -1;
   // The deployed model gives way to the packed file early in the deploy, and to the baked interior
   // (see "inside") while you look inside.
@@ -486,6 +533,20 @@ export async function createSystemStage(
     const next = clamp01(t);
     if (next === deploy) return;
     deploy = next;
+    if (reveal && stowedGltf) {
+      // Only draw what can be seen: one model at rest, both while the scan crosses.
+      stowedGltf.scene.visible = deploy < 0.999;
+      showRoot(deploy > 0.001);
+      const x = reveal.from + (reveal.to - reveal.from) * deploy;
+      clipStowed.constant = -x;
+      clipOpen.constant = x;
+      scanU.uScanX.value = x;
+      const on = deploy > 0.001 && deploy < 0.999;
+      scanU.uScanOn.value = on ? Math.min(1, Math.min(deploy, 1 - deploy) * 12) : 0;
+      if (scanGroup) { scanGroup.visible = on; scanGroup.position.x = x; }
+      renderer.shadowMap.needsUpdate = true;
+      return;
+    }
     if (mixer && clip) {
       if (stowedGltf) {
         // Packed file first; it sinks away as the shelter starts to go up from the ground.

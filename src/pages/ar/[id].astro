@@ -4,7 +4,7 @@ import tpl from '../../ar-template.html?raw';
 import IMG from '../../generated/img.json';
 import fontsCss from '../../styles/fonts.css?raw';
 import { SYSTEM_MODELS, PRODUCT_MODELS } from '../../lib/system-models';
-export function getStaticPaths() { return Object.keys(SYSTEM_MODELS).map(id => ({ params: { id } })); }
+export function getStaticPaths() { return Object.keys(SYSTEM_MODELS).filter(id => !SYSTEM_MODELS[id].arPage).map(id => ({ params: { id } })); }   // the TRECC keeps /ar/
 const { id } = Astro.params;
 const m = SYSTEM_MODELS[id];
 const name = m.ar.title.replace(/^See the /, '').replace(/ at full size$/, '');

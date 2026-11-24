@@ -1018,7 +1018,7 @@ function pageProduct(p) {
     actions: `<a class="btn btn-primary" href="/contact?product=${p.id}">Request a quote</a><button class="btn btn-ghost" data-cmp="${p.id}" aria-pressed="${compare.has(p.id)}">${compare.has(p.id) ? 'Added to compare' : 'Add to compare'}</button>` })}
   <nav class="subnav pbar" aria-label="On this page"><div class="wrap">
     <a class="pbar-id" href="/products/${p.id}/overview" data-sub="overview" aria-label="${esc(p.name)} overview"><b>${esc(p.name)}</b><span>${esc(p.list.gain)}</span></a>
-    <div class="pbar-links"><a href="/products/${p.id}/overview" data-sub="overview">Overview</a>${p.viewer || PRODUCT_MODELS[p.id] ? `<a href="/products/${p.id}/viewer" data-sub="viewer">3D model</a>` : ''}<a href="/products/${p.id}/applications" data-sub="applications">Applications</a><a href="/products/${p.id}/related" data-sub="related">Related</a></div>
+    <div class="pbar-links"><a href="/products/${p.id}/overview" data-sub="overview">Overview</a>${PRODUCT_MODELS[p.id] ? `<a href="/products/${p.id}/viewer" data-sub="viewer">3D model</a>` : ''}<a href="/products/${p.id}/applications" data-sub="applications">Applications</a><a href="/products/${p.id}/related" data-sub="related">Related</a></div>
     <a class="pbar-cta" href="/contact?product=${p.id}"><span class="pc-full">Request a quote</span><span class="pc-short">Quote</span></a></div></nav>
   <section class="sec" id="overview"><div class="wrap pd">
     ${galleryHTML(p)}
@@ -1028,12 +1028,7 @@ function pageProduct(p) {
       <div class="pd-acts"><a class="btn btn-primary" href="/contact?product=${p.id}">Request a quote</a><a class="btn btn-line" href="${SITE.rfpGuide}" target="_blank" rel="noopener">${I.doc}RFP guide</a></div></div>
   </div></section>
   ${scaleSingle(p.id)}
-  ${!p.viewer && PRODUCT_MODELS[p.id] ? `<section class="sec-tight sv-sec" id="viewer"><div class="wrap"><div class="sec-head"><h2 class="h-l">See it deploy.</h2><p class="lead">${PRODUCT_MODELS[p.id].length > 1 ? 'Pick a shelter, watch it go up, look inside, then step in and walk round.' : `Watch the ${esc(p.name)} deploy, look inside, then step in and walk round.`} Drag to turn it.</p></div>${systemViewerHTML(PRODUCT_MODELS[p.id], esc)}</div></section>` : ''}
-  ${p.viewer ? (() => { const isM = p.viewer === 'mecc' || p.viewer === 'ehmecc', V = VIEWER_COPY[p.viewer]; return `<section class="sec-tight ice" id="viewer"><div class="wrap"><div class="sec-head"><h2 class="h-l">See it deploy.</h2><p class="lead">${esc(V.lead)} Drag to look around.</p></div>
-    <div class="viewer-card" id="pd-card"><div class="stage" id="pd-stage" style="background:url(${IMG[p.imgs[0]]}) center/cover"></div>${isM ? insideUI() : p.viewer === 'trecc' ? insideUI('trecc') : ''}<div class="vbar" id="pd-vbar"><button class="deploy-btn" data-deploy aria-pressed="false"><span class="ic">${I.up}</span><span class="t">Deploy</span></button>${p.viewer === 'trecc' ? paintPick() + `<label class="xr-ctl" title="Section cut"><span>Section cut</span><input type="range" min="0" max="100" value="0" data-xray aria-label="Section cut depth"></label>` : ''}
-      ${p.viewer === 'trecc' ? `<div class="readout"><div><small>Floor area vs. footprint</small><b data-area>1.0×</b></div><div><small>Height</small><b data-height>5\u0027</b></div></div>` : isM ? `<div class="readout"><div><small>Floor area, approx.</small><b data-area>160 ft²</b></div><div><small>Height</small><b data-height>8\u0027</b></div></div>` : `<div class="readout"><div><small>${esc(V.k)}</small><b>${esc(V.v)}</b></div></div>`}
-      <input type="range" min="0" max="100" value="0" data-scrub aria-label="Deployment progress" style="flex:1;min-width:140px">
-      ${isM ? `<label class="toggle"><input type="checkbox" data-eh>Raise roof</label>` : ''}${climateSeg('temperate')}</div></div>${isM ? insidePick('Step inside') : p.viewer === 'trecc' ? insidePickTrecc() + (ASSETS.ar ? `<div class="ar-row"><a class="btn btn-line" href="${esc(ASSETS.ar)}">${I.box}See it at full size in AR</a><span>Opens a page you can scan with a phone — the deployed TRECC placed in your room, at real scale.</span></div>` : '') : ''}</div></section>`; })() : ''}
+  ${PRODUCT_MODELS[p.id] ? `<section class="sec-tight sv-sec" id="viewer"><div class="wrap"><div class="sec-head"><h2 class="h-l">See it deploy.</h2><p class="lead">${PRODUCT_MODELS[p.id].length > 1 ? 'Pick a shelter, watch it go up, look inside, then step in and walk round.' : SYSTEM_MODELS[PRODUCT_MODELS[p.id][0]].inside ? `Watch the ${esc(p.name)} deploy, look inside, then step in and walk round.` : SYSTEM_MODELS[PRODUCT_MODELS[p.id][0]].reveal ? `Weatherhaven’s own CAD model of the ${esc(p.name)}, simplified for the web. Deploy it to watch it grow in width and height.` : `Watch the ${esc(p.name)} deploy.`} Drag to turn it.</p></div>${systemViewerHTML(PRODUCT_MODELS[p.id], esc)}</div></section>` : ''}
   <section class="sec" id="applications"><div class="wrap">
     <div class="sec-head"><h2 class="h-l">Applications</h2><div class="appgrid">${p.apps.map(a => `<span class="chip">${esc(a)}</span>`).join('')}</div></div>
     ${p.examples ? `<div style="margin:-12px 0 56px"><p class="kicker">Example uses</p><ul class="ticks" style="columns:2;column-gap:48px">${p.examples.map(e => `<li>${esc(e)}</li>`).join('')}</ul></div>` : ''}
@@ -1046,45 +1041,10 @@ function pageProduct(p) {
   ${ctaBand(`Spec a ${p.name} for your mission.`, 'Tell us the application, climate and transport route — we’ll configure the electrical, mechanical and interior fit-out.', p.imgs[1] || p.imgs[0])}`;
 }
 // lead text and one published fact for each product's 3D model
-const VIEWER_COPY = {
-  mecc: { lead: 'An illustrative model of the MECC — deploy it and watch the floor space triple.' },
-  ehmecc: { lead: 'An illustrative model of the EHMECC — deploy it, then raise the roof 4.5 feet.' },
-  series4: { lead: 'An illustrative model of a Series 4: the frame goes up arch by arch, then the cover goes on. Proportions are illustrative.', k: 'Climate', v: 'All, incl. polar' },
-  trecc: { lead: 'Weatherhaven’s own CAD model of the TRECC, simplified for the web. Deploy it to watch it grow in width and height — the motion between packed and open is illustrative.' },
-  hercon: { lead: "An illustrative model of the HERCon: two 4'-wide units ship together like one 8'-wide container, then deploy separately. Proportions and fold sequence are illustrative.", k: 'Living space', v: 'Up to 6×' }
-};
 function initProduct(p) {
   initScale();
-  if (!p.viewer && PRODUCT_MODELS[p.id]) cleanups.push(mountSystemViewer($('#viewer .sv'), { reduced: reduceMotion }));
+  if (PRODUCT_MODELS[p.id]) cleanups.push(mountSystemViewer($('#viewer .sv'), { reduced: reduceMotion }));
   initGallery(p);
-  if (p.viewer) initProductViewer(p);
-}
-function initProductViewer(p, again) {
-  {
-    const stage = $('#pd-stage');
-    if (!win.ShelterViewer && lite() && !asked3d() && win.__whLoadEngine) {
-      const vbar = $('#pd-vbar'), ip = $('#viewer .inside-pick');
-      stage.innerHTML = `<div class="fallback" style="position:absolute;inset:0;background:url(${IMG[p.imgs[0]]}) center/cover"></div><button class="btn btn-primary sv-open3d" type="button">Open 3D model</button>`;
-      vbar.style.visibility = 'hidden'; ip && (ip.style.visibility = 'hidden');
-      $('.sv-open3d', stage).addEventListener('click', e => {
-        const b = e.currentTarget; b.disabled = true; b.textContent = 'Loading…';
-        try { sessionStorage.setItem('wh-3d-mobile', '1'); } catch (_) { }
-        const go = () => { if (!document.body.contains(stage)) return; stage.innerHTML = ''; vbar.style.visibility = ''; ip && (ip.style.visibility = ''); initProductViewer(p, true); };
-        win.__whLoadEngine().then(go, go);
-      });
-      initSubnav();
-      return;
-    }
-    const v = getViewer();
-    if (v && v.mount(stage, { dist: p.viewer === 'trecc' ? 52 : 64 })) {
-      v.setCamp(null); v.setModel(p.viewer === 'ehmecc' ? 'mecc' : p.viewer); v.scrub(0); v.setClimate('temperate');
-      bindViewerControls($('#pd-vbar'), v, { insideRoot: $('#viewer') });
-      if (p.viewer !== 'ehmecc') { const t = $('#pd-vbar .toggle'); t && (t.style.display = 'none'); }
-      again || initSubnav();
-      const io = new IntersectionObserver(es => { if (es[0].isIntersecting && !reduceMotion) { v.whenModel().then(() => v.container === stage && v.pT === 0 && v.deploy(true), () => v.deploy(true)); if (p.viewer === 'ehmecc') setTimeout(() => v.container === stage && v.setExtended(true), 4600); io.disconnect(); } }, { threshold: 0.5 });
-      io.observe(stage); cleanups.push(() => io.disconnect());
-    } else { stage.innerHTML = `<div class="fallback" style="position:absolute;inset:0;background:url(${IMG[p.imgs[0]]}) center/cover"></div>`; $('#pd-vbar').style.display = 'none'; const ip = $('#viewer .inside-pick'); ip && ip.remove(); }
-  }
 }
 
 /* ---------------- SERVICES ---------------- */
@@ -1884,7 +1844,7 @@ export function pageFor(page, seg, q, section = null) {
     case 'products': {
       const p = P(seg[1]);
       if (seg[1] === 'compare') { html = pageCompare(q); init = () => initCompare(q); title = 'Compare systems — Weatherhaven'; }
-      else if (p) { html = pageProduct(p); init = () => { initProduct(p); if (!p.viewer) initSubnav(); }; title = /weatherhaven/i.test(p.full) ? `${p.name} — ${p.full}` : `${p.name} — ${p.full} — Weatherhaven`; }
+      else if (p) { html = pageProduct(p); init = () => { initProduct(p); initSubnav(); }; title = /weatherhaven/i.test(p.full) ? `${p.name} — ${p.full}` : `${p.name} — ${p.full} — Weatherhaven`; }
       else { html = pageProducts(q); init = () => { initProducts(q); initSubnav(); }; title = 'Products — Weatherhaven'; }
       break; }
     case 'services': html = pageServices(); init = () => { initLifecycle(SERVICES.some(s => s.id === section) ? section : null); initSubnav(); }; title = 'Services & support — Weatherhaven'; if (SERVICES.some(s => s.id === section)) section = 'lifecycle-sec'; if (section === 'lifecycle') section = 'lifecycle-sec'; break;
@@ -1906,7 +1866,7 @@ function renderPage(page, seg, q, qs, section, pageKey) {
   const R = pageFor(page, seg, q, section); let { html, init, title } = R; section = R.section;
   const firstLoad = main.dataset.ssr === '1';
   if (firstLoad) { delete main.dataset.ssr; } else { main.innerHTML = html; if (R.remote) loadRemote(main, pageKey); }
-  const needs3d = (page === '' && (!lite() || asked3d())) || page === 'plan' || page === 'record' || (page === 'products' && P(seg[1]) && P(seg[1]).viewer && (!lite() || asked3d()));
+  const needs3d = (page === '' && (!lite() || asked3d())) || page === 'plan' || page === 'record';
   const init0 = init, run = init0 ? () => { if (lastPage === pageKey) init0(); } : () => { };
   if (needs3d && !win.ShelterViewer && win.__whLoadEngine) { init = null; win.__whLoadEngine().then(run, run); }
   main.classList.remove('page-enter'); void main.offsetWidth; if (!reduceMotion) main.classList.add('page-enter');
