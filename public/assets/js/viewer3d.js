@@ -408,9 +408,9 @@
     arctic: {
       label: 'Arctic', skyTop: 0x1a3768, skyMid: 0x6a88b8, skyBot: 0xf4c7a2, fog: 0xa3b1cc, fogNear: 260, fogFar: 1500,
       ground: 0xe6ebf1, ground2: 0x8796ad, steel: 0xa8392d, fabric: 0xe8e5dc, frame: 0x8f3027, gn: 0.22,
-      sun: 0xffc9a2, sunI: 2.35, sunEl: 0.27, sunAz: 0.95, hemiSky: 0x97a5bf, hemiGround: 0x33405a, hemiI: 0.46, env: 0.55,
+      sun: 0xffe2c6, sunI: 2.7, sunEl: 0.3, sunAz: 0.95, hemiSky: 0x9fb2cf, hemiGround: 0x3a465c, hemiI: 0.4, env: 0.55,
       detail: 'snow', detS: [0.045, 0.19], detA: 1, macA: 0.07, pad: 0.45, padCol: 0xc9d0da, clouds: [0.5, 0.7], scatter: 'rocks-arctic', sparkle: 1,
-      exposure: 0.84, terrain: 'mountains', particles: 'snow', glow: 2.4, lamp: 1, tod: 0.42, storm: 0xb7c2d0
+      exposure: 0.9, terrain: 'mountains', particles: 'snow', glow: 2.4, lamp: 1, tod: 0.42, storm: 0xb7c2d0
     },
     desert: {
       label: 'Desert', skyTop: 0x3f7fc4, skyMid: 0x8db4dc, skyBot: 0xf2dfc3, fog: 0xe8d4b6, fogNear: 220, fogFar: 1000,
