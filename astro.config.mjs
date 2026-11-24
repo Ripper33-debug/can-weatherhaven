@@ -10,5 +10,5 @@ export default defineConfig({
   integrations: [sitemap({ filter: p => !/\/(api|ar)\//.test(p) && isOwnPage(new URL(p).pathname) })],
   trailingSlash: 'always',
   build: { inlineStylesheets: 'never' },
-  vite: { define: { __WH_BUILD__: JSON.stringify((process.env.VERCEL_GIT_COMMIT_SHA || Date.now().toString(36)).slice(0, 10)) }, build: { assetsInlineLimit: 0, minify: process.env.NOMIN ? false : 'esbuild' } }
+  vite: { define: { __WH_LAUNCH__: JSON.stringify(process.env.PUBLIC_LAUNCH === '1'), __WH_BUILD__: JSON.stringify((process.env.VERCEL_GIT_COMMIT_SHA || Date.now().toString(36)).slice(0, 10)) }, build: { assetsInlineLimit: 0, minify: process.env.NOMIN ? false : 'esbuild' } }
 });

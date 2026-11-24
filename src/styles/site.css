@@ -1619,3 +1619,4 @@ body.presenting .hero-foot{display:none}
 .trusted li{position:relative;padding-left:16px;font-size:18.5px;white-space:normal;line-height:1.25}
 .trusted li::before{content:'';position:absolute;left:0;top:.5em;width:6px;height:6px;border-radius:1px;background:var(--orange)}
 @media (max-width:759px){.trusted ul{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px}.trusted li{font-size:15.5px}}
+.ftr-bot a{color:inherit;text-decoration:underline;text-underline-offset:3px}

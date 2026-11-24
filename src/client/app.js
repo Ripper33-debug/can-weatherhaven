@@ -35,6 +35,8 @@ import FITOUTS_META from '../generated/fitouts.json';
 import { isBrowser, matchMedia, navigator, sessionStorage } from './env.js';
 /* Files at fixed URLs (engine scripts, TRECC models) are cached for a year, so each build stamps them with its own version. */
 export const BUILD = typeof __WH_BUILD__ !== 'undefined' ? __WH_BUILD__ : 'dev';
+/** PUBLIC_LAUNCH=1 at build: the live site (no "redesign concept" label). See LAUNCH.md. */
+export const LAUNCH = typeof __WH_LAUNCH__ !== 'undefined' && __WH_LAUNCH__;
 export const ASSETS = { js: '/assets/js/', v: `?v=${BUILD}`, models: { open: `/assets/models/trecc-open.glb?v=${BUILD}`, stowed: `/assets/models/trecc-stowed.glb?v=${BUILD}`, dracoPath: '/assets/draco/' }, ar: '/ar/' };
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
@@ -127,7 +129,7 @@ function chromeHTML() {
       <div><h2 class="ftr-h">Company</h2><ul><li><a href="/company">About</a></li><li><a href="/innovation">Innovation</a></li><li><a href="/services">Services</a></li><li><a href="/news">News</a></li><li><a href="/buy">How to buy</a></li><li><a href="/buy/suppliers">Supplier information</a></li><li><a href="/buy/quality">Quality & ISO 9001:2015</a></li></ul></div>
       <div><h2 class="ftr-h">Regional websites</h2><ul>${SITE.regional.map(r => `<li><a href="${r.url}" target="_blank" rel="noopener">${r.name}</a></li>`).join('')}</ul><h2 class="ftr-h" style="margin-top:24px">Follow</h2><ul>${SITE.social.map(r => `<li><a href="${r.url}" target="_blank" rel="noopener">${r.name}</a></li>`).join('')}</ul></div>
     </div>
-    <div class="ftr-bot"><span>© 2026 Weatherhaven Global Resources Ltd. All rights reserved.</span><span class="concept"><i></i>Website redesign concept — content from weatherhaven.com</span></div>
+    <div class="ftr-bot"><span>© 2026 Weatherhaven Global Resources Ltd. All rights reserved.</span>${LAUNCH ? `<a href="/privacy">Privacy</a>` : `<span class="concept"><i></i>Website redesign concept — content from weatherhaven.com · <a href="/privacy">Privacy</a></span>`}</div>
     <div class="ftr-mark" aria-hidden="true"><img src="${IMG.logo_w}" alt=""></div></div>`;
   for (const k in out) out[k] = slashLinks(out[k]);
   return out;
@@ -1210,6 +1212,19 @@ function legacyArticle(q) {
   if (a) navigate(`/news/${a.slug}/`, true);
 }
 
+/* ---------------- PRIVACY: what this website does with data (a draft for Weatherhaven's legal review) ---------------- */
+function pagePrivacy() {
+  const S = [
+    ['What the contact form collects', `Your name, organization, email, phone (optional), sector, region, the system you’re interested in, your message and the page you sent it from. It is sent to the Weatherhaven team who handles your request, by email or into their customer-records system, and used only to answer it. The RFP checklist and camp planner can attach what you picked to that message; nothing from them is sent unless you send the form.`],
+    ['Cookies and tracking', `This website sets no advertising or tracking cookies. If visit statistics are switched on, they come from a cookieless service that counts page views without identifying you.`],
+    ['What your browser keeps', `A few things stay in your own browser so the site remembers them: the camp plan you’re sketching and the background you chose for the 3D models (kept until you clear them), and, for this visit only, whether you’ve seen the intro, closed the news bar or asked for 3D on a phone, the 3D quality that suits your device, and your RFP checklist note. They never leave your device; clearing your browser’s site data removes them.`],
+    ['Who to contact', `Questions about your information, or a request to see or delete it: <a href="mailto:${SITE.email}">${SITE.email}</a> or ${SITE.tollFree}.`],
+  ];
+  return `${pageHero({ crumb: [['Privacy', null]], title: 'Privacy', lead: 'What this website collects, why, and what stays on your device.', imgKey: 'rapid_forest', compact: true })}
+  <section class="sec"><div class="wrap dt"><article class="dt-main">${S.map(([h, p]) => `<section class="dt-sec"><h2>${esc(h)}</h2><p>${p}</p></section>`).join('')}
+    <p class="dt-src">${LAUNCH ? 'Last updated' : 'Draft for Weatherhaven’s legal review, written to describe what this website actually does'} — ${esc(new Date(2026, 10, 24).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' }))}.</p></article></div></section>`;
+}
+
 /* ---------------- CONTACT ---------------- */
 function pageContact(q) {
   const prod = q.get('product') || '', sec = q.get('sector') || '';
@@ -1226,7 +1241,7 @@ function pageContact(q) {
       <div class="field full"><label for="f-prod">System of interest</label><select id="f-prod" name="product"><option value="">Not sure yet — help me choose</option>${PRODUCTS.map(p => `<option value="${p.id}" ${p.id === prod ? 'selected' : ''}>${p.name} — ${esc(p.full)}</option>`).join('')}<option value="camp">A complete turnkey camp</option><option value="parts">Parts, training or repair</option></select></div>
       <div class="field full"><label for="f-msg">What do you need to deploy?</label><textarea id="f-msg" name="message" placeholder="Mission, number of people, location, climate, timeline…"></textarea></div>
       <div class="field hp" aria-hidden="true"><label for="f-web">Website</label><input id="f-web" name="website" tabindex="-1" autocomplete="off"></div>
-      <div class="sub"><button class="btn btn-primary" type="submit">Send request</button><p>Prefer the phone? Call ${SITE.tollFree}.</p></div><p class="form-err" role="alert" hidden></p>
+      <div class="sub"><button class="btn btn-primary" type="submit">Send request</button><p>Prefer the phone? Call ${SITE.tollFree}. How we use your details: <a href="/privacy">privacy</a>.</p></div><p class="form-err" role="alert" hidden></p>
     </form></div>
     <aside class="cside"><div class="cblock"><h3>Who to talk to</h3><div class="who">${CONTACTS.map((c, i) => `<details ${i === 0 ? 'open' : ''}><summary>${esc(c.region)}${I.chev}</summary><ul>${c.people.map(([n, r]) => `<li><b>${esc(n)}</b><span>${esc(r)}</span></li>`).join('')}</ul></details>`).join('')}</div></div>
     <div class="cblock"><h3>Head office</h3><p>${SITE.address.join('<br>')}</p></div>
@@ -1256,7 +1271,7 @@ function initContact() {
     const data = Object.fromEntries(new FormData(f).entries()); data.page = location.href;
     fetch('/api/quote/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(r => r.json().then(j => ({ ok: r.ok && j.ok, j })), () => ({ ok: false, j: {} })).then(({ ok, j }) => {
       if (!ok) { btn.disabled = false; btn.textContent = 'Send request'; err.textContent = (j && j.error) || 'We could not send that just now. Please call us or try again.'; err.hidden = false; return; }
-      if (j.delivered === false) { $('#form-wrap').innerHTML = `<div class="sent" tabindex="-1" id="sent"><h3>This preview site isn’t connected to email yet.</h3><p class="muted">Nothing was sent. To reach the ${esc(t)} team now, call <a href="tel:${SITE.tollFree}">${SITE.tollFree}</a> (toll free, Canada & USA) or email <a href="mailto:${SITE.email}">${SITE.email}</a>.</p></div>`; $('#sent').focus(); return; }
+      if (j.delivered === false) { $('#form-wrap').innerHTML = `<div class="sent" tabindex="-1" id="sent"><h3>This form isn’t connected to email yet.</h3><p class="muted">Nothing was sent. To reach the ${esc(t)} team now, call <a href="tel:${SITE.tollFree}">${SITE.tollFree}</a> (toll free, Canada & USA) or email <a href="mailto:${SITE.email}">${SITE.email}</a>.</p></div>`; $('#sent').focus(); return; }
       $('#form-wrap').innerHTML = `<div class="sent" tabindex="-1" id="sent"><h3>Thanks, ${esc(name.split(' ')[0])}. Your request is on its way.</h3><p class="muted">It goes to the ${esc(t)} team${p ? ` with your interest in the ${esc(p.name)}` : ''}. We’ll reply by email${f.phone.value.trim() ? ' or phone' : ''}.</p><p style="margin-top:18px"><a class="link" href="/products">Keep browsing products</a></p></div>`;
       $('#sent').focus();
     });
@@ -1876,6 +1891,7 @@ export function pageFor(page, seg, q, section = null) {
     case 'contact': html = pageContact(q); init = initContact; title = 'Contact — Weatherhaven'; break;
     case 'record': html = pageRecord(); init = initGlobe; title = 'Where we’ve worked — Weatherhaven'; break;
     case 'buy': html = pageBuy(); init = initBuy; title = 'How to buy — Weatherhaven'; break;
+    case 'privacy': html = pagePrivacy(); title = 'Privacy — Weatherhaven'; break;
     case 'plan': html = pagePlan(); init = initPlan; title = 'Camp planner — Weatherhaven'; break;
     default: html = notFoundHTML(); title = 'Page not found — Weatherhaven';
   }

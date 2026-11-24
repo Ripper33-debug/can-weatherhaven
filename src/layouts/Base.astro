@@ -32,6 +32,8 @@ const CONSENT = import.meta.env.PUBLIC_CONSENT === '1';          // set when a c
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#061A2F">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230D4275'/%3E%3Cpath d='M7 25V12c0-3 2-5 5-5h13v18H19V14h-6v11z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 {path === "/" && <link rel="preload" href={`/assets/js/three.min.js${ASSETS.v}`} as="script" media="(min-width: 760px)">}
 {jsonld && (Array.isArray(jsonld) ? jsonld : [jsonld]).map(j => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
 {ANALYTICS === 'plausible' && <script defer data-domain={import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN} src="https://plausible.io/js/script.js"></script>}
