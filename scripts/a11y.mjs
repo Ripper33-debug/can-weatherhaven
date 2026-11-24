@@ -6,7 +6,7 @@ const BASE = process.argv[2] || 'http://127.0.0.1:8800';
 const PAGES = ['/', '/products/', '/products/trecc/', '/products/mecc/', '/products/polar/', '/products/compare/', '/ar/mecc/', '/plan/', '/contact/', '/company/', '/services/', '/military/', '/military/c2/', '/services/support/kitchens/', '/products/accessories/interconnectors/', '/news/', '/news/staking-out-new-ground/', '/buy/', '/record/'];
 const axe = fs.readFileSync('node_modules/axe-core/axe.min.js', 'utf8');
 const b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
-const pg = await b.newPage({ viewport: { width: 1280, height: 800 } });
+const pg = await b.newPage({ viewport: { width: 1280, height: 800 }, bypassCSP: true });   // axe is injected as an inline script, which the site's security policy (rightly) blocks
 await pg.addInitScript("try{sessionStorage.setItem('wh-intro','1')}catch(e){}");
 let total = 0;
 for (const path of PAGES) {
