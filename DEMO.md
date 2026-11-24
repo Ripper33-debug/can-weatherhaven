@@ -10,7 +10,7 @@ Live: https://can-weatherhaven.vercel.app
 ## 1. Home hero (1 min)
 - The intro plays, then the TRECC deploys on its own: "This is your TRECC, the actual CAD model, not an illustration."
 - Drag it. Tap **Pack up**, then **Deploy**.
-- Tap **Desert**, then **Temperate**. The paint changes automatically so the unit never disappears into the ground.
+- Tap **Desert**, then **Temperate**, then **Tropical**. Each is a real place now: drifting clouds, grass, scrub and boulders, pine forest or palms, and a gravel pad under the unit. The paint changes automatically so the unit never disappears into the ground.
 - Tap **More** and slide **time of day** to night. Turn **Storm** on, then off again.
 
 ## 2. Step inside and X-ray (1 min)
@@ -29,8 +29,11 @@ Live: https://can-weatherhaven.vercel.app
 - Hit **Play**: everything unfolds from packed to deployed.
 
 ## 4b. Every mission has its own page (45 s) — **new**
+- **Solutions → Military**. Scroll to **Where we've deployed**: every military deployment on Weatherhaven's map, by country. **See them on the globe** opens the globe filtered to military.
 - **Solutions → Medical**. Each application shows key facts. Click **Field hospitals**: the full weatherhaven.com content, key facts, the systems used, and the other medical applications down the side.
 - **Company → News**: all 61 articles from 2008 on, each with its own page here instead of links out to the old site.
+
+- **Products → MECC**, scroll to **Where it's used**: the missions that name the MECC, and the news that mentions it.
 
 ## 5. Compare (45 s) — **new**
 - **Products → Compare**. Pick ATEPS vs EHMECC vs RDMSS: every published fact side by side.
@@ -43,7 +46,8 @@ Live: https://can-weatherhaven.vercel.app
 - Say: "That's every capability from our RFP guide. A buyer can paste it straight into their RFP."
 
 ## 6b. Any product in 3D (1 min) — **new**
-- **Products → MECC → 3D model**. It unfolds from a 20′ container. Tap **Show inside**: the roof cuts away to a command post. Tap **Step inside** and drag to look round. **Back outside**.
+- **Products → MECC → 3D model**. It unfolds from a 20′ container on a forest site. Tap **Show inside**: the roof cuts away to a command post. Tap **Step inside** and drag to look round. **Back outside**.
+- Tap **Studio** for the clean engineering view, then back to **Forest**. Say: "Every system stands where it's used: ATEPS and RDMSS in desert, the polar shelters on snow, Series 8 in the tropics."
 - **Products → Polar shelters**: switch between Polarhaven, Polar Chief and Endurance.
 - Every product has **See it full size** for AR.
 
@@ -60,6 +64,7 @@ Live: https://can-weatherhaven.vercel.app
 - **Don't send the contact form live** unless email has been set up on Vercel. Without it, the form says the preview isn't connected and nothing was sent.
 
 ## What to say when asked
+- **"Can we go live?"** The code is ready. LAUNCH.md lists what Weatherhaven needs to sign off, three Vercel settings, and the domain switch. Every old weatherhaven.com link already redirects to its new page.
 - **"Is that our real product?"**
   - The TRECC is Weatherhaven's own CAD, simplified for the browser.
   - The other products' 3D models are built from Weatherhaven's published specs and photos. They're accurate to the published sizes but not engineering CAD, and the page says so.
