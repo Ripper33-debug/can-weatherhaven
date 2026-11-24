@@ -18,7 +18,7 @@ type Palette = {
 };
 const SITES: Record<SiteKind, Palette> = {
   desert: { skyTop: 0x4580c4, skyMid: 0x9dbedd, skyBot: 0xe1ddd5, sun: 0xfff6e8, clouds: 0.16, ground: 0xc2ab8c, ground2: 0xa48e70, far: 0xcdc6ba, pad: 0x938674, padOn: 0.5,
-    relief: 0.45, ridge: 0.2, detail: "sand", key: 0xfff6ea, keyI: 1.8, hemiSky: 0xbfd3ea, hemiGround: 0x9c7a50, hemiI: 0.45, trees: null },
+    relief: 0.45, ridge: 0.2, detail: "sand", key: 0xfff6ea, keyI: 1.5, hemiSky: 0xbfd3ea, hemiGround: 0x9c7a50, hemiI: 0.36, trees: null },
   arctic: { skyTop: 0x2c5390, skyMid: 0x86a3cb, skyBot: 0xf1dcc8, sun: 0xffe7cf, clouds: 0.4, ground: 0xe9eef4, ground2: 0x9aa9bf, far: 0xc9d4e4, pad: 0xb3bcc8, padOn: 0.4,
     relief: 0.9, ridge: 1, detail: "snow", key: 0xfff3e6, keyI: 1.7, hemiSky: 0xa9bbd6, hemiGround: 0x5b6a80, hemiI: 0.5, trees: null },
   temperate: { skyTop: 0x5384bd, skyMid: 0xa0bbd6, skyBot: 0xe4e9e4, sun: 0xffeccc, clouds: 0.5, ground: 0x66744b, ground2: 0x4b5832, far: 0xa9b7b4, pad: 0x6f6b62, padOn: 1,
