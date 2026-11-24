@@ -14,8 +14,8 @@ import CONTACTS from '../content/contacts.json';
 import NEWS from '../content/news.json';
 import SITES from '../content/sites.json';
 import RFP from '../content/rfp.json';
-import { PRODUCT_MODELS } from '../lib/system-models';
-import { systemViewerHTML, mountSystemViewer } from './systemViewer.js';
+import { PRODUCT_MODELS, SYSTEM_MODELS } from '../lib/system-models';
+import { systemViewerHTML, mountSystemViewer, modelName } from './systemViewer.js';
 import PLACES from '../content/places.json';
 import FINDER from '../content/finder.json';
 import TRUSTED from '../content/trusted.json';
@@ -783,7 +783,7 @@ function cmpSelect(slot, id, ids) {
 }
 function cmpBody(ids) {
   const list = ids.map(P);
-  const dims = p => { const sy = SCALE_SYS.find(s => s.id === p.id); return sy ? `${dimTxt(sy, sy.fix)} × ${dimTxt(sy, sy.exp[0])} → ${dimTxt(sy, sy.fix)} × ${sy.approx ? '≈' : ''}${dimTxt(sy, sy.exp[1])}${sy.h[1] ? `<br><small>${sy.h[0] === sy.h[1] ? '' : dimTxt(sy, sy.h[0]) + ' → '}${dimTxt(sy, sy.h[1])} high</small>` : ''}` : '<span class="muted">Not published</span>'; };
+  const dims = p => { const sy = SCALE_SYS.find(s => s.id === p.id); return sy && !sy.exp[0] ? `Deployed ${dimTxt(sy, sy.exp[1])} wide<br><small>Shown ${dimTxt(sy, sy.fix)} long; extends in modules</small>` : sy ? `${dimTxt(sy, sy.fix)} × ${dimTxt(sy, sy.exp[0])} → ${dimTxt(sy, sy.fix)} × ${sy.approx ? '≈' : ''}${dimTxt(sy, sy.exp[1])}${sy.h[1] ? `<br><small>${sy.h[0] === sy.h[1] ? '' : dimTxt(sy, sy.h[0]) + ' → '}${dimTxt(sy, sy.h[1])} high</small>` : ''}` : '<span class="muted">Not published</span>'; };
   const rows = [
     ['Type', p => esc(FAMILIES[p.family].name)],
     ['Set-up', p => esc(p.list.deploy)],
@@ -835,9 +835,11 @@ function initCompare(q) {
 const SCALE_SYS = [
   { id: 'trecc', name: 'TRECC', fix: 94.2, exp: [85.4, 178], h: [57, 92.5], fmt: 'in', src: 'Measured from Weatherhaven’s TRECC CAD model' },
   { id: 'ateps', name: 'ATEPS', fix: 104, exp: [84, 244], h: [91, 91], fmt: 'in', src: 'Published: 84\u0022 × 104\u0022 packed, 244\u0022 × 104\u0022 deployed, 91\u0022 external height (packed height taken as the same)' },
-  { id: 'mecc', name: 'MECC', fix: 240, exp: [96, 288], h: [96, 96], fmt: 'ft', approx: true, src: 'Published: 20\u0027 long × 8\u0027 high, three times the floor area deployed; deployed width estimated at three times the 8\u0027 shipping width' },
-  { id: 'ehmecc', name: 'EHMECC', fix: 240, exp: [96, 288], h: [96, 150], fmt: 'ft', approx: true, src: 'Published: 12\u00276\u0022 of vertical space, a 4.5 ft roof raise, three times the floor area; length and width estimated from the 20\u0027 MECC' },
-  { id: 'hqss', name: 'HQSS operations shelter', fix: 501.6, exp: [null, 285.6], h: [null, null], fmt: 'ft', href: '/innovation/hqss', src: 'Published: deployed 23.8 ft × 41.8 ft, 995 ft²' }
+  { id: 'mecc', name: 'MECC', fix: 240, exp: [96, 253], h: [96, 96], fmt: 'ft', src: 'Published: 20\u0027 long × 8\u0027 high on weatherhaven.com; 253\u0022 deployed width from Weatherhaven’s MECC brochure (2021)' },
+  { id: 'ehmecc', name: 'EHMECC', fix: 240, exp: [96, 253], h: [96, 150], fmt: 'ft', approx: true, src: 'Published: 12\u00276\u0022 of vertical space and a 4.5 ft roof raise; length and deployed width taken from the MECC it is built on' },
+  { id: 'hqss', name: 'HQSS operations shelter', fix: 501.6, exp: [null, 285.6], h: [null, null], fmt: 'ft', href: '/innovation/hqss', src: 'Published: deployed 23.8 ft × 41.8 ft, 995 ft²' },
+  { id: 'mex26', name: 'MEX-26', fix: 432, exp: [null, 312], h: [null, null], fmt: 'ft', src: 'Published: 26 ft wide; drawn at the 3D model’s example length of 36 ft (it extends in modules)' },
+  { id: 'series8', name: 'Series 8', fix: 384, exp: [null, 192], h: [null, null], fmt: 'ft', src: 'Published: 16 ft (4.88 m) standard width; drawn at the 3D model’s example length of 32 ft' }
 ];
 const ISO20 = { fix: 240, exp: 96, h: 102 };
 const ftin = v => { const f = Math.floor(v / 12 + 1e-6), i = Math.round(v - f * 12); return i === 12 ? `${f + 1}\u0027` : i ? `${f}\u0027${i}\u0022` : `${f}\u0027`; };
@@ -887,12 +889,15 @@ function scaleSvg(view, list, opts = {}) {
   return `<svg class="scl-svg" viewBox="0 0 ${W} ${H}" role="${opts.noLink ? 'img' : 'group'}" aria-label="${plan ? 'Plan view from above' : 'End view'}, drawn to one scale: ${list.map(s => s.name).join(', ')}, with ${plan ? 'a 20-foot ISO container' : 'a 6-foot person and a 20-foot ISO container'} for reference.">${g}</svg>`;
 }
 function scaleLineup() {
-  const ends = SCALE_SYS.filter(s => s.h[1]);
+  const hard = SCALE_SYS.filter(s => s.exp[0]), soft = SCALE_SYS.filter(s => !s.exp[0]), ends = SCALE_SYS.filter(s => s.h[1]);
+  const planW = list => 60 + ISO20.fix + list.reduce((n, s) => n + s.fix, 0) + 60 * list.length;
+  const W = Math.max(planW(hard), planW(soft));
   return `<div class="scl" data-state="packed" id="scl">
     <div class="scl-bar"><div class="seg" role="group" aria-label="Show"><button data-scl="packed" aria-pressed="true">Packed</button><button data-scl="deployed" aria-pressed="false">Deployed</button></div><button class="btn btn-line btn-sm" data-scl="play">${I.up}Play</button></div>
-    <figure class="scl-fig"><figcaption>From above</figcaption><div class="scl-scroll">${scaleSvg('plan', SCALE_SYS)}</div></figure>
-    <figure class="scl-fig"><figcaption>From the end</figcaption><div class="scl-scroll">${scaleSvg('end', ends)}</div></figure>
-    <details class="scl-src"><summary>Where the numbers come from</summary><ul>${SCALE_SYS.map(s => `<li><b>${esc(s.name)}:</b> ${esc(s.src)}.</li>`).join('')}<li>MECC and EHMECC deployed width is drawn at three times the 8\u0027 shipping width, from the published “three times the floor area”. The HQSS operations shelter is shown deployed; its packed size isn’t published. HERCon and the softwall shelters aren’t drawn because complete packed and deployed dimensions aren’t published.</li></ul></details>
+    <figure class="scl-fig"><figcaption>From above · expandable containers</figcaption><div class="scl-scroll">${scaleSvg('plan', hard, { minW: W })}</div></figure>
+    <figure class="scl-fig"><figcaption>From above · softwall shelters, shown deployed, same scale</figcaption><div class="scl-scroll">${scaleSvg('plan', soft, { minW: W })}</div></figure>
+    <figure class="scl-fig"><figcaption>From the end</figcaption><div class="scl-scroll">${scaleSvg('end', ends, { minW: W })}</div></figure>
+    <details class="scl-src"><summary>Where the numbers come from</summary><ul>${SCALE_SYS.map(s => `<li><b>${esc(s.name)}:</b> ${esc(s.src)}.</li>`).join('')}<li>Softwall shelters extend in modules, so their length is an example; their packed size isn’t published. HERCon and the other softwall shelters aren’t drawn because complete packed and deployed dimensions aren’t published.</li></ul></details>
   </div>`;
 }
 function scaleSingle(id) {
@@ -921,6 +926,55 @@ function initScale() {
   });
 }
 
+/* ---------------- product gallery: photos from weatherhaven.com, then renders of the 3D model ---------------- */
+function gallerySlides(p) {
+  const photos = p.imgs.filter(k => IMG[k]).map((k, i) => ({ src: IMG[k], alt: `${p.name} — photo ${i + 1}`, cap: '', pos: IMGPOS[k] || '' }));
+  const renders = (PRODUCT_MODELS[p.id] || []).flatMap(id => { const m = SYSTEM_MODELS[id], n = modelName(id); return [
+    m.hero && { src: m.hero, alt: `${n}, deployed — render of the 3D model`, cap: `${n}, deployed. Render of the 3D model, not a photograph.`, render: 1 },
+    m.interiorStill && { src: m.interiorStill, alt: `${n} inside, with an example ${m.inside ? m.inside.label.toLowerCase() : ''} fit-out — render`, cap: `${n} inside, with an example ${m.inside ? m.inside.label.toLowerCase() : ''} fit-out. Render of the 3D model.`, render: 1 }]; }).filter(Boolean);
+  return photos.concat(renders);
+}
+function galleryHTML(p) {
+  const S = gallerySlides(p), first = S[0];
+  return `<div class="gallery" data-gal>
+    <div class="main"><img id="gmain" src="${first.src}" alt="${esc(first.alt)}" decoding="async"${first.pos ? ` style="object-position:${first.pos}"` : ''}>
+      <span class="g-badge" ${first.render ? '' : 'hidden'}>Render</span>
+      ${S.length > 1 ? `<button class="g-nav g-prev" data-gstep="-1" aria-label="Previous image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2"/></svg></button><button class="g-nav g-next" data-gstep="1" aria-label="Next image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2"/></svg></button><span class="g-count" aria-live="polite">1 / ${S.length}</span>` : ''}
+      <button class="g-full" data-gfull aria-label="View full screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.9"/></svg></button></div>
+    ${S.length > 1 ? `<div class="thumbs">${S.map((sl, i) => `<button data-gi="${i}" aria-pressed="${i === 0}" aria-label="${sl.render ? 'Render' : 'Photo'} ${i + 1} of ${S.length}"><img src="${sl.src}" alt="" loading="lazy" decoding="async"${sl.pos ? ` style="object-position:${sl.pos}"` : ''}>${sl.render ? '<i>Render</i>' : ''}</button>`).join('')}</div>` : ''}
+  </div>`;
+}
+function initGallery(p) {
+  const root = $('[data-gal]'); if (!root) return;
+  const S = gallerySlides(p), main = $('#gmain', root), badge = $('.g-badge', root), count = $('.g-count', root);
+  let cur = 0, lb = null;
+  const show = i => {
+    cur = (i + S.length) % S.length; const sl = S[cur];
+    main.src = sl.src; main.alt = sl.alt; main.style.objectPosition = sl.pos || '';
+    badge.hidden = !sl.render; if (count) count.textContent = `${cur + 1} / ${S.length}`;
+    $$('[data-gi]', root).forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.gi === cur)));
+    if (lb) drawLb();
+  };
+  const drawLb = () => { const sl = S[cur]; $('.lb-img', lb).src = sl.src; $('.lb-img', lb).alt = sl.alt; $('.lb-cap', lb).textContent = sl.cap || sl.alt; $('.lb-count', lb).textContent = `${cur + 1} / ${S.length}`; };
+  const close = () => { if (!lb) return; lb.remove(); lb = null; document.body.style.overflow = ''; removeEventListener('keydown', onKey); $('[data-gfull]', root).focus(); };
+  const onKey = e => { if (e.key === 'Escape') close(); else if (e.key === 'ArrowRight') show(cur + 1); else if (e.key === 'ArrowLeft') show(cur - 1); };
+  const open = () => {
+    lb = document.createElement('div'); lb.className = 'lb'; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-modal', 'true'); lb.setAttribute('aria-label', `${p.name} images`);
+    lb.innerHTML = `<button class="lb-x" aria-label="Close">×</button><figure><img class="lb-img" alt=""><figcaption><span class="lb-cap"></span><span class="lb-count"></span></figcaption></figure>${S.length > 1 ? `<button class="lb-nav lb-prev" aria-label="Previous image">‹</button><button class="lb-nav lb-next" aria-label="Next image">›</button>` : ''}`;
+    document.body.appendChild(lb); document.body.style.overflow = 'hidden'; drawLb();
+    lb.addEventListener('click', e => { if (e.target.closest('.lb-x') || e.target === lb) close(); else if (e.target.closest('.lb-prev')) show(cur - 1); else if (e.target.closest('.lb-next')) show(cur + 1); });
+    let x0 = null; lb.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true }); lb.addEventListener('touchend', e => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) show(cur + (dx < 0 ? 1 : -1)); x0 = null; });
+    addEventListener('keydown', onKey); $('.lb-x', lb).focus();
+  };
+  root.addEventListener('click', e => {
+    const t = e.target.closest('[data-gi],[data-gstep],[data-gfull]');
+    if (!t) { if (e.target === main) open(); return; }
+    if (t.dataset.gi != null) show(+t.dataset.gi); else if (t.dataset.gstep) show(cur + +t.dataset.gstep); else open();
+  });
+  let x0 = null; main.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true }); main.addEventListener('touchend', e => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) show(cur + (dx < 0 ? 1 : -1)); x0 = null; });
+  cleanups.push(close);
+}
+
 /* ---------------- PRODUCT DETAIL ---------------- */
 function pageProduct(p) {
   const fam = FAMILIES[p.family];
@@ -931,7 +985,7 @@ function pageProduct(p) {
     <a href="/products/${p.id}/overview" data-sub="overview">Overview</a>${p.viewer || PRODUCT_MODELS[p.id] ? `<a href="/products/${p.id}/viewer" data-sub="viewer">3D model</a>` : ''}<a href="/products/${p.id}/applications" data-sub="applications">Applications</a><a href="/products/${p.id}/related" data-sub="related">Related</a>
     <a class="pill-cta" href="/contact?product=${p.id}"><span class="pc-full">Request a quote</span><span class="pc-short">Quote</span></a></div></div></nav>
   <section class="sec" id="overview"><div class="wrap pd">
-    <div class="gallery"><div class="main">${img(p.imgs[0], `${p.name} — photo 1`, 'id="gmain"')}</div>${p.imgs.length > 1 ? `<div class="thumbs">${p.imgs.map((k, i) => `<button data-g="${k}" aria-pressed="${i === 0}" aria-label="Photo ${i + 1}">${img(k, '')}</button>`).join('')}</div>` : ''}</div>
+    ${galleryHTML(p)}
     <div><h2 class="h-m" style="color:var(--navy);margin-bottom:18px">${esc(p.full)}</h2><p class="muted" style="margin-bottom:24px">${esc(p.summary)}</p>
       <dl class="facts" style="margin:0">${p.facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
       ${p.note ? `<p class="note">${esc(p.note)}</p>` : ''}
@@ -965,8 +1019,7 @@ const VIEWER_COPY = {
 function initProduct(p) {
   initScale();
   if (!p.viewer && PRODUCT_MODELS[p.id]) cleanups.push(mountSystemViewer($('#viewer .sv'), { reduced: reduceMotion }));
-  const main = $('#gmain');
-  $$('[data-g]').forEach(b => b.addEventListener('click', () => { main.src = IMG[b.dataset.g]; $$('[data-g]').forEach(x => x.setAttribute('aria-pressed', x === b)); }));
+  initGallery(p);
   if (p.viewer) {
     const v = getViewer(), stage = $('#pd-stage');
     if (v && v.mount(stage, { dist: p.viewer === 'trecc' ? 52 : 64 })) {
