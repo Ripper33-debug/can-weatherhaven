@@ -7,6 +7,7 @@ const sec = { 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'SAMEORIGI
 const routes = [
   { src: '/assets/(.*)', headers: { 'Cache-Control': 'public, max-age=31536000, immutable' }, continue: true },
   { src: '/_astro/(.*)', headers: { 'Cache-Control': 'public, max-age=31536000, immutable' }, continue: true },
+  { src: '/models/(.*)', headers: { 'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800' }, continue: true },
   { src: '/(.*)', headers: sec, continue: true }
 ];
 const mine = new Set(routes.map(r => r.src));
