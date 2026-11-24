@@ -1765,10 +1765,25 @@
       mk(rboxGeo(4.4, 2.6, 1.8, 0.3, 2), olive, 0, 2.1, -4.2, g);            // counterweight
       box(1.7, 0.3, 1.4, black, 0, 3.6, -1.6, g); box(1.7, 1.5, 0.25, black, 0, 4.4, -2.35, g); // seat
       box(0.12, 1.4, 0.12, black, 0, 4.2, 0.2, g); mk(new THREE.TorusGeometry(0.55, 0.06, 8, 24), black, 0, 4.95, 0.2, g).rotation.x = PI / 2 - 0.5; // wheel
-      [-1, 1].forEach(sx => { box(0.16, 4.6, 0.16, black, sx * 1.9, 5.8, 0.4, g); box(0.16, 4.6, 0.16, black, sx * 1.9, 5.8, -3.2, g); });
+      // overhead guard: front posts lean forward, rear posts upright
+      [-1, 1].forEach(sx => { const fp = box(0.16, 4.75, 0.16, black, sx * 1.9, 5.8, 0.2, g); fp.rotation.x = 0.1; box(0.16, 4.6, 0.16, black, sx * 1.9, 5.8, -3.2, g); });
+      // warning chevrons on the counterweight, work lights, amber beacon, exhaust
+      { const c = cvs(256, 64), x = c.getContext('2d'); x.fillStyle = '#e8b018'; x.fillRect(0, 0, 256, 64); x.fillStyle = '#16181a';
+        for (let i = -64; i < 256; i += 32) { x.beginPath(); x.moveTo(i, 64); x.lineTo(i + 16, 64); x.lineTo(i + 48, 0); x.lineTo(i + 32, 0); x.fill(); }
+        const stripe = new THREE.MeshStandardMaterial({ map: tex(c), roughness: 0.6 }); mk(new THREE.PlaneGeometry(4.2, 0.55), stripe, 0, 1.55, -5.12, g).rotation.y = PI; }
+      const lampM = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xfff2d0, emissiveIntensity: 1.4, roughness: 0.3 });
+      [-1, 1].forEach(sx => { box(0.42, 0.32, 0.22, black, sx * 1.9, 7.7, 0.38, g); box(0.32, 0.22, 0.04, lampM, sx * 1.9, 7.7, 0.5, g, false); });
+      mk(new THREE.CylinderGeometry(0.2, 0.24, 0.32, 12), new THREE.MeshStandardMaterial({ color: 0xffa21a, emissive: 0xff8a00, emissiveIntensity: 0.9, roughness: 0.4, transparent: true, opacity: 0.92 }), 1.3, 8.36, -2.8, g);
+      mk(new THREE.CylinderGeometry(0.09, 0.09, 1.6, 8), black, -1.6, 4.4, -3.9, g);
+      box(4.25, 0.18, 0.18, black, 0, 1.05, 1.9, g);   // front step / bumper
       box(4.1, 0.12, 4.0, black, 0, 8.1, -1.4, g);                           // overhead guard
       for (let i = 0; i < 5; i++) box(0.08, 0.08, 4.0, black, -1.6 + i * 0.8, 8.18, -1.4, g, false);
       [-1, 1].forEach(sx => box(0.3, 9.4, 0.5, steel, sx * 1.55, 4.7, 2.1, g)); // mast
+      [-1, 1].forEach(sx => box(0.2, 8.6, 0.32, steel, sx * 1.2, 4.9, 2.2, g));  // inner mast
+      const chainM = new THREE.MeshStandardMaterial({ color: LIN(0x2a2c2e), roughness: 0.5, metalness: 0.8 });
+      [-1, 1].forEach(sx => box(0.08, 8.2, 0.08, chainM, sx * 0.55, 5.0, 2.05, g, false));
+      // tilt cylinders from the body to the mast
+      [-1, 1].forEach(sx => { const cy = mk(new THREE.CylinderGeometry(0.13, 0.13, 2.4, 10), steel, sx * 1.75, 3.1, 1.2, g); cy.rotation.x = 1.15; });
       box(3.4, 0.25, 0.3, steel, 0, 9.3, 2.1, g);
       const car = new THREE.Group(); g.add(car); this.forkCar = car;          // carriage + forks
       box(3.5, 1.5, 0.22, steel, 0, 0, 2.4, car);
@@ -1778,6 +1793,7 @@
       [[1.1, 1.35, 0.95], [-3.3, 1.15, 0.8]].forEach(([z, r, w]) => [-1, 1].forEach(sx => {
         const t = mk(tireG, rubber, sx * 2.0, r, z, g); t.scale.set(w, r, r); this.forkWheels.push([t, r]);
         const rim = mk(tireG, olive, sx * 2.0, r, z, g); rim.scale.set(w + 0.04, r * 0.55, r * 0.55);
+        const hub = mk(tireG, steel, sx * 2.0, r, z, g); hub.scale.set(w + 0.1, r * 0.2, r * 0.2);
       }));
       const ao = mk(new THREE.PlaneGeometry(6, 10), this.mat.ao, 0, 0.05, -0.5, g, false, false); ao.rotation.x = -PI / 2;
       g.traverse(o => { if (o.isMesh && o !== ao) o.castShadow = true; });
