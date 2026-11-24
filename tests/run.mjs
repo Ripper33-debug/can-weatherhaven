@@ -30,7 +30,7 @@ let pw = null; try { pw = createRequire(import.meta.url)(process.env.PW || '/opt
 if (pw) {
   const b = await pw.chromium.launch(); const pg = await b.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   for (const path of urls) {
-    await pg.goto(BASE + path, { waitUntil: 'domcontentloaded' }); await pg.waitForTimeout(150);
+    await pg.goto(BASE + path, { waitUntil: 'load' }); await pg.waitForTimeout(150);   // after the stylesheet: nothing renders before it
     const w = await pg.evaluate(() => document.documentElement.scrollWidth);
     if (w > 391) fail(`${path}: ${w}px wide on a 390px phone`);
   }
