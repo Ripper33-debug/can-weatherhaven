@@ -686,6 +686,9 @@ function initGlobe() {
     if (!globe.ok) { globe = null; box.classList.add('noglobe'); }
   }
   show(current);
+  // arriving from a sector page's map (/record/?filter=def): start on that sector's sites
+  const pre = new URLSearchParams(location.search).get('filter'), pb = pre && $(`[data-gf="${pre}"]`);
+  if (pb) pb.click();
 }
 
 /* ---------------- lifecycle (services) ---------------- */
@@ -715,7 +718,7 @@ function deployMap(key) {
   const W = 2000, H = 900, LAT0 = 82, LAT1 = -60, country = x => x.loc.split(',').pop().trim();
   const countries = [...new Set(list.map(country))].sort((a, b) => a.localeCompare(b));
   const dots = list.map(x => `<circle cx="${Math.round((x.lon + 180) / 360 * W)}" cy="${Math.round(Math.min(H - 10, (LAT0 - x.lat) / (LAT0 - LAT1) * H))}" r="10"><title>${esc(x.loc)}</title></circle>`).join('');
-  return `<section class="sec dark smap-sec" id="deployments"><div class="wrap"><div class="sec-head"><h2 class="h-l">Where we’ve deployed.</h2><p class="lead">${list.length} ${esc(s.name.toLowerCase())} sites in ${countries.length} countries, from Weatherhaven’s own deployment map. <a class="link" href="/record">All ${SITES.length} sites on the globe</a></p></div>
+  return `<section class="sec dark smap-sec" id="deployments"><div class="wrap"><div class="sec-head"><h2 class="h-l">Where we’ve deployed.</h2><p class="lead">${list.length === countries.length ? `${esc(s.name)} deployments in ${countries.length} countries and regions` : `${list.length} ${esc(s.name.toLowerCase())} sites in ${countries.length} countries and regions`}, from Weatherhaven’s own deployment map. <a class="link" href="/record?filter=${SITE_TYPE[key]}">See them on the globe</a></p></div>
     <figure class="smap"><img src="/assets/img/world-dots.webp" alt="" loading="lazy" decoding="async" width="2000" height="900"><svg viewBox="0 0 2000 900" role="img" aria-label="World map of ${list.length} ${esc(s.name.toLowerCase())} deployment sites">${dots}</svg></figure>
     <p class="smap-list">${countries.map(esc).join(' · ')}</p></div></section>`;
 }
