@@ -38,6 +38,11 @@ Live: https://can-weatherhaven.vercel.app
 - The summary builds on the right. **Send with a request** carries the list into the quote form.
 - Say: "That's every capability from our RFP guide. A buyer can paste it straight into their RFP."
 
+## 6b. Any product in 3D (1 min) — **new**
+- **Products → MECC → 3D model**. It unfolds from a 20′ container. Tap **Show inside**: the roof cuts away to a command post. Tap **Step inside** and drag to look round. **Back outside**.
+- **Products → Polar shelters**: switch between Polarhaven, Polar Chief and Endurance.
+- Every product has **See it full size** for AR.
+
 ## 7. Camp planner (45 s)
 - **Products → Camp planner**. Pick an example layout, tap **3D**, drag a unit, tap **Quote**.
 
@@ -52,7 +57,7 @@ Live: https://can-weatherhaven.vercel.app
 ## What to say when asked
 - **"Is that our real product?"**
   - The TRECC is Weatherhaven's own CAD, simplified for the browser.
-  - The MECC, HERCon and Series 4 models are illustrative.
+  - The other products' 3D models are built from Weatherhaven's published specs and photos. They're accurate to the published sizes but not engineering CAD, and the page says so.
   - The fold motion and the forklift are illustrative.
 - **"Is the content real?"** Every fact comes from weatherhaven.com:
   - the 162 sites are our public deployment map

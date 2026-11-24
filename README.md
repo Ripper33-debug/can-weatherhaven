@@ -63,7 +63,11 @@ python3 scripts/images.py <folder-with-photos> [more folders]
 
 The JSON files are the content model. To move to Sanity, Contentful or similar: create document types with the same fields (`products`, `sectors`, `services`, `news`, `people`, `support`, `accessories`, `timeline`, `places`), import the JSON, and replace the `import ... from '../content/x.json'` lines at the top of `src/client/app.js` with a fetch in `src/lib/content.js` that runs at build time. Nothing else needs to change; the renderers only read plain objects.
 
-## The 3D viewer
+## Product 3D (every system but the TRECC)
+
+`src/lib/three/systemStage.ts` (+ `walkThrough.ts`, `gltfImageTextures.ts`) is the same three.js 0.184 stage the US site uses; `src/lib/system-models.ts` lists each model's files, fit-out, walk-in start point and AR copy (copy here is from weatherhaven.com). `src/client/systemViewer.js` is the controls: packed/deployed (the model's own deploy clip), show inside, step inside, finishes, full screen, AR link. It downloads only when the viewer nears the screen, and only on a real GPU; software WebGL gets the poster, the deploy video and the interior render. Models are Barry's round-7 web package in `public/models/<id>/`; `/ar/<id>/` pages come from `src/pages/ar/[id].astro`. To update a model, drop the new files in with the same names.
+
+## The 3D viewer (home page, TRECC, planner)
 
 `public/assets/js/viewer3d.js` is the engine: environments, time of day, storm, the TRECC deploy, step inside, x-ray, fact pins, the camp planner's 3D view and the scroll story. It is plain JavaScript on three.js r128 and is loaded only when a page needs it (home on desktop, product pages with a model, the planner, the record page). On phones the home page shows a short clip instead and loads the engine on tap.
 
@@ -87,6 +91,7 @@ All copy and numbers come from weatherhaven.com (see `src/content`). The TRECC g
 - `/record/` — globe of all 162 sites with satellite, night and field views, a guided tour and site cards
 - `/products/scale/` — every system with published dimensions, drawn to one scale, packed and deployed; each of those product pages has its own to-scale panel
 - `/products/compare/?ids=a,b,c` — any two or three systems side by side, shareable
+- Every product page: 3D (packed/deployed, inside, walk in), AR at `/ar/<id>/`, and a gallery with renders and a full-screen viewer
 - `/buy/` — RFP checklist (from the RFP guide; send with a request, copy or download), in-stock inventory, quality, supplier information
 
 ## Open questions for Weatherhaven
