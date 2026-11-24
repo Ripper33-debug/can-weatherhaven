@@ -1202,6 +1202,14 @@ function pageArticle(a) {
     <div class="wrap art-pn">${newer ? `<a href="/news/${newer.slug}"><small>Newer</small>${esc(newer.title)}</a>` : '<span></span>'}${older ? `<a class="older" href="/news/${older.slug}"><small>Older</small>${esc(older.title)}</a>` : ''}</div></section>${ctaBand()}`;
 }
 
+// Old weatherhaven.com article links arrive as /news/?article=<old name> (see scripts/postbuild.mjs): open that article.
+function legacyArticle(q) {
+  const raw = q.get('article'); if (!raw) return;
+  const norm = v => { let t = v; try { t = decodeURIComponent(decodeURIComponent(v)); } catch (_) { } return t.toLowerCase().replace(/[^a-z0-9]/g, ''); };
+  const want = norm(raw), a = NEWSA.find(n => { const m = /[?&]name=([^&]*)/.exec(n.source || ''); return m && norm(m[1]) === want; });
+  if (a) navigate(`/news/${a.slug}/`, true);
+}
+
 /* ---------------- CONTACT ---------------- */
 function pageContact(q) {
   const prod = q.get('product') || '', sec = q.get('sector') || '';
@@ -1864,7 +1872,7 @@ export function pageFor(page, seg, q, section = null) {
     case 'services': html = pageServices(); init = () => { initLifecycle(SERVICES.some(s => s.id === section) ? section : null); initSubnav(); }; title = 'Services & support — Weatherhaven'; if (SERVICES.some(s => s.id === section)) section = 'lifecycle-sec'; if (section === 'lifecycle') section = 'lifecycle-sec'; break;
     case 'innovation': html = pageInnovation(); init = () => { initInnovation(); initSubnav(); }; title = 'Innovation — Weatherhaven'; break;
     case 'company': html = pageCompany(); init = () => { initCompany(); initSubnav(); }; title = 'Company — Weatherhaven'; break;
-    case 'news': { const a = seg[1] && NEWSA.find(n => n.slug === seg[1]); if (a) { html = pageArticle(a); title = `${a.title} — Weatherhaven`; remote = !FULL; } else if (!seg[1]) { html = pageNews(); title = 'News — Weatherhaven'; } else { html = notFoundHTML(); title = 'Page not found — Weatherhaven'; } break; }
+    case 'news': { const a = seg[1] && NEWSA.find(n => n.slug === seg[1]); if (a) { html = pageArticle(a); title = `${a.title} — Weatherhaven`; remote = !FULL; } else if (!seg[1]) { html = pageNews(); init = () => legacyArticle(q); title = 'News — Weatherhaven'; } else { html = notFoundHTML(); title = 'Page not found — Weatherhaven'; } break; }
     case 'contact': html = pageContact(q); init = initContact; title = 'Contact — Weatherhaven'; break;
     case 'record': html = pageRecord(); init = initGlobe; title = 'Where we’ve worked — Weatherhaven'; break;
     case 'buy': html = pageBuy(); init = initBuy; title = 'How to buy — Weatherhaven'; break;

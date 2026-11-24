@@ -22,7 +22,38 @@ const routes = [
   { src: '^/(?!ar/).*$', headers: sec, continue: true },
   { src: '^/ar/.*$', headers: secAr, continue: true }
 ];
+// Old weatherhaven.com addresses → their pages here (301), so search rankings and saved links carry over.
+// Crawled from the live site (138 URLs). Vercel matches routes case-insensitively unless told otherwise, and
+// /Military must not catch the new /military/ (a redirect loop), so every one of these is caseSensitive.
+const LEGACY = {
+  '/AboutUs': '/company/', '/Company': '/company/', '/40th-Anniversary-Book': '/company/history/', '/ContactUs': '/contact/', '/Innovation': '/innovation/',
+  '/Products': '/products/', '/Services-Maintenance': '/services/', '/Support-Systems': '/services/support/', '/Supplier-Information': '/buy/suppliers/',
+  '/Military': '/military/', '/Military/Military-Camp': '/military/camps/', '/Military/command-control': '/military/c2/', '/Military/simulation-training': '/military/simulation/',
+  '/Military/unmanned-aerial-vehicles-satellite-systems': '/military/uav/', '/Military/workshops': '/military/workshops/',
+  '/Medical': '/medical/', '/Medical/cbrn': '/medical/cbrn/', '/Medical/emergency-response': '/medical/emergency/', '/Medical/field-hospitals': '/medical/field-hospitals/', '/Medical/medical-clinics': '/medical/clinics/',
+  '/Commercial': '/commercial/', '/Commercial/Mobile-Luxury-Recreation-Container': '/commercial/luxury/', '/Commercial/antarctic-climate-research': '/commercial/antarctic/',
+  '/Commercial/turn-key-solutions': '/commercial/turnkey/', '/Commercial/workforce-housing': '/commercial/workforce/',
+  '/products/expandable-container': '/products/?f=expandable', '/products/soft-shelters': '/products/?f=soft',
+  '/products/expandable-container/ateps': '/products/ateps/', '/products/expandable-container/ehmecc': '/products/ehmecc/', '/products/expandable-container/hercon': '/products/hercon/',
+  '/products/expandable-container/mecc': '/products/mecc/', '/products/expandable-container/trecc': '/products/trecc/',
+  '/products/soft-shelters/mex-26': '/products/mex26/', '/products/soft-shelters/modular-tentage-system': '/products/mts/', '/products/soft-shelters/polar-shelters': '/products/polar/',
+  '/products/soft-shelters/rdmss': '/products/rdmss/', '/products/soft-shelters/series-4': '/products/series4/', '/products/soft-shelters/series-8': '/products/series8/',
+  '/products/accessories/interconnectors-corridors': '/products/accessories/interconnectors/', '/products/accessories/solarshades': '/products/accessories/solarshade/',
+  '/services-maintenance/engineering-design': '/services/engineering/', '/services-maintenance/installation': '/services/installation/', '/services-maintenance/parts': '/services/parts/',
+  '/services-maintenance/repair-overhaul': '/services/repair/', '/services-maintenance/training-on-site-support': '/services/training/', '/services-maintenance/transportation-logistics': '/services/logistics/',
+  '/support-systems/ablutionwash-houses': '/services/support/ablutions/', '/support-systems/electrical-mechanical-water': '/services/support/emw/', '/support-systems/floors': '/services/support/floors/',
+  '/support-systems/kitchen': '/services/support/kitchens/', '/support-systems/laundry': '/services/support/laundry/', '/support-systems/mobilizers-trailers': '/services/support/mobilizers/',
+  '/support-systems/security': '/services/support/security/', '/support-systems/sleeping-quarters': '/services/support/sleeping/',
+  '/electrical-mechanical-water': '/services/support/emw/', '/laundry': '/services/support/laundry/', '/sleeping-quarters': '/services/support/sleeping/',
+};
+const esc = p => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const legacy = [
+  // news articles: /Article?name=… → /news/?article=… (the news page finds the article and opens it)
+  { src: '^/Article/?$', caseSensitive: true, has: [{ type: 'query', key: 'name', value: '(?<name>.+)' }], status: 301, headers: { Location: '/news/?article=$name' } },
+  { src: '^/(Article|News)/?$', caseSensitive: true, status: 301, headers: { Location: '/news/' } },
+  ...Object.entries(LEGACY).map(([from, to]) => ({ src: `^${esc(from)}/?$`, caseSensitive: true, status: 301, headers: { Location: to } })),
+];
 // drop every header-only route already there (Astro's /_astro cache rule, or ours from an earlier run), then add ours
-cfg.routes = [...routes, ...(cfg.routes || []).filter(r => !(r.continue && r.headers && !r.dest && !r.status && !r.handle))];
+cfg.routes = [...routes, ...legacy, ...(cfg.routes || []).filter(r => !(r.continue && r.headers && !r.dest && !r.status && !r.handle) && !(r.status === 301 && legacy.some(l => l.src === r.src)))];
 fs.writeFileSync(p, JSON.stringify(cfg, null, 2));
-console.log(`postbuild: headers added (inline scripts ${inlineElsewhere ? 'allowed everywhere: found outside /ar/' : 'only on /ar/'})`);
+console.log(`postbuild: ${legacy.length} legacy redirects; headers added (inline scripts ${inlineElsewhere ? 'allowed everywhere: found outside /ar/' : 'only on /ar/'})`);
