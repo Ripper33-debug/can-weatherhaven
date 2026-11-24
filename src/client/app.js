@@ -359,12 +359,7 @@ function pageHome() {
     </div>
   </section>
 
-  <section class="sec ice">
-    <div class="wrap">
-      <div class="sec-head"><h2 class="h-l">More than shelter.</h2><p class="lead">Weatherhaven designs, ships, installs and supports the whole capability — from need assessment to repair and overhaul decades later.</p></div>
-      ${lifecycle()}
-    </div>
-  </section>
+
 
   <section class="sec">
     <div class="wrap">
@@ -711,12 +706,24 @@ function initLifecycle(sel) {
 function newsList(max = 99) { return `<div class="news">${NEWSA.slice(0, max).map(n => `<a href="/news/${n.slug}"><time datetime="${n.date}">${esc(n.dateText)}</time><h3>${esc(n.title)}</h3><p>${esc(n.summary)}</p></a>`).join('')}</div>`; }
 
 /* ---------------- SECTOR ---------------- */
+/* Deployment map for a sector page: its sites from Weatherhaven's map, on a dotted world (scripts/world_map.py). */
+const SITE_TYPE = { military: 'def', medical: 'med', commercial: 'com' };
+function deployMap(key) {
+  const s = SECTORS[key], list = SITES.filter(x => x.t === SITE_TYPE[key]); if (!list.length) return '';
+  const W = 2000, H = 900, LAT0 = 82, LAT1 = -60, country = x => x.loc.split(',').pop().trim();
+  const countries = [...new Set(list.map(country))].sort((a, b) => a.localeCompare(b));
+  const dots = list.map(x => `<circle cx="${Math.round((x.lon + 180) / 360 * W)}" cy="${Math.round(Math.min(H - 10, (LAT0 - x.lat) / (LAT0 - LAT1) * H))}" r="10"><title>${esc(x.loc)}</title></circle>`).join('');
+  return `<section class="sec dark smap-sec" id="deployments"><div class="wrap"><div class="sec-head"><h2 class="h-l">Where we’ve deployed.</h2><p class="lead">${list.length} ${esc(s.name.toLowerCase())} sites in ${countries.length} countries, from Weatherhaven’s own deployment map. <a class="link" href="/record">All ${SITES.length} sites on the globe</a></p></div>
+    <figure class="smap"><img src="/assets/img/world-dots.webp" alt="" loading="lazy" decoding="async" width="2000" height="900"><svg viewBox="0 0 2000 900" role="img" aria-label="World map of ${list.length} ${esc(s.name.toLowerCase())} deployment sites">${dots}</svg></figure>
+    <p class="smap-list">${countries.map(esc).join(' · ')}</p></div></section>`;
+}
 function pageSector(key) {
   const s = SECTORS[key];
   return `${pageHero({ crumb: [['Solutions', null], [s.name, null]], title: s.name, lead: s.lead, imgKey: s.img, stats: s.stats, actions: `<a class="btn btn-primary" href="/contact?sector=${key}">Talk to the ${s.name.toLowerCase()} team</a><button class="btn btn-ghost" data-action="finder">Find a shelter</button>` })}
-  <nav class="subnav" aria-label="On this page"><div class="wrap"><a href="/${key}/apps" data-sub="apps">Applications</a><a href="/${key}/why" data-sub="why">Why Weatherhaven</a><a href="/${key}/voices" data-sub="voices">From the field</a></div></nav>
+  <nav class="subnav" aria-label="On this page"><div class="wrap"><a href="/${key}/apps" data-sub="apps">Applications</a><a href="/${key}/why" data-sub="why">Why Weatherhaven</a><a href="/${key}/deployments" data-sub="deployments">Where we’ve deployed</a><a href="/${key}/voices" data-sub="voices">From the field</a></div></nav>
   <section class="sec" id="apps"><div class="wrap apps">${s.apps.map(a => `<article class="app" id="${a.id}"><a class="app-img" href="/${key}/${a.id}" tabindex="-1" aria-hidden="true">${img(a.img, '')}</a><div><h2 class="h-l"><a href="/${key}/${a.id}">${esc(a.name)}</a></h2><p>${esc(a.text)}</p>${(() => { const d = DETAILS[`${key}/${a.id}`], pr = d && (d.proof || (d.facts || []).filter(([, v]) => v.length <= 34).slice(0, 3)); return pr && pr.length ? `<dl class="app-proof">${pr.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>` : ''; })()}<div class="uses"><span>Systems used</span>${productChips(a.products)}</div>${DETAILS[`${key}/${a.id}`] ? `<p style="margin-top:22px"><a class="btn btn-line btn-sm" href="/${key}/${a.id}">${/^[A-Z]{2,}/.test(a.name) ? 'More on ' + esc(a.name) : 'More on ' + esc(a.name.charAt(0).toLowerCase() + a.name.slice(1))}</a></p>` : ''}</div></article>`).join('')}</div></section>
-  <section class="sec dark" id="why"><div class="wrap"><div class="sec-head"><h2 class="h-l">Why ${s.name.toLowerCase()} customers choose Weatherhaven</h2><p class="lead">Rapid, ecodesigned and redeployable — the three principles behind every system.</p></div>
+  ${deployMap(key)}
+  <section class="sec ice" id="why"><div class="wrap"><div class="sec-head"><h2 class="h-l">Why ${s.name.toLowerCase()} customers choose Weatherhaven</h2><p class="lead">Rapid, ecodesigned and redeployable — the three principles behind every system.</p></div>
     <div class="pillars">${s.pillars.map(([t, d, k]) => `<div class="pillar"><div class="pimg">${img(k, '')}</div><h3>${t}</h3><p>${esc(d)}</p></div>`).join('')}</div></div></section>
   <section class="sec" id="voices"><div class="wrap"><div class="sec-head one"><h2 class="h-l">From the field</h2></div>
     <div class="fgroups">${s.quotes.map(q => `<figure class="pquote" style="margin:0"><p>${esc(q.q)}</p><cite>${esc(q.a)}</cite></figure>`).join('')}</div></div></section>
@@ -1028,6 +1035,7 @@ function pageProduct(p) {
     <div class="fgroups">${p.groups.map(([h, items]) => `<div><h3>${esc(h)}</h3><ul class="ticks">${items.map(i => `<li>${esc(i)}</li>`).join('')}</ul></div>`).join('')}</div>
     ${p.quote ? `<figure class="pquote" style="margin:64px 0 0;max-width:820px"><p>${esc(p.quote.q)}</p><cite>${esc(p.quote.a)}</cite></figure>` : ''}
   </div></section>
+  ${usedFor(p)}
   <section class="sec ice" id="related"><div class="wrap"><div class="sec-head"><h2 class="h-m" style="color:var(--navy)">More ${fam.name.toLowerCase()}</h2><p class="lead"><a class="link" href="/products">All products</a></p></div>
     <div class="related">${related.map(r => `<a href="/products/${r.id}"><div class="rimg">${imgS(r.imgs[0], r.name)}</div><b>${esc(r.name)}</b><span>${esc(r.list.gain)}</span></a>`).join('')}</div></div></section>
   ${ctaBand(`Spec a ${p.name} for your mission.`, 'Tell us the application, climate and transport route — we’ll configure the electrical, mechanical and interior fit-out.', p.imgs[1] || p.imgs[0])}`;
@@ -1352,6 +1360,18 @@ function pageDetail(k) {
   ${prods.length ? `<section class="sec ice"><div class="wrap"><div class="sec-head"><h2 class="h-m" style="color:var(--navy)">Systems used</h2><p class="lead"><a class="link" href="/products">All products</a></p></div>
     <div class="related">${prods.map(r => `<a href="/products/${r.id}"><div class="rimg">${imgS(r.imgs[0], r.name)}</div><b>${esc(r.name)}</b><span>${esc(r.list.gain)}</span></a>`).join('')}</div></div></section>` : ''}
   ${ctaBand(`${d.title}: tell us what you need.`, 'From a single shelter to a turnkey camp, we’ll work with you on a redeployable solution that suits your operation.', c.img && IMG[c.img] ? c.img : 'workforce')}`;
+}
+
+/* Product pages: the mission, service and support-system pages that name this system, and the news that does. */
+function usedFor(p) {
+  const keys = Object.keys(DETAILS).filter(k => (DETAILS[k].products || []).includes(p.id) || (SECTORS[k.split('/')[0]] && (SECTORS[k.split('/')[0]].apps.find(a => `${k.split('/')[0]}/${a.id}` === k) || {}).products?.includes(p.id)));
+  const news = NEWSA.filter(n => (n.p || []).includes(p.id) || (p.id === 'polar' && /polar/i.test(n.title))).slice(0, 6);
+  if (!keys.length && !news.length) return '';
+  const card = k => { const c = detailCtx(k); return `<a class="used" href="${detailHref(k)}"><span class="used-img">${imgS(c.img || 'rapid_forest', '')}</span><span class="used-body"><small>${esc(c.group)}</small><b>${esc(DETAILS[k].title)}</b></span></a>`; };
+  return `<section class="sec" id="used"><div class="wrap"><div class="sec-head"><h2 class="h-l">Where it’s used.</h2><p class="lead">The missions and systems where Weatherhaven names the ${esc(p.name)}${news.length ? ', and the news that mentions it' : ''}.</p></div>
+    ${keys.length ? `<div class="used-grid">${keys.slice(0, 8).map(card).join('')}</div>` : ''}
+    ${news.length ? `<div class="used-news"><h3 class="grp-h">In the news</h3><ul>${news.map(n => `<li><a href="/news/${n.slug}"><time datetime="${n.date}">${esc(n.dateText)}</time>${esc(n.title)}</a></li>`).join('')}</ul></div>` : ''}
+  </div></section>`;
 }
 
 /* ---------------- RECORD (globe as its own page) ---------------- */

@@ -744,7 +744,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border:0;border-radiu
 .trusted li{font-family:var(--f-head);font-weight:600;font-size:20px;color:var(--navy);white-space:nowrap}
 
 /* fleet mosaic (Anduril) */
-.fleet{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:clamp(190px,17.5vw,252px);grid-auto-flow:dense;gap:12px}
+.fleet{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:clamp(160px,13.5vw,200px);grid-auto-flow:dense;gap:12px}
 .ft{position:relative;overflow:hidden;border-radius:6px;background:var(--navy-800);color:#fff;text-decoration:none;isolation:isolate}
 .ft.w2{grid-column:span 2}
 .ft.h2{grid-row:span 2}
@@ -889,7 +889,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border:0;border-radiu
 #viewer.is-inside .hs-layer{opacity:0;pointer-events:none}
 
 /* scroll story */
-.story{position:relative;height:320vh;background:#0e1626}
+.story{position:relative;height:280vh;background:#0e1626}
 .story-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
 .story-stage{position:absolute;inset:0}
 .story-stage canvas{display:block}
@@ -970,7 +970,7 @@ html.vt .page-enter{animation:none}
   .inside-tabs button{flex:none;white-space:nowrap}
   .inside-card p{font-size:14.5px}
   .inside-back{top:calc(var(--top0) + 12px)}
-  .story{height:300vh}
+  .story{height:260vh}
   .story-head h2{font-size:34px}
   .story-steps h3{font-size:21px}
   .story-note{left:var(--gutter);right:auto;bottom:12px}
@@ -1591,3 +1591,31 @@ body.presenting .hero-foot{display:none}
   .hero-copy{padding-bottom:205px}
   .hero .lead{font-size:17.5px}
 }
+/* sector deployment map */
+.smap{position:relative;margin:8px 0 0;border-radius:10px;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,rgba(141,179,218,.08),transparent 70%)}
+.smap img{display:block;width:100%;height:auto;opacity:.9}
+.smap svg{position:absolute;inset:0;width:100%;height:100%}
+.smap circle{fill:var(--orange);stroke:rgba(6,26,47,.85);stroke-width:3;transition:r .2s}
+.smap circle:hover{r:16;fill:#ffb347;cursor:default}
+.smap-list{margin-top:20px;color:rgba(222,233,244,.72);font-size:14.5px;line-height:1.8;max-width:110ch}
+/* product: where it's used */
+.used-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.used{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;align-items:center;padding:10px;border:1px solid var(--rule);border-radius:8px;text-decoration:none;background:#fff;transition:border-color .15s,box-shadow .15s}
+.used:hover{border-color:var(--navy);box-shadow:0 6px 18px rgba(6,26,47,.08)}
+.used-img{display:block;aspect-ratio:4/3;border-radius:5px;overflow:hidden;background:var(--ice)}
+.used-img img{width:100%;height:100%;object-fit:cover;display:block}
+.used-body small{display:block;font-size:12.5px;color:var(--steel);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.used-body b{color:var(--navy);font-size:16.5px;line-height:1.25}
+.used-news{margin-top:48px;max-width:860px}
+.used-news ul{list-style:none;margin:0;padding:0}
+.used-news li a{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--navy);font-weight:500}
+.used-news li a:hover{color:var(--orange-ink)}
+.used-news time{color:var(--steel);font-weight:400;font-size:14.5px}
+@media (max-width:759px){.used-news li a{grid-template-columns:minmax(0,1fr);gap:2px}}
+.ice .pillar p,.sec:not(.dark) .pillar p{color:var(--steel)}
+.ice .pillar h3{color:var(--navy)}
+/* trusted by: an even grid of names instead of a ragged line */
+.trusted ul{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px 28px}
+.trusted li{position:relative;padding-left:16px;font-size:18.5px;white-space:normal;line-height:1.25}
+.trusted li::before{content:'';position:absolute;left:0;top:.5em;width:6px;height:6px;border-radius:1px;background:var(--orange)}
+@media (max-width:759px){.trusted ul{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px}.trusted li{font-size:15.5px}}
