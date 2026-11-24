@@ -14,6 +14,9 @@ import CONTACTS from '../content/contacts.json';
 import NEWS from '../content/news.json';
 import SITES from '../content/sites.json';
 import RFP from '../content/rfp.json';
+import DETAILS from '../content/details.json';
+import NEWSA from '../content/news-archive.json';
+import NEWSIMG from '../generated/news-img.json';
 import { PRODUCT_MODELS, SYSTEM_MODELS } from '../lib/system-models';
 import { systemViewerHTML, mountSystemViewer, modelName } from './systemViewer.js';
 import PLACES from '../content/places.json';
@@ -105,7 +108,7 @@ function chromeHTML() {
     </div></div>`;
   out.drawer = drawer + `<div class="d-actions"><button class="btn btn-line" data-action="search">${I.search}Search</button><button class="btn btn-line" data-action="finder">Find a shelter</button><a class="btn btn-line" href="${SITE.instock}" target="_blank" rel="noopener">In-stock inventory</a><a class="btn btn-primary" href="/contact">Contact us</a></div>`;
 
-  out.annc = `<div class="wrap annc-in"><span class="annc-tag">News</span><a href="${ANNOUNCE.url}" target="_blank" rel="noopener">${esc(ANNOUNCE.t)}<span class="annc-go" aria-hidden="true">${I.right}</span></a><button class="annc-x" aria-label="Dismiss announcement">${I.x}</button></div>`;
+  out.annc = `<div class="wrap annc-in"><span class="annc-tag">News</span><a href="/news/${NEWSA[0].slug}">${esc(NEWSA[0].title)}<span class="annc-go" aria-hidden="true">${I.right}</span></a><button class="annc-x" aria-label="Dismiss announcement">${I.x}</button></div>`;
   out.ftr = `<div class="wrap">
     <div class="clocks" role="group" aria-label="Local time at Weatherhaven sites">${OFFICES.map(o => `<div><span>${esc(o.n)}</span><b class="num" data-tz="${o.tz}">--:--</b><small>${esc(o.s)}</small></div>`).join('')}</div>
     <div class="ftr-top">
@@ -686,14 +689,14 @@ function initLifecycle(sel) {
   });
   if (sel) pick(sel);
 }
-function newsList(max = 99) { return `<div class="news">${NEWS.slice(0, max).map(n => `<a href="${n.url}" target="_blank" rel="noopener"><time>${n.date}</time><h3>${esc(n.t)}</h3><p>${esc(n.d)}</p></a>`).join('')}</div>`; }
+function newsList(max = 99) { return `<div class="news">${NEWSA.slice(0, max).map(n => `<a href="/news/${n.slug}"><time datetime="${n.date}">${esc(n.dateText)}</time><h3>${esc(n.title)}</h3><p>${esc(n.summary)}</p></a>`).join('')}</div>`; }
 
 /* ---------------- SECTOR ---------------- */
 function pageSector(key) {
   const s = SECTORS[key];
   return `${pageHero({ crumb: [['Solutions', null], [s.name, null]], title: s.name, lead: s.lead, imgKey: s.img, stats: s.stats, actions: `<a class="btn btn-primary" href="/contact?sector=${key}">Talk to the ${s.name.toLowerCase()} team</a><button class="btn btn-ghost" data-action="finder">Find a shelter</button>` })}
-  <nav class="subnav" aria-label="On this page"><div class="wrap">${s.apps.map(a => `<a href="/${key}/${a.id}" data-sub="${a.id}">${esc(a.name)}</a>`).join('')}<a href="/${key}/why" data-sub="why">Why Weatherhaven</a><a href="/${key}/voices" data-sub="voices">From the field</a></div></nav>
-  <section class="sec"><div class="wrap apps">${s.apps.map(a => `<article class="app" id="${a.id}"><div class="app-img">${img(a.img, a.name)}</div><div><h2 class="h-l">${esc(a.name)}</h2><p>${esc(a.text)}</p><div class="uses"><span>Systems used</span>${productChips(a.products)}</div></div></article>`).join('')}</div></section>
+  <nav class="subnav" aria-label="On this page"><div class="wrap"><a href="/${key}/apps" data-sub="apps">Applications</a><a href="/${key}/why" data-sub="why">Why Weatherhaven</a><a href="/${key}/voices" data-sub="voices">From the field</a></div></nav>
+  <section class="sec" id="apps"><div class="wrap apps">${s.apps.map(a => `<article class="app" id="${a.id}"><a class="app-img" href="/${key}/${a.id}" tabindex="-1" aria-hidden="true">${img(a.img, '')}</a><div><h2 class="h-l"><a href="/${key}/${a.id}">${esc(a.name)}</a></h2><p>${esc(a.text)}</p><div class="uses"><span>Systems used</span>${productChips(a.products)}</div>${DETAILS[`${key}/${a.id}`] ? `<p style="margin-top:18px"><a class="btn btn-line btn-sm" href="/${key}/${a.id}">More on ${esc(a.name.toLowerCase())}</a></p>` : ''}</div></article>`).join('')}</div></section>
   <section class="sec dark" id="why"><div class="wrap"><div class="sec-head"><h2 class="h-l">Why ${s.name.toLowerCase()} customers choose Weatherhaven</h2><p class="lead">Rapid, ecodesigned and redeployable — the three principles behind every system.</p></div>
     <div class="pillars">${s.pillars.map(([t, d, k]) => `<div class="pillar"><div class="pimg">${img(k, '')}</div><h3>${t}</h3><p>${esc(d)}</p></div>`).join('')}</div></div></section>
   <section class="sec" id="voices"><div class="wrap"><div class="sec-head one"><h2 class="h-l">From the field</h2></div>
@@ -737,7 +740,7 @@ function pageProducts(q) {
     </div></div></section>
   <section class="sec ice" id="scale"><div class="wrap"><div class="sec-head"><h2 class="h-l">Ships small, opens big.</h2><p class="lead">Every system with published dimensions, drawn to one scale — packed for shipping, then deployed. Tap a name to open its page.</p></div>${scaleLineup()}</div></section>
   <section class="sec" id="accessories"><div class="wrap"><div class="sec-head"><h2 class="h-l">Accessories</h2><p class="lead">Every shelter can be as unique as the mission. Accessories tune it to the climate and link it into a complex.</p></div>
-    <div class="acc">${ACCESSORIES.map(a => `<div><div class="aimg">${img(a.img, a.name)}</div><h3>${esc(a.name)}</h3><p>${esc(a.text)}</p><a class="link" href="${a.src}" target="_blank" rel="noopener">Full details</a></div>`).join('')}</div>
+    <div class="acc">${ACCESSORIES.map(a => `<div><div class="aimg">${img(a.img, a.name)}</div><h3>${esc(a.name)}</h3><p>${esc(a.text)}</p>${DETAILS[`accessories/${a.id}`] ? `<a class="link" href="/products/accessories/${a.id}">Full details</a>` : ''}</div>`).join('')}</div>
     <p class="note">Looking for kitchens, ablutions, laundry, power or water? See <a class="link" href="/services/support">support systems</a>.</p></div></section>
   <section class="sec dark" id="hqss"><div class="wrap two"><div><h2 class="h-l">Canada’s Headquarters Shelter System</h2><p class="lead" style="margin:18px 0 26px">${esc(HQSS.intro)}</p><a class="btn btn-primary" href="/innovation/hqss">Open the HQSS spec sheet</a></div><div class="photo" style="aspect-ratio:737/490;background:#fff">${img('hqss_diag', 'HQSS modular frame and fabric components')}</div></div></section>
   ${ctaBand()}`;
@@ -1040,12 +1043,12 @@ function pageServices() {
   return `${pageHero({ crumb: [['Services', null]], title: 'Services & support', lead: 'To complement the shelters, a fully integrated service: engineering and design, logistics, installation, training, repair and parts — from start to finish.', imgKey: 'sv_install', stats: [['6', 'Integrated services, one team'], ['1,000', 'People fed three fresh meals a day by a full-service kitchen'], ['< 1 hr', 'To a working field laundry once connected']] })}
   <nav class="subnav" aria-label="On this page"><div class="wrap"><a href="/services/lifecycle" data-sub="lifecycle-sec">How we support you</a><a href="/services/support" data-sub="support">Support systems</a><a href="/services/accessories" data-sub="accessories">Accessories</a></div></nav>
   <section class="sec" id="lifecycle-sec"><div class="wrap"><div class="sec-head"><h2 class="h-l">From first drawing to final overhaul.</h2><p class="lead">Building on a long track record of field projects, Weatherhaven assists with your shelter operation from start to finish.</p></div>${lifecycle()}</div></section>
-  <section class="sec ice" id="services-detail"><div class="wrap"><div class="sec-head"><h2 class="h-l">Each service, in detail.</h2><p class="lead">What the teams do at each stage, from the services pages on weatherhaven.com.</p></div>
-    <div class="svc-grid">${SERVICES.map(s => `<article class="svc" id="svc-${s.id}"><div class="svc-img">${img(s.img, s.name)}</div><h3>${esc(s.name)}</h3><p>${esc(s.text)}</p><ul class="ticks">${(s.detail || []).map(d => `<li>${esc(d)}</li>`).join('')}</ul></article>`).join('')}</div></div></section>
+  <section class="sec ice" id="services-detail"><div class="wrap"><div class="sec-head"><h2 class="h-l">Each service, in detail.</h2><p class="lead">What each team does, and what you can ask it for.</p></div>
+    <div class="svc-grid">${SERVICES.map(s => `<a class="svc svc-link" id="svc-${s.id}" href="/services/${s.id}"><div class="svc-img">${img(s.img, '')}</div><h3>${esc(s.name)}</h3><p>${esc(s.text)}</p><span class="link">Read more</span></a>`).join('')}</div></div></section>
   <section class="sec" id="support"><div class="wrap"><div class="sec-head"><h2 class="h-l">Support systems</h2><p class="lead">More than shelters: fully equipped capability that is functional, comfortable and ready when occupants arrive on site.</p></div>
-    <div class="sgrid">${SUPPORT.map(s => `<div class="sitem" id="ss-${s.id}"><div class="simg">${img(s.img, s.name)}</div><h3>${esc(s.name)}</h3><p>${esc(s.text)}</p></div>`).join('')}</div></div></section>
+    <div class="sgrid">${SUPPORT.map(s => `<a class="sitem sitem-link" id="ss-${s.id}" href="/services/support/${s.id}"><div class="simg">${img(s.img, '')}</div><h3>${esc(s.name)}</h3><p>${esc(s.text)}</p></a>`).join('')}</div></div></section>
   <section class="sec ice" id="accessories"><div class="wrap"><div class="sec-head"><h2 class="h-l">Accessories</h2><p class="lead">Solarshades, interconnectors and covers that adapt any shelter to its site.</p></div>
-    <div class="acc">${ACCESSORIES.map(a => `<div><div class="aimg">${img(a.img, a.name)}</div><h3>${esc(a.name)}</h3><p>${esc(a.text)}</p></div>`).join('')}</div></div></section>
+    <div class="acc">${ACCESSORIES.map(a => `<div><div class="aimg">${img(a.img, a.name)}</div><h3>${esc(a.name)}</h3><p>${esc(a.text)}</p>${DETAILS[`accessories/${a.id}`] ? `<a class="link" href="/products/accessories/${a.id}">Full details</a>` : ''}</div>`).join('')}</div></div></section>
   ${ctaBand('Need parts, training or an overhaul?', 'Request spares, schedule field service or send equipment for repair and overhaul.', 'sv_parts')}`;
 }
 
@@ -1113,7 +1116,7 @@ function pageCompany() {
   <section class="sec" id="leadership"><div class="wrap"><div class="sec-head"><h2 class="h-l">Leadership</h2><p class="lead">An executive team with backgrounds in defence procurement, engineering, finance and government.</p></div>
     <div class="people">${PEOPLE.exec.map(p => `<div class="person"><div class="mono" aria-hidden="true">${ini(p.n)}</div><h3>${esc(p.n)}</h3><p class="role">${esc(p.r)}</p><p>${esc(p.b)}</p></div>`).join('')}</div>
     <div class="two" style="margin-top:64px;align-items:start"><div><h3 class="h-m" style="color:var(--navy);margin-bottom:18px">Regional managing directors</h3><div class="plist">${PEOPLE.regional.map(p => `<div><b>${esc(p.n)}</b><span>${esc(p.r)}</span></div>`).join('')}</div></div>
-      <div><h3 class="h-m" style="color:var(--navy);margin-bottom:18px">US advisory board</h3><div class="plist">${PEOPLE.advisory.map(p => `<div><b>${esc(p.n)}</b><span>${esc(p.r)}</span></div>`).join('')}</div></div></div></div></section>
+      <div><h3 class="h-m" style="color:var(--navy);margin-bottom:18px">US advisory board</h3><div class="plist">${PEOPLE.advisory.map(p => `<div><b>${esc(p.n)}</b><span>${esc(p.r)}</span>${p.b ? `<p class="pbio">${esc(p.b)}</p>` : ''}</div>`).join('')}</div></div></div></div><div style="margin-top:64px"><h3 class="h-m" style="color:var(--navy);margin-bottom:18px">Regional sales leads</h3><div class="sales">${(PEOPLE.sales || []).map(p => `<div><b>${esc(p.n)}</b><span>${esc(p.r)}</span><p class="pbio">${esc(p.b)}</p></div>`).join('')}</div></div></section>
   <section class="sec ice" id="offices"><div class="wrap two" style="align-items:start"><div><h2 class="h-l">Head office and regional sites</h2><p class="lead" style="margin-top:16px">Expert teams across the world, wherever the project is.</p></div>
     <div class="cside"><div class="cblock"><h3>Head office</h3><p>${SITE.address.join('<br>')}</p><p style="margin-top:10px">Toll free (Canada & USA) <a href="tel:${SITE.tollFree}">${SITE.tollFree}</a><br>International <a href="tel:${SITE.intl}">${SITE.intl}</a><br><a href="mailto:${SITE.email}">${SITE.email}</a></p></div>
     <div class="cblock"><h3>Regional websites</h3><ul>${SITE.regional.map(r => `<li><a href="${r.url}" target="_blank" rel="noopener">${r.name}</a></li>`).join('')}</ul></div>
@@ -1137,8 +1140,22 @@ function initCompany() {
 
 /* ---------------- NEWS ---------------- */
 function pageNews() {
-  return `${pageHero({ crumb: [['Company', '/company'], ['News', null]], title: 'News', lead: 'Partnerships, contracts, programs and the trade shows Weatherhaven attends.', imgKey: 'news_banner' })}
-  <section class="sec"><div class="wrap">${newsList()}<p style="margin-top:36px"><a class="btn btn-line" href="${SITE.newsArchive}" target="_blank" rel="noopener">Browse the full news archive</a></p></div></section>${ctaBand()}`;
+  const years = [...new Set(NEWSA.map(n => n.date.slice(0, 4)))];
+  const card = n => `<a class="na" href="/news/${n.slug}">${NEWSIMG[n.slug] ? `<span class="na-img"><img src="${NEWSIMG[n.slug]}" alt="" loading="lazy" decoding="async"></span>` : ''}<span class="na-body"><time datetime="${n.date}">${esc(n.dateText)}</time><b>${esc(n.title)}</b><span>${esc(n.summary)}</span></span></a>`;
+  return `${pageHero({ crumb: [['Company', '/company'], ['News', null]], title: 'News', lead: 'Partnerships, contracts, programs and the trade shows Weatherhaven attends.', imgKey: 'news_banner', stats: [[String(NEWSA.length), 'Articles'], [`${years[years.length - 1]}–${years[0]}`, 'Years covered']] })}
+  <section class="sec"><div class="wrap"><h2 class="sr-only">Latest</h2>${newsList(3)}</div></section>
+  <section class="sec ice"><div class="wrap"><div class="sec-head"><h2 class="h-l">All news</h2><nav class="ny" aria-label="Years">${years.map(y => `<a href="#y${y}">${y}</a>`).join('')}</nav></div>
+    ${years.map(y => `<section class="ny-year" id="y${y}"><h3>${y}</h3><div class="na-list">${NEWSA.filter(n => n.date.startsWith(y)).map(card).join('')}</div></section>`).join('')}</div></section>${ctaBand()}`;
+}
+function pageArticle(a) {
+  const i = NEWSA.indexOf(a), newer = NEWSA[i - 1], older = NEWSA[i + 1];
+  const body = a.body.map(b => b.h ? `<h2>${esc(b.h)}</h2>` : b.list ? `<ul class="ticks">${b.list.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : `<p>${esc(b.p)}</p>`).join('');
+  return `<section class="art-hero"><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="/company">Company</a><span>/</span><a href="/news">News</a></nav>
+    <time datetime="${a.date}">${esc(a.dateText)}</time><h1 class="h-l">${esc(a.title)}</h1></div></section>
+  <section class="sec art"><div class="wrap art-grid"><article class="art-body">${NEWSIMG[a.slug] ? `<figure class="art-img"><img src="${NEWSIMG[a.slug]}" alt="" decoding="async"></figure>` : ''}${body}
+    <p class="dt-src">Published on <a href="${a.source}" target="_blank" rel="noopener">weatherhaven.com</a>.</p></article>
+    <aside class="art-side"><div class="dt-card"><h3>More news</h3><ul class="art-more">${NEWSA.filter(n => n !== a).slice(0, 5).map(n => `<li><a href="/news/${n.slug}"><time datetime="${n.date}">${esc(n.dateText)}</time>${esc(n.title)}</a></li>`).join('')}</ul><p style="margin-top:12px"><a class="link" href="/news">All news</a></p></div></aside></div>
+    <div class="wrap art-pn">${newer ? `<a href="/news/${newer.slug}"><small>Newer</small>${esc(newer.title)}</a>` : '<span></span>'}${older ? `<a class="older" href="/news/${older.slug}"><small>Older</small>${esc(older.title)}</a>` : ''}</div></section>${ctaBand()}`;
 }
 
 /* ---------------- CONTACT ---------------- */
@@ -1270,6 +1287,41 @@ function initBuy() {
     if (e.target.closest('[data-rfp-send]')) { try { sessionStorage.setItem('wh-rfp-note', asText()); } catch (_) { } window.__rfpNote = asText(); navigate('/contact?from=rfp'); }
   });
   draw();
+}
+
+/* ---------------- DETAIL PAGES: sector applications, services, support systems, accessories ---------------- */
+export function detailKey(seg) {
+  const [a, b, c] = seg;
+  if (SECTORS[a] && b && !c && DETAILS[`${a}/${b}`]) return `${a}/${b}`;
+  if (a === 'services' && b === 'support' && c && DETAILS[`support/${c}`]) return `support/${c}`;
+  if (a === 'services' && b && !c && DETAILS[`services/${b}`]) return `services/${b}`;
+  if (a === 'products' && b === 'accessories' && c && DETAILS[`accessories/${c}`]) return `accessories/${c}`;
+  return null;
+}
+const detailHref = k => { const [g, id] = k.split('/'); return g === 'support' ? `/services/support/${id}` : g === 'accessories' ? `/products/accessories/${id}` : `/${g}/${id}`; };
+function detailCtx(k) {
+  const [g, id] = k.split('/');
+  if (SECTORS[g]) { const S = SECTORS[g], a = S.apps.find(x => x.id === id); return { crumb: [[S.name, `/${g}`]], img: a && a.img, sibs: S.apps.map(x => [`${g}/${x.id}`, x.name]), group: S.name, products: a && a.products }; }
+  if (g === 'services') { const x = SERVICES.find(v => v.id === id); return { crumb: [['Services', '/services']], img: x && x.img, sibs: SERVICES.map(v => [`services/${v.id}`, v.name]), group: 'Services' }; }
+  if (g === 'support') { const x = SUPPORT.find(v => v.id === id); return { crumb: [['Services', '/services'], ['Support systems', '/services/support']], img: x && x.img, sibs: SUPPORT.map(v => [`support/${v.id}`, v.name]), group: 'Support systems' }; }
+  const x = ACCESSORIES.find(v => v.id === id); return { crumb: [['Products', '/products'], ['Accessories', '/products/accessories']], img: x && x.img, sibs: ACCESSORIES.filter(v => DETAILS[`accessories/${v.id}`]).map(v => [`accessories/${v.id}`, v.name]), group: 'Accessories' };
+}
+function pageDetail(k) {
+  const d = DETAILS[k], c = detailCtx(k);
+  const prods = [...new Set([...(d.products || []), ...(c.products || [])])].map(P).filter(Boolean).slice(0, 4);
+  const sib = c.sibs.filter(([key]) => DETAILS[key]);
+  return `${pageHero({ crumb: [...c.crumb, [d.title, null]], title: d.title, lead: d.lead, imgKey: c.img || 'rapid_forest', actions: `<a class="btn btn-primary" href="/contact?topic=${encodeURIComponent(k)}">Talk to the team</a><a class="btn btn-ghost" href="/buy/rfp">RFP checklist</a>` })}
+  <section class="sec"><div class="wrap dt">
+    <article class="dt-main">${d.sections.map(x => `<section class="dt-sec">${x.h ? `<h2>${esc(x.h)}</h2>` : ''}${(x.p || []).map(t => `<p>${esc(t)}</p>`).join('')}${x.list && x.list.length ? `<ul class="ticks">${x.list.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}</section>`).join('')}
+      <p class="dt-src">From <a href="${d.source}" target="_blank" rel="noopener">weatherhaven.com</a>.</p></article>
+    <aside class="dt-side">
+      ${d.facts && d.facts.length ? `<div class="dt-card"><h3>Key facts</h3><dl class="facts">${d.facts.map(([a, b]) => `<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join('')}</dl></div>` : ''}
+      ${sib.length > 1 ? `<nav class="dt-card dt-nav" aria-label="${esc(c.group)}"><h3>${esc(c.group)}</h3><ul>${sib.map(([key, name]) => `<li><a href="${detailHref(key)}"${key === k ? ' aria-current="page"' : ''}>${esc(name)}</a></li>`).join('')}</ul></nav>` : ''}
+    </aside>
+  </div></section>
+  ${prods.length ? `<section class="sec ice"><div class="wrap"><div class="sec-head"><h2 class="h-m" style="color:var(--navy)">Systems used</h2><p class="lead"><a class="link" href="/products">All products</a></p></div>
+    <div class="related">${prods.map(r => `<a href="/products/${r.id}"><div class="rimg">${img(r.imgs[0], r.name)}</div><b>${esc(r.name)}</b><span>${esc(r.list.gain)}</span></a>`).join('')}</div></div></section>` : ''}
+  ${ctaBand()}`;
 }
 
 /* ---------------- RECORD (globe as its own page) ---------------- */
@@ -1717,10 +1769,11 @@ function route() {
   const [path] = raw.split('?'); const qs = location.search.replace(/^\?/, ''); const q = new URLSearchParams(qs || '');
   const seg = path.split('/').filter(Boolean);
   const page = seg[0] || '';
-  let section = (page === 'products' && (P(seg[1]) || seg[1] === 'compare')) ? (seg[2] || null) : (seg[1] || null);
+  const dk = detailKey(seg), art = page === 'news' && seg[1] ? seg[1] : null;
+  let section = dk || art ? null : (page === 'products' && (P(seg[1]) || seg[1] === 'compare')) ? (seg[2] || null) : (seg[1] || null);
   $$('.overlay.on').forEach(o => { o.classList.remove('on'); o.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; });
   if ($('#hdr').classList.contains('open')) setDrawer(false);
-  const pageKey = page + (page === 'products' && (P(seg[1]) || seg[1] === 'compare') ? '/' + seg[1] : '') + (qs ? '?' + qs : '');
+  const pageKey = (dk ? seg.join('/') : art ? 'news/' + art : page + (page === 'products' && (P(seg[1]) || seg[1] === 'compare') ? '/' + seg[1] : '')) + (qs ? '?' + qs : '');
   // same page, only a section change → just scroll
   if (lastPage === pageKey && section) { scrollToSection(section, page); return; }
   const render = () => renderPage(page, seg, q, qs, section, pageKey);
@@ -1732,8 +1785,11 @@ function route() {
     t.finished.catch(() => { }).then(() => document.documentElement.classList.remove('vt'));
   } else render();
 }
+const notFoundHTML = () => `<section class="phero"><div class="wrap" style="padding:120px 0 96px"><h1 class="h-xl">That page has moved.</h1><p class="lead" style="margin:18px 0 28px">Search the site or head back to the start.</p><div class="hero-cta"><button class="btn btn-primary" data-action="search">Search the site</button><a class="btn btn-ghost" href="/">Go to the home page</a></div></div></section>`;
 export function pageFor(page, seg, q, section = null) {
   let html, init, title;
+  const dk = seg && detailKey(seg);
+  if (dk) return { html: pageDetail(dk), init: null, title: `${DETAILS[dk].title} — Weatherhaven`, section: null };
   switch (page) {
     case '': html = pageHome(); init = initHome; title = 'Weatherhaven — Rapidly deploying shelter systems anywhere in the world'; break;
     case 'military': case 'medical': case 'commercial': html = pageSector(page); init = initSubnav; title = `${SECTORS[page].name} shelter solutions — Weatherhaven`; break;
@@ -1746,12 +1802,12 @@ export function pageFor(page, seg, q, section = null) {
     case 'services': html = pageServices(); init = () => { initLifecycle(SERVICES.some(s => s.id === section) ? section : null); initSubnav(); }; title = 'Services & support — Weatherhaven'; if (SERVICES.some(s => s.id === section)) section = 'lifecycle-sec'; if (section === 'lifecycle') section = 'lifecycle-sec'; break;
     case 'innovation': html = pageInnovation(); init = () => { initInnovation(); initSubnav(); }; title = 'Innovation — Weatherhaven'; break;
     case 'company': html = pageCompany(); init = () => { initCompany(); initSubnav(); }; title = 'Company — Weatherhaven'; break;
-    case 'news': html = pageNews(); title = 'News — Weatherhaven'; break;
+    case 'news': { const a = seg[1] && NEWSA.find(n => n.slug === seg[1]); if (a) { html = pageArticle(a); title = `${a.title} — Weatherhaven`; } else if (!seg[1]) { html = pageNews(); title = 'News — Weatherhaven'; } else { html = notFoundHTML(); title = 'Page not found — Weatherhaven'; } break; }
     case 'contact': html = pageContact(q); init = initContact; title = 'Contact — Weatherhaven'; break;
     case 'record': html = pageRecord(); init = initGlobe; title = 'Where we’ve worked — Weatherhaven'; break;
     case 'buy': html = pageBuy(); init = initBuy; title = 'How to buy — Weatherhaven'; break;
     case 'plan': html = pagePlan(); init = initPlan; title = 'Camp planner — Weatherhaven'; break;
-    default: html = `<section class="phero"><div class="wrap" style="padding:120px 0 96px"><h1 class="h-xl">That page has moved.</h1><p class="lead" style="margin:18px 0 28px">Search the site or head back to the start.</p><div class="hero-cta"><button class="btn btn-primary" data-action="search">Search the site</button><a class="btn btn-ghost" href="/">Go to the home page</a></div></div></section>`; title = 'Page not found — Weatherhaven';
+    default: html = notFoundHTML(); title = 'Page not found — Weatherhaven';
   }
   return { html, init, title, section };
 }

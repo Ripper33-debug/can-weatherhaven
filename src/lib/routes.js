@@ -1,5 +1,6 @@
 /* Route discovery: start from the base pages, crawl the internal links each rendered page contains. Every internal link gets a real URL. */
-import { ssrRender } from '../client/app.js';
+import { ssrRender, detailKey } from '../client/app.js';
+import DETAILS from '../content/details.json';
 import PRODUCTS from '../content/products.json';
 import SECTORS from '../content/sectors.json';
 import SITE from '../content/site.json';
@@ -25,7 +26,9 @@ export function metaFor(path, title) {
   const site = { '@type': 'Organization', name: 'Weatherhaven', url: 'https://weatherhaven.com', logo: IMG.logo_n, telephone: SITE.tollFree };
   let description = 'Expandable containers, softwall shelters and complete camps for military, medical and commercial operations — founded in Canada in 1981, deployed in more than 95 countries.';
   let jsonld = { '@context': 'https://schema.org', ...site }, image;
-  if (seg[0] === 'products' && seg[1] === 'compare') description = 'Put any two or three Weatherhaven shelter systems side by side, on the facts each one publishes.';
+  const dk = detailKey(seg);
+  if (dk) description = DETAILS[dk].lead;
+  else if (seg[0] === 'products' && seg[1] === 'compare') description = 'Put any two or three Weatherhaven shelter systems side by side, on the facts each one publishes.';
   else if (seg[0] === 'products' && seg[1]) {
     const p = PRODUCTS.find(x => x.id === seg[1]);
     if (p) { description = p.summary; image = IMG[p.imgs[0]]; jsonld = { '@context': 'https://schema.org', '@type': 'Product', name: `${p.name} — ${p.full}`, description: p.summary, image: image, brand: { '@type': 'Brand', name: 'Weatherhaven' }, manufacturer: site, url: path }; }
