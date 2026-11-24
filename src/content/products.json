@@ -575,7 +575,7 @@
     "Secured load, D-ring tie-downs"
    ]
   ],
-  "summary": "A tactical, quick-erect shelter for expeditionary and emergency response operations. The ATEPS fits a single 463L pallet and expands to nearly three times its footprint for forward operating bases, medical facilities and specialised shelters.",
+  "summary": "A tactical, quick-erect shelter for expeditionary and emergency response operations. The ATEPS fits a single 463L pallet and expands to nearly three times its footprint for forward operating bases, medical facilities and specialized shelters.",
   "imgs": [
    "p_ateps",
    "p_ateps2"
@@ -909,7 +909,21 @@
    "camp": "Kitchens, dining and accommodation",
    "bags": "Bags sized for a four-person lift",
    "cold": "Among the most thermally efficient tactical shelters"
-  }
+  },
+  "stats": [
+   [
+    "4",
+    "People at most to lift any bag"
+   ],
+   [
+    "Modular",
+    "Lengths from standard modules"
+   ],
+   [
+    "±",
+    "Works over- and under-pressure"
+   ]
+  ]
  },
  {
   "id": "series4",
@@ -1275,7 +1289,7 @@
     "Dog-sled journey on Endurance shelters"
    ]
   ],
-  "summary": "Supplied to national science organisations and private operators in Antarctica, the High Canadian Arctic and Greenland. Polarhaven anchors long-term base camps, Polar Chief’s octagonal shape sheds swirling wind, and Endurance is a quick-erect expedition shelter.",
+  "summary": "Supplied to national science organizations and private operators in Antarctica, the High Canadian Arctic and Greenland. Polarhaven anchors long-term base camps, Polar Chief’s octagonal shape sheds swirling wind, and Endurance is a quick-erect expedition shelter.",
   "imgs": [
    "p_polar",
    "p_polar4",
@@ -1368,7 +1382,7 @@
    }
   },
   "why": {
-   "polar": "Supplied to national science organisations in Antarctica, the High Arctic and Greenland",
+   "polar": "Supplied to national science organizations in Antarctica, the High Arctic and Greenland",
    "cold": "Designed for extremely cold, dry, windy regions",
    "short": "Endurance is a quick-erect expedition shelter"
   }

@@ -20,7 +20,8 @@ export function loadEngine() {
   if (enginePromise) return enginePromise;
   if (treccPage()) prefetchTrecc();
   const one = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.async = false; s.onload = res; s.onerror = () => rej(new Error('failed ' + src)); document.head.appendChild(s); });
-  enginePromise = one(ASSETS.js + 'three.min.js').then(() => Promise.all([one(ASSETS.js + 'GLTFLoader.js'), one(ASSETS.js + 'DRACOLoader.js')])).then(() => one(ASSETS.js + 'viewer3d.js')).then(() => Promise.all([one(ASSETS.js + 'fitouts.js'), one(ASSETS.js + 'globe.js')]));
+  const js = f => ASSETS.js + f + ASSETS.v;
+  enginePromise = one(js('three.min.js')).then(() => Promise.all([one(js('GLTFLoader.js')), one(js('DRACOLoader.js'))])).then(() => one(js('viewer3d.js'))).then(() => Promise.all([one(js('fitouts.js')), one(js('globe.js'))]));
   return enginePromise;
 }
 window.__whLoadEngine = loadEngine;

@@ -19,14 +19,6 @@
    "url": "https://uk.weatherhaven.com"
   },
   {
-   "name": "Africa",
-   "url": "https://www.rcssa.com"
-  },
-  {
-   "name": "Brasil",
-   "url": "http://whdobrasil.com.br"
-  },
-  {
    "name": "Peru",
    "url": "https://peru.weatherhaven.com/"
   }
@@ -52,5 +44,6 @@
    "name": "X (Twitter)",
    "url": "https://twitter.com/Weatherhavengr"
   }
- ]
+ ],
+ "bookPdf": "https://eiec269001.blob.core.windows.net/site-content/BOOK%20WH%2040%20YEARS%20v12.pdf"
 }

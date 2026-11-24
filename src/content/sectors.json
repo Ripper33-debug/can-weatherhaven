@@ -116,7 +116,7 @@
  "medical": {
   "name": "Medical",
   "img": "med_hero",
-  "lead": "From mobile clinics to field hospitals, Weatherhaven medical shelters meet the guidelines set by organisations like the World Health Organization and the United Nations for foreign field hospitals.",
+  "lead": "From mobile clinics to field hospitals, Weatherhaven medical shelters meet the guidelines set by organizations like the World Health Organization and the United Nations for foreign field hospitals.",
   "stats": [
    [
     "24 hrs",
@@ -127,8 +127,8 @@
     "Field hospital care, from triage to surgery"
    ],
    [
-    "+4.5 ft",
-    "Of operating-room headroom in the EHMECC"
+    "12'6\"",
+    "Of vertical space in an EHMECC operating room"
    ]
   ],
   "apps": [
@@ -184,7 +184,7 @@
     "med_redeploy"
    ],
    [
-    "EcoDesign",
+    "Ecodesign",
     "Designs that protect workers and patients from their environment — from extreme heat to mosquitoes.",
     "med_eco"
    ],

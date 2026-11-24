@@ -29,7 +29,9 @@ import IMG from '../generated/img.json';
 import IMGPOS from '../generated/imgpos.json';
 import FITOUTS_META from '../generated/fitouts.json';
 import { isBrowser, matchMedia, navigator, sessionStorage } from './env.js';
-export const ASSETS = { js: '/assets/js/', models: { open: '/assets/models/trecc-open.glb', stowed: '/assets/models/trecc-stowed.glb', dracoPath: '/assets/draco/' }, ar: '/ar/' };
+/* Files at fixed URLs (engine scripts, TRECC models) are cached for a year, so each build stamps them with its own version. */
+export const BUILD = typeof __WH_BUILD__ !== 'undefined' ? __WH_BUILD__ : 'dev';
+export const ASSETS = { js: '/assets/js/', v: `?v=${BUILD}`, models: { open: `/assets/models/trecc-open.glb?v=${BUILD}`, stowed: `/assets/models/trecc-stowed.glb?v=${BUILD}`, dracoPath: '/assets/draco/' }, ar: '/ar/' };
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -66,7 +68,7 @@ const I = {
 
 /* ---------------- nav model ---------------- */
 const NAV = [
-  { key: 'solutions', label: 'Solutions', routes: ['military', 'medical', 'commercial'], cols: ['military', 'medical', 'commercial'].map(k => ({ title: SECTORS[k].name, href: `/${k}`, blurb: SECTORS[k].lead.split('. ')[0] + '.', items: SECTORS[k].apps.map(a => ({ t: a.name, href: `/${k}/${a.id}` })) })), feature: { t: 'Not sure what you need?', d: 'Answer four questions and get the systems that fit your mission, transport and climate.', a: 'Find a shelter', action: 'finder', img: 'mil_rapid' } },
+  { key: 'solutions', label: 'Solutions', routes: ['military', 'medical', 'commercial'], cols: ['military', 'medical', 'commercial'].map(k => ({ title: SECTORS[k].name, href: `/${k}`, blurb: SECTORS[k].lead.split('. ')[0].replace(/\.$/, '') + '.', items: SECTORS[k].apps.map(a => ({ t: a.name, href: `/${k}/${a.id}` })) })), feature: { t: 'Not sure what you need?', d: 'Answer four questions and get the systems that fit your mission, transport and climate.', a: 'Find a shelter', action: 'finder', img: 'mil_rapid' } },
   { key: 'products', label: 'Products', routes: ['products'], cols: [
     { title: FAMILIES.expandable.name, href: '/products?f=expandable', blurb: 'Ship compact, open big. ISO-standard and pallet-sized.', items: PRODUCTS.filter(p => p.family === 'expandable').map(p => ({ t: p.name, s: p.list.gain, href: `/products/${p.id}` })) },
     { title: FAMILIES.soft.name, href: '/products?f=soft', blurb: 'Tensioned fabric shelters for every climate on Earth.', items: PRODUCTS.filter(p => p.family === 'soft').map(p => ({ t: p.name, s: p.list.gain, href: `/products/${p.id}` })) },
@@ -76,7 +78,7 @@ const NAV = [
   { key: 'company', label: 'Company', routes: ['company', 'innovation', 'news'], cols: [
     { title: 'About Weatherhaven', href: '/company', blurb: 'Designing, building and supporting redeployable shelter since 1981.', items: [{ t: 'Our story', href: '/company/about' }, { t: 'History', href: '/company/history' }, { t: 'Leadership', href: '/company/leadership' }, { t: 'Where we’ve worked', href: '/record' }] },
     { title: 'Innovation', href: '/innovation', blurb: '51 patents in 30 countries, and a world-class engineering team.', items: [{ t: 'Engineering & patents', href: '/innovation/engineering' }, { t: 'HQSS spec sheet', href: '/innovation/hqss' }, { t: 'Expandable space', href: '/innovation/expandable' }, { t: 'Energy efficiency', href: '/innovation/energy' }] },
-    { title: 'News & contact', href: '/news', blurb: 'Announcements, events and the right person to talk to.', items: [{ t: 'Latest news', href: '/news' }, { t: 'Contact & offices', href: '/contact' }, { t: 'Supplier information', href: SITE.supplier, ext: 1 }, { t: '40th anniversary book', href: SITE.book, ext: 1 }] }
+    { title: 'News & contact', href: '/news', blurb: 'Announcements, events and the right person to talk to.', items: [{ t: 'Latest news', href: '/news' }, { t: 'Contact & offices', href: '/contact' }, { t: 'Supplier information', href: '/buy/suppliers' }, { t: '40th anniversary book', s: 'PDF', href: SITE.bookPdf, ext: 1 }] }
   ], feature: { t: 'A field record on every continent', d: 'Explore four decades of camps, hospitals and research stations on the globe.', a: 'Explore the map', href: '/record', img: 'antarctica' } }
 ];
 
@@ -110,7 +112,7 @@ function chromeHTML() {
       <div><img src="${IMG.logo_w}" alt="Weatherhaven" style="height:26px;width:auto"><div class="addr">${SITE.address.join('<br>')}<br><br>Toll free (Canada & USA) <a href="tel:${SITE.tollFree}">${SITE.tollFree}</a><br>International <a href="tel:${SITE.intl}">${SITE.intl}</a><br><a href="mailto:${SITE.email}">${SITE.email}</a></div></div>
       <div><h2 class="ftr-h">Solutions</h2><ul><li><a href="/military">Military</a></li><li><a href="/medical">Medical</a></li><li><a href="/commercial">Commercial</a></li><li><a href="#" data-action="finder">Find a shelter</a></li></ul></div>
       <div><h2 class="ftr-h">Products</h2><ul><li><a href="/products?f=expandable">Expandable containers</a></li><li><a href="/products?f=soft">Softwall shelters</a></li><li><a href="/plan">Camp planner</a></li><li><a href="/products/accessories">Accessories</a></li><li><a href="/services/support">Support systems</a></li><li><a href="${SITE.instock}" target="_blank" rel="noopener">In-stock inventory</a></li></ul></div>
-      <div><h2 class="ftr-h">Company</h2><ul><li><a href="/company">About</a></li><li><a href="/innovation">Innovation</a></li><li><a href="/services">Services</a></li><li><a href="/news">News</a></li><li><a href="/buy">How to buy</a></li><li><a href="/buy/suppliers">Supplier information</a></li><li><a href="${SITE.iso}" target="_blank" rel="noopener">ISO 9001:2015 certificate</a></li></ul></div>
+      <div><h2 class="ftr-h">Company</h2><ul><li><a href="/company">About</a></li><li><a href="/innovation">Innovation</a></li><li><a href="/services">Services</a></li><li><a href="/news">News</a></li><li><a href="/buy">How to buy</a></li><li><a href="/buy/suppliers">Supplier information</a></li><li><a href="/buy/quality">Quality & ISO 9001:2015</a></li></ul></div>
       <div><h2 class="ftr-h">Regional websites</h2><ul>${SITE.regional.map(r => `<li><a href="${r.url}" target="_blank" rel="noopener">${r.name}</a></li>`).join('')}</ul><h2 class="ftr-h" style="margin-top:24px">Follow</h2><ul>${SITE.social.map(r => `<li><a href="${r.url}" target="_blank" rel="noopener">${r.name}</a></li>`).join('')}</ul></div>
     </div>
     <div class="ftr-bot"><span>© 2026 Weatherhaven Global Resources Ltd. All rights reserved.</span><span class="concept"><i></i>Website redesign concept — content from weatherhaven.com</span></div>
@@ -575,7 +577,7 @@ function globeSection() {
   const n = t => SITES.filter(s => s.t === t).length;
   return `<section class="sec dark globe-sec" id="record">
     <div class="wrap">
-      <div class="sec-head"><h2 class="h-l">A field record on every continent.</h2><p class="lead">${SITES.length} sites in ${SITE_COUNTRIES} countries and territories plus Antarctica, from Weatherhaven’s own deployment map — plus the stories behind them, from the Kuwait–Iraq demilitarized zone to the Antarctic ice.</p></div>
+      <div class="sec-head"><h2 class="h-l">A field record on every continent.</h2><p class="lead">${SITES.length} mapped sites on every continent, from Weatherhaven’s own deployment map — plus the stories behind them, from the Kuwait–Iraq demilitarized zone to the Antarctic ice.</p></div>
       <div class="globe-grid">
         <div class="globe-side">
           <div class="gfilter" role="group" aria-label="Filter by mission type">
@@ -797,7 +799,7 @@ function cmpBody(ids) {
   return `<div class="cmp-scroll"><table class="cmp-page" style="--n:${list.length}"><thead><tr><th scope="col"><span class="sr-only">Attribute</span></th>${list.map(p => `<th scope="col"><a href="/products/${p.id}"><div class="cmp-img">${img(p.imgs[0], p.name)}</div><b>${esc(p.name)}</b><small>${esc(p.full)}</small></a></th>`).join('')}</tr></thead>
     <tbody>${rows.map(([h, f]) => `<tr><th scope="row">${h}</th>${list.map(p => `<td>${f(p)}</td>`).join('')}</tr>`).join('')}
     <tr class="cmp-acts"><th scope="row"><span class="sr-only">Actions</span></th>${list.map(p => `<td><a class="btn btn-primary btn-sm" href="/contact?product=${p.id}">Request a quote</a><a class="link" href="/products/${p.id}">Full details</a></td>`).join('')}</tr></tbody></table></div>
-    ${drawn.length ? `<div class="cmp-scale"><h2 class="h-m">At one scale</h2><p class="muted">${drawn.length < list.length ? `${list.filter(p => !SCALE_SYS.find(s => s.id === p.id)).map(p => esc(p.name)).join(' and ')} ${list.length - drawn.length > 1 ? 'aren’t' : 'isn’t'} drawn — dimensions aren’t published. ` : ''}Drawn from published dimensions where they exist; the TRECC is measured from Weatherhaven’s CAD model, and MECC and EHMECC deployed width is estimated (≈). Next to a 20' ISO container.</p>
+    ${drawn.length ? `<div class="cmp-scale"><h2 class="h-m">At one scale</h2><p class="muted">${drawn.length < list.length ? `${list.filter(p => !SCALE_SYS.find(s => s.id === p.id)).map(p => esc(p.name)).join(' and ')} ${list.length - drawn.length > 1 ? 'aren’t' : 'isn’t'} drawn — dimensions aren’t published. ` : ''}Drawn from published dimensions; the TRECC is measured from Weatherhaven’s CAD model. Outside dimensions are shown; published floor-area multiples count usable floor and may differ. Next to a 20' ISO container.</p>
       <div class="scl" data-state="packed"><div class="scl-bar"><div class="seg" role="group" aria-label="Show"><button data-scl="packed" aria-pressed="true">Packed</button><button data-scl="deployed" aria-pressed="false">Deployed</button></div></div>
       <figure class="scl-fig"><figcaption>From above</figcaption><div class="scl-scroll">${scaleSvg('plan', drawn, { noLink: 1 })}</div></figure></div></div>` : ''}`;
 }
@@ -833,7 +835,7 @@ function initCompare(q) {
 /* ---------------- one-scale lineup (drawn in inches; 1 SVG unit = 1 inch) ---------------- */
 // fix = length that doesn't change; exp = expanding dimension, packed → deployed; h = height, packed → deployed
 const SCALE_SYS = [
-  { id: 'trecc', name: 'TRECC', fix: 94.2, exp: [85.4, 178], h: [57, 92.5], fmt: 'in', src: 'Measured from Weatherhaven’s TRECC CAD model' },
+  { id: 'trecc', name: 'TRECC', fix: 94.2, exp: [85.4, 178], h: [57, 92.5], fmt: 'in', src: 'Measured from Weatherhaven’s TRECC CAD model: outside dimensions of the unit as modelled. Published floor-area multiples count usable floor and vary by model (TRECC-P, TRECC-H)' },
   { id: 'ateps', name: 'ATEPS', fix: 104, exp: [84, 244], h: [91, 91], fmt: 'in', src: 'Published: 84\u0022 × 104\u0022 packed, 244\u0022 × 104\u0022 deployed, 91\u0022 external height (packed height taken as the same)' },
   { id: 'mecc', name: 'MECC', fix: 240, exp: [96, 253], h: [96, 96], fmt: 'ft', src: 'Published: 20\u0027 long × 8\u0027 high on weatherhaven.com; 253\u0022 deployed width from Weatherhaven’s MECC brochure (2021)' },
   { id: 'ehmecc', name: 'EHMECC', fix: 240, exp: [96, 253], h: [96, 150], fmt: 'ft', approx: true, src: 'Published: 12\u00276\u0022 of vertical space and a 4.5 ft roof raise; length and deployed width taken from the MECC it is built on' },
@@ -897,7 +899,7 @@ function scaleLineup() {
     <figure class="scl-fig"><figcaption>From above · expandable containers</figcaption><div class="scl-scroll">${scaleSvg('plan', hard, { minW: W })}</div></figure>
     <figure class="scl-fig"><figcaption>From above · softwall shelters, shown deployed, same scale</figcaption><div class="scl-scroll">${scaleSvg('plan', soft, { minW: W })}</div></figure>
     <figure class="scl-fig"><figcaption>From the end</figcaption><div class="scl-scroll">${scaleSvg('end', ends, { minW: W })}</div></figure>
-    <details class="scl-src"><summary>Where the numbers come from</summary><ul>${SCALE_SYS.map(s => `<li><b>${esc(s.name)}:</b> ${esc(s.src)}.</li>`).join('')}<li>Softwall shelters extend in modules, so their length is an example; their packed size isn’t published. HERCon and the other softwall shelters aren’t drawn because complete packed and deployed dimensions aren’t published.</li></ul></details>
+    <details class="scl-src"><summary>Where the numbers come from</summary><ul>${SCALE_SYS.map(s => `<li><b>${esc(s.name)}:</b> ${esc(s.src)}.</li>`).join('')}<li>All drawings show outside dimensions. Weatherhaven’s floor-area multiples (such as “three times the floor”) count usable floor, so they won’t always match the outlines.</li><li>Softwall shelters extend in modules, so their length is an example; their packed size isn’t published. HERCon and the other softwall shelters aren’t drawn because complete packed and deployed dimensions aren’t published.</li></ul></details>
   </div>`;
 }
 function scaleSingle(id) {
@@ -1052,12 +1054,12 @@ function pageInnovation() {
   const vids = [['IKZSBVyRhmc', 'Designed for speed and mobility', 'in_rain'], ['tllmaP7TDlw', 'Expandable portable space', 'p_ehmecc'], ['Ns0YkE_2dCc', 'Extreme climate and logistics', 'antarctica']];
   return `${pageHero({ crumb: [['Company', '/company'], ['Innovation', null]], title: 'Innovation', lead: 'Shelter solutions engineered for commercial, medical and military use — and proven in the harshest places on Earth.', imgKey: 'in_solar', stats: [['51', 'Patents'], ['30', 'Countries where they’re held'], ['3,000+', 'Expandable containers sold'], ['44%', 'Reduction in CO₂ emissions']] })}
   <nav class="subnav" aria-label="On this page"><div class="wrap"><a href="/innovation/engineering" data-sub="engineering">Engineering & patents</a><a href="/innovation/hqss" data-sub="hqss">HQSS spec sheet</a><a href="/innovation/expandable" data-sub="expandable">Expandable space</a><a href="/innovation/energy" data-sub="energy">Energy efficiency</a><a href="/innovation/videos" data-sub="videos">Videos</a></div></nav>
-  <section class="sec" id="engineering"><div class="wrap two"><div><h2 class="h-l">A world-class engineering team.</h2><p class="lead" style="margin:18px 0">Recognised by media and global CAD experts, the engineering team is the backbone behind 51 patents in more than 30 countries — and works with customers to design the ideal shelter for each mission.</p><p class="muted">Rapid deployment and redeployment is the core design element of every product — containerized, softwall or hybrid — and of the power, electrical and lighting systems integrated into them.</p></div><div class="photo" style="aspect-ratio:4/3">${img('in_rain', 'Rain testing a shelter in the engineering facility')}</div></div></section>
+  <section class="sec" id="engineering"><div class="wrap two"><div><h2 class="h-l">A world-class engineering team.</h2><p class="lead" style="margin:18px 0">Recognized by media and global CAD experts, the engineering team is the backbone behind 51 patents in more than 30 countries — and works with customers to design the ideal shelter for each mission.</p><p class="muted">Rapid deployment and redeployment is the core design element of every product — containerized, softwall or hybrid — and of the power, electrical and lighting systems integrated into them.</p></div><div class="photo" style="aspect-ratio:4/3">${img('in_rain', 'Rain testing a shelter in the engineering facility')}</div></div></section>
   <section class="sec dark" id="hqss"><div class="wrap"><div class="sec-head"><h2 class="h-l">HQSS — the most advanced tactical shelter system ever developed.</h2><p class="lead">${esc(HQSS.intro)}</p></div>
     <div class="spec"><div><dl class="spec-table" style="margin:0;border-color:#fff">${HQSS.specs.map(([k, v]) => `<div style="border-color:var(--rule-dark)"><dt style="color:rgba(222,233,244,.7)">${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
       <h3 class="h-s" style="margin:32px 0 12px">Semi-rigid flooring</h3><ul class="ticks">${HQSS.floor.map(f => `<li>${esc(f)}</li>`).join('')}</ul></div>
       <div class="plan"><svg id="plan-svg" viewBox="0 0 640 420" role="img" aria-label="Plan of the HQSS operations shelter, 41.8 by 23.8 feet, drawn to scale"></svg>
-        <div class="plan-legend"><span><i style="background:rgba(13,66,117,.8);border:1px solid #8db3da"></i>HQSS operations shelter, 995 ft²</span><label class="toggle"><input type="checkbox" id="plan-mecc">Overlay a deployed MECC (≈20\u0027 × 24\u0027)</label></div></div></div></div></section>
+        <div class="plan-legend"><span><i style="background:rgba(13,66,117,.8);border:1px solid #8db3da"></i>HQSS operations shelter, 995 ft²</span><label class="toggle"><input type="checkbox" id="plan-mecc">Overlay a deployed MECC (20\u0027 × 21\u0027)</label></div></div></div></div></section>
   <section class="sec" id="expandable"><div class="wrap two"><div class="photo" style="aspect-ratio:4/3">${img('p_ehmecc5', 'Inside an EHMECC')}</div><div><h2 class="h-l">Expandable portable space.</h2><p class="lead" style="margin:18px 0">Weatherhaven pioneered expandable containers and has sold more than 3,000 units to more than 25 military customers — from extended-height versions to small truck-mounted and trailer units.</p><p class="muted" style="margin-bottom:22px">All follow one principle: the smallest shipping configuration possible, expanding to the largest working space possible. The patented EHMECC’s walls swing down to triple the floor, then the roof rises from 8\u0027 to 12\u00276\u0022.</p><div class="hero-cta"><a class="btn btn-primary" href="/products/ehmecc/viewer">Raise an EHMECC roof in 3D</a><a class="btn btn-line" href="/products/scale">Compare expansion ratios</a></div></div></div></section>
   <section class="sec ice" id="energy"><div class="wrap calc"><div><h2 class="h-l">Energy efficiency, measured in fuel not trucked.</h2><p class="lead" style="margin:18px 0">The thermal performance of Weatherhaven systems cuts energy and fuel use — a 44% reduction in CO₂ emissions — and the redeployable softwall solution has the lowest carbon footprint of traditional shelter systems, from concrete to wood to modular.</p><p class="muted">Compared with shelters using standard insulation, Solarshades reduced fuel consumption by 2,631 litres a year — 7.33 tonnes of CO₂e — meaning less fuel to transport, and fewer convoys in hostile areas.</p></div>
     <div class="calc-box light-range"><label for="calc-n">Shelters with Solarshades <b id="calc-v" class="num">10</b></label><input type="range" id="calc-n" min="1" max="200" value="10" style="width:100%">
@@ -1103,7 +1105,7 @@ function pageCompany() {
     <p>From its origins serving expedition and mining exploration, the company’s work is best showcased where transportation is hard, environments are extreme, and mobility, performance and sustainability matter most.</p>
     <p>From the commercial market, Weatherhaven grew into supporting government and non-government agencies and militaries — including peacekeeping missions around the world — with camp and medical capability. It has been listed among the top defence companies in Canada for its military work and product innovation.</p>
     <p>Today the focus is custom, leading-edge shelter solutions with turnkey options, energy efficiency, redeployability and integrated camp systems — staying true to a dynamic, creative and agile culture.</p>
-    <div class="hero-cta" style="margin-top:12px"><a class="btn btn-line" href="${SITE.book}" target="_blank" rel="noopener">Read the 40th anniversary book</a><a class="btn btn-line" href="${SITE.iso}" target="_blank" rel="noopener">${I.doc}ISO certificate</a></div></div>
+    <div class="hero-cta" style="margin-top:12px"><a class="btn btn-line" href="${SITE.bookPdf}" target="_blank" rel="noopener">Read the 40th anniversary book (PDF)</a><a class="btn btn-line" href="${SITE.iso}" target="_blank" rel="noopener">${I.doc}ISO certificate</a></div></div>
     <aside class="factbox"><div><b>1,000+ years</b><span>Of combined team experience planning and delivering shelter and camp solutions</span></div><div><b>ISO 9001:2015</b><span>Registered for design, development, manufacturing, installation and servicing of redeployable shelter systems</span></div><div><b>Top 50</b><span>Canadian defence companies, Canadian Defence Review — first named in 2011</span></div><div><b>Seven continents</b><span>Of deployments, from the Antarctic to the Arctic islands</span></div></aside></div></section>
   <section class="sec dark" id="history"><div class="wrap"><div class="sec-head"><h2 class="h-l">Four decades in the field.</h2><p class="lead">Use the years — or your arrow keys — to move through the company’s history.</p></div>
     <div class="tl"><div class="tl-track" role="group" aria-label="Years">${TIMELINE.map((t, i) => `<button data-tl="${i}" aria-pressed="${i === 0}">${t.y}</button>`).join('')}</div><div class="tl-panel" id="tl-panel" aria-live="polite"></div>
@@ -1115,7 +1117,7 @@ function pageCompany() {
   <section class="sec ice" id="offices"><div class="wrap two" style="align-items:start"><div><h2 class="h-l">Head office and regional sites</h2><p class="lead" style="margin-top:16px">Expert teams across the world, wherever the project is.</p></div>
     <div class="cside"><div class="cblock"><h3>Head office</h3><p>${SITE.address.join('<br>')}</p><p style="margin-top:10px">Toll free (Canada & USA) <a href="tel:${SITE.tollFree}">${SITE.tollFree}</a><br>International <a href="tel:${SITE.intl}">${SITE.intl}</a><br><a href="mailto:${SITE.email}">${SITE.email}</a></p></div>
     <div class="cblock"><h3>Regional websites</h3><ul>${SITE.regional.map(r => `<li><a href="${r.url}" target="_blank" rel="noopener">${r.name}</a></li>`).join('')}</ul></div>
-    <div class="cblock"><h3>Suppliers</h3><p><a href="${SITE.supplier}" target="_blank" rel="noopener">Supplier information</a></p></div></div></div></section>
+    <div class="cblock"><h3>Suppliers</h3><p><a href="/buy/suppliers">Supplier information</a></p></div></div></div></section>
   ${ctaBand()}`;
 }
 function initCompany() {
@@ -1135,7 +1137,7 @@ function initCompany() {
 
 /* ---------------- NEWS ---------------- */
 function pageNews() {
-  return `${pageHero({ crumb: [['Company', '/company'], ['News', null]], title: 'News', lead: 'Partnerships, programs and where to meet the team next.', imgKey: 'news_banner' })}
+  return `${pageHero({ crumb: [['Company', '/company'], ['News', null]], title: 'News', lead: 'Partnerships, contracts, programs and the trade shows Weatherhaven attends.', imgKey: 'news_banner' })}
   <section class="sec"><div class="wrap">${newsList()}<p style="margin-top:36px"><a class="btn btn-line" href="${SITE.newsArchive}" target="_blank" rel="noopener">Browse the full news archive</a></p></div></section>${ctaBand()}`;
 }
 
@@ -1147,7 +1149,7 @@ function pageContact(q) {
     <h2 class="h-m" style="color:var(--navy);margin-bottom:24px">Start a request</h2>
     <form class="form" id="cform" novalidate>
       <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required><span class="err">Enter your name.</span></div>
-      <div class="field"><label for="f-org">Organisation <span>(optional)</span></label><input id="f-org" name="org" autocomplete="organization"></div>
+      <div class="field"><label for="f-org">Organization <span>(optional)</span></label><input id="f-org" name="org" autocomplete="organization"></div>
       <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required><span class="err">Enter a valid email, like name@example.com.</span></div>
       <div class="field"><label for="f-phone">Phone <span>(optional)</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
       <div class="field"><label for="f-sector">Sector</label><select id="f-sector" name="sector">${[['', 'Choose a sector'], ['military', 'Military & defence'], ['medical', 'Medical & emergency response'], ['commercial', 'Commercial, mining & research'], ['other', 'Other']].map(([v, t]) => `<option value="${v}" ${v === sec ? 'selected' : ''}>${t}</option>`).join('')}</select></div>
@@ -1223,7 +1225,7 @@ function pageBuy() {
   <section class="sec" id="quality"><div class="wrap">
     <div class="sec-head"><h2 class="h-l">Quality you can put in a contract.</h2><p class="lead">Certified quality management at its facilities, and containers certified for every mode of transport.</p></div>
     <div class="buy-q">
-      <div><b>ISO 9001:2015</b><p>Quality management certified for the Burnaby and Brockville facilities.</p><a class="link" href="${SITE.iso}" target="_blank" rel="noopener">Certificate (PDF)</a></div>
+      <div><b>ISO 9001:2015</b><p>Quality management certified for the Burnaby and Brockville facilities.</p><a class="link" href="/contact">Certificate on request</a></div>
       <div><b>ISO and CSC</b><p>MECC and EHMECC: certified for air, land and sea transport and stacking.</p><a class="link" href="/products/mecc">MECC specifications</a></div>
       <div><b>Tested to Milspec</b><p>MECC: rugged, heavy-duty construction tested to meet military specifications.</p><a class="link" href="/products/mecc">How the MECC is built</a></div>
       <div><b>15–20 years</b><p>MECC: built to last 15–20 years in the field. Repair, overhaul and parts come from the same team.</p><a class="link" href="/services">Services and support</a></div>
@@ -1315,7 +1317,6 @@ function buildIndex() {
   NEWS.forEach(n => add(n.t, n.date, n.url, 'News', n.d, 1));
   add('RFP guide', 'PDF download', SITE.rfpGuide, 'Download', 'request for proposal tender spec', 1);
   add('In-stock inventory', 'PDF download — ready to ship', SITE.instock, 'Download', 'available now stock inventory', 1);
-  add('ISO 9001:2015 certificate', 'PDF download', SITE.iso, 'Download', 'quality', 1);
   add('Energy efficiency calculator', 'Solarshade fuel savings', '/innovation/energy', 'Page', 'fuel co2 carbon diesel');
   return idx;
 }
@@ -1739,7 +1740,7 @@ export function pageFor(page, seg, q, section = null) {
     case 'products': {
       const p = P(seg[1]);
       if (seg[1] === 'compare') { html = pageCompare(q); init = () => initCompare(q); title = 'Compare systems — Weatherhaven'; }
-      else if (p) { html = pageProduct(p); init = () => { initProduct(p); if (!p.viewer) initSubnav(); }; title = `${p.name} — ${p.full} — Weatherhaven`; }
+      else if (p) { html = pageProduct(p); init = () => { initProduct(p); if (!p.viewer) initSubnav(); }; title = /weatherhaven/i.test(p.full) ? `${p.name} — ${p.full}` : `${p.name} — ${p.full} — Weatherhaven`; }
       else { html = pageProducts(q); init = () => { initProducts(q); initSubnav(); }; title = 'Products — Weatherhaven'; }
       break; }
     case 'services': html = pageServices(); init = () => { initLifecycle(SERVICES.some(s => s.id === section) ? section : null); initSubnav(); }; title = 'Services & support — Weatherhaven'; if (SERVICES.some(s => s.id === section)) section = 'lifecycle-sec'; if (section === 'lifecycle') section = 'lifecycle-sec'; break;
