@@ -315,7 +315,7 @@
       label: 'Arctic', skyTop: 0x0b1a33, skyMid: 0x3a5480, skyBot: 0xf0b48c, fog: 0x7d8db2, fogNear: 260, fogFar: 1500,
       ground: 0xd3dfee, ground2: 0x7e90ab, steel: 0xa8392d, fabric: 0xe8e5dc, frame: 0x8f3027, gn: 0.35,
       sun: 0xffa774, sunI: 2.2, sunEl: 0.2, sunAz: 0.95, hemiSky: 0x6f8ccc, hemiGround: 0x2a3654, hemiI: 0.55, env: 0.55,
-      exposure: 0.84, terrain: 'mountains', particles: 'snow', glow: 2.4, lamp: 1, tod: 0.55, storm: 0xb7c2d0
+      exposure: 0.84, terrain: 'mountains', particles: 'snow', glow: 2.4, lamp: 1, tod: 0.42, storm: 0xb7c2d0
     },
     desert: {
       label: 'Desert', skyTop: 0x3f7fc4, skyMid: 0x8db4dc, skyBot: 0xf2dfc3, fog: 0xe8d4b6, fogNear: 220, fogFar: 1000,
@@ -339,8 +339,8 @@
     dusk: {
       label: 'Dusk', skyTop: 0x203a66, skyMid: 0x7d7fa6, skyBot: 0xf4b07a, fog: 0xd7a787, fogNear: 200, fogFar: 950,
       ground: 0xc9a77f, ground2: 0x9a7658, steel: 0xb09a75, fabric: 0xd8c49d, frame: 0x9a8562, gn: 0.16,
-      sun: 0xffa15a, sunI: 2.6, sunEl: 0.1, sunAz: 0.55, hemiSky: 0x9aa6c9, hemiGround: 0x6d4d36, hemiI: 0.5, env: 0.75,
-      exposure: 1.0, terrain: 'dunes', particles: 'dust', glow: 2.2, lamp: 1, tod: 0.55, storm: 0xb68c5a
+      sun: 0xffc896, sunI: 2.3, sunEl: 0.2, sunAz: 0.55, hemiSky: 0xa9b4d4, hemiGround: 0x6d4d36, hemiI: 0.62, env: 0.85,
+      exposure: 1.0, terrain: 'dunes', particles: 'dust', glow: 1.5, lamp: 1, tod: 0.45, storm: 0xb68c5a
     }
   };
 

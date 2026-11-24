@@ -1481,3 +1481,5 @@ body.presenting .hero-foot{display:none}
 .lb-prev{left:14px}.lb-next{right:14px}
 .lb-x:hover,.lb-nav:hover{background:rgba(255,255,255,.2)}
 @media (max-width:759px){.lb{padding:56px 10px 20px}.lb-nav{width:42px;height:42px;font-size:28px;top:auto;bottom:18px;transform:none}.lb-prev{left:calc(50% - 52px)}.lb-next{right:calc(50% - 52px)}.lb-img{max-height:calc(100vh - 190px)}}
+
+.sec-head:has(.hero-cta),.sec-head:has(.btn){align-items:start}

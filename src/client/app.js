@@ -261,7 +261,7 @@ function bindViewerControls(root, v, opts = {}) {
     $$('[data-paint]', root).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.paint === s.paint)));
     if (xrT) xrT.checked = (v.xrayT || 0) > 0.5;
     if (xrS && document.activeElement !== xrS) { xrS.value = Math.round((s.xray || 0) * 100); xrS.style.setProperty('--v', xrS.value + '%'); }
-    if (tod) { if (document.activeElement !== tod) tod.value = Math.round((s.tod == null ? 0.55 : s.tod) * 100); tod.style.setProperty('--v', tod.value + '%'); }
+    if (tod) { if (document.activeElement !== tod) tod.value = Math.round((s.tod == null ? 0.42 : s.tod) * 100); tod.style.setProperty('--v', tod.value + '%'); }
     if (storm) storm.checked = !!s.storm;
     if (note) note.textContent = (s.storm ? STORM_NOTES : CLIMATE_NOTES)[s.climate];
     if (temp) temp.textContent = SHELTER_CLIMATES[s.climate].label;
@@ -289,7 +289,7 @@ function pageHome() {
     ${insideUI('trecc')}
     <div class="dock"><div class="wrap">
       <div class="dock-tray" id="hero-tray" hidden>
-        <div class="tray-row"><span class="tray-k">Finish</span>${paintPick()}<span class="tray-sep"></span><label class="toggle" title="Section cut: see inside the deployed unit"><input type="checkbox" data-xray-toggle>X-ray</label><span class="tray-sep"></span><label class="tod" title="Time of day">${I.sun}<input type="range" min="0" max="100" value="55" data-tod aria-label="Time of day, from midday to night">${I.moon}</label><label class="toggle"><input type="checkbox" data-storm>Storm</label></div>
+        <div class="tray-row"><span class="tray-k">Finish</span>${paintPick()}<span class="tray-sep"></span><label class="toggle" title="Section cut: see inside the deployed unit"><input type="checkbox" data-xray-toggle>X-ray</label><span class="tray-sep"></span><label class="tod" title="Time of day">${I.sun}<input type="range" min="0" max="100" value="42" data-tod aria-label="Time of day, from midday to night">${I.moon}</label><label class="toggle"><input type="checkbox" data-storm>Storm</label></div>
         <div class="tray-row"><span class="tray-k">Deployment</span><input type="range" min="0" max="100" value="0" data-scrub aria-label="Deployment progress" class="tray-scrub"><span class="tray-facts"><span data-su0><small>Set-up</small><b>1–2 people</b></span><span data-tm0><small>Time</small><b>A few minutes</b></span></span><button type="button" class="present-btn" data-action="present" title="Present mode (P)">${I.play}Present<kbd>P</kbd></button></div>
         <p class="climate-note" data-cnote></p>
       </div>
@@ -406,7 +406,7 @@ function initHome() {
 function initHero(stage, hero, fromMobile) {
   const v = getViewer();
   const first = !initHome.played && !fromMobile; initHome.played = true;
-  if (v && v.mount(stage, { offsetX: 0.23, offsetY: -0.03, offsetYNarrow: 0.13, offsetYTablet: -0.02, dist: 92, fewPins: true })) {
+  if (v && v.mount(stage, { offsetX: 0.23, offsetY: -0.03, offsetYNarrow: 0.13, offsetYTablet: -0.02, dist: 74, fewPins: true })) {
     v.setCamp(null); v.setModel('trecc'); v.setClimate('arctic');
     // if the CAD model can't load (no WebAssembly), the viewer falls back to the illustrative MECC
     const ready = v.whenModel().catch(() => {
@@ -1473,7 +1473,7 @@ function pagePlan() {
           <button type="button" data-pl="undo" aria-label="Undo" title="Undo (Ctrl+Z)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
           <button type="button" data-pl="zoomout" aria-label="Zoom out">−</button><button type="button" data-pl="zoomin" aria-label="Zoom in">+</button><button type="button" data-pl="fit">Fit</button>
         </div>
-        <div class="pl-3d-only pl-wx">${climateSeg('arctic')}<div class="wx-row"><label class="tod" title="Time of day">${I.sun}<input type="range" min="0" max="100" value="55" data-tod aria-label="Time of day, from midday to night">${I.moon}</label><label class="toggle"><input type="checkbox" data-storm>Storm</label></div></div>
+        <div class="pl-3d-only pl-wx">${climateSeg('arctic')}<div class="wx-row"><label class="tod" title="Time of day">${I.sun}<input type="range" min="0" max="100" value="42" data-tod aria-label="Time of day, from midday to night">${I.moon}</label><label class="toggle"><input type="checkbox" data-storm>Storm</label></div></div>
       </div>
       <div class="pl-stage" id="pl-stage">
         <svg id="pl-svg" tabindex="0" role="application" aria-label="Site plan. Select a shelter, then use the arrow keys to move it, R to rotate, D to duplicate and Delete to remove it." aria-describedby="pl-keys"></svg>
