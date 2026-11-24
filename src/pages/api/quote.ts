@@ -1,7 +1,8 @@
 /* Quote / contact endpoint. Runs on Vercel (serverless). Provider is chosen by env vars:
    RESEND_API_KEY + CONTACT_TO  → emails the request (Resend)
    HUBSPOT_PORTAL_ID + HUBSPOT_FORM_GUID → submits to a HubSpot form
-   neither → logs the request and returns ok (so the site works before accounts exist) */
+   neither → returns ok with delivered:false, and the form tells the visitor nothing was sent and how to reach the team.
+   Personal data is never written to the logs. */
 export const prerender = false;
 import type { APIRoute } from 'astro';
 
@@ -11,6 +12,7 @@ const clean = (v: unknown, max = 2000) => String(v ?? '').replace(/[\u0000-\u000
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
   const env = import.meta.env;
+  if (Number(request.headers.get('content-length') || 0) > 32_768) return json({ ok: false, error: 'That request is too large.' }, 413);
   const ct = request.headers.get('content-type') || '';
   let body: Record<string, unknown> = {};
   try { body = ct.includes('application/json') ? await request.json() : Object.fromEntries((await request.formData()).entries()); } catch { return json({ ok: false, error: 'bad request' }, 400); }
@@ -30,10 +32,12 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       const r = await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${env.HUBSPOT_PORTAL_ID}/${env.HUBSPOT_FORM_GUID}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields, context: { pageUri: d.page, ipAddress: ip } }) });
       if (!r.ok) throw new Error('hubspot ' + r.status);
     } else {
-      console.log('[quote] no provider configured; request logged only:\n' + summary);
+      console.warn('[quote] no email or CRM provider configured; request not delivered');
+      return json({ ok: true, delivered: false });
     }
   } catch (e) { console.error('[quote] delivery failed', e); return json({ ok: false, error: 'We could not send that just now. Please call us or try again shortly.' }, 502); }
   return json({ ok: true });
 };
 export const GET: APIRoute = () => json({ ok: false, error: 'POST only' }, 405);
+export const ALL: APIRoute = () => json({ ok: false, error: 'POST only' }, 405);   // OPTIONS, PUT, DELETE … get a clean 405
 const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });

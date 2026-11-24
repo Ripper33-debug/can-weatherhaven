@@ -5,12 +5,16 @@ const cfg = JSON.parse(fs.readFileSync(p, 'utf8'));
 const sec = { 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'SAMEORIGIN', 'Referrer-Policy': 'strict-origin-when-cross-origin', 'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), xr-spatial-tracking=(self)', 'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
   'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://plausible.io https://va.vercel-scripts.com https://browser.sentry-cdn.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' blob: data: https://plausible.io https://vitals.vercel-insights.com https://*.ingest.sentry.io; media-src 'self'; worker-src 'self' blob:; frame-ancestors 'self'; base-uri 'self'; form-action 'self'" };
 const routes = [
-  { src: '/assets/(.*)', headers: { 'Cache-Control': 'public, max-age=31536000, immutable' }, continue: true },
+  // Only files whose URL changes when their content changes are cached forever: hashed names (p_mecc.821812460a.webp)
+  // and engine files requested with ?v=<build>. Everything else under /assets is cached for a day.
+  { src: '^/assets/.+\\.[0-9a-f]{10}\\.[a-z0-9]+$', headers: { 'Cache-Control': 'public, max-age=31536000, immutable' }, continue: true },
+  { src: '^/assets/(?!.+\\.[0-9a-f]{10}\\.[a-z0-9]+$).*$', has: [{ type: 'query', key: 'v' }], headers: { 'Cache-Control': 'public, max-age=31536000, immutable' }, continue: true },
+  { src: '^/assets/(?!.+\\.[0-9a-f]{10}\\.[a-z0-9]+$).*$', missing: [{ type: 'query', key: 'v' }], headers: { 'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800' }, continue: true },
   { src: '/_astro/(.*)', headers: { 'Cache-Control': 'public, max-age=31536000, immutable' }, continue: true },
   { src: '/models/(.*)', headers: { 'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800' }, continue: true },
   { src: '/(.*)', headers: sec, continue: true }
 ];
-const mine = new Set(routes.map(r => r.src));
+const mine = new Set(routes.map(r => r.src));   // keep our header routes once (Astro's own come after)
 cfg.routes = [...routes, ...(cfg.routes || []).filter(r => !(mine.has(r.src) && r.continue && r.headers))];
 fs.writeFileSync(p, JSON.stringify(cfg, null, 2));
 console.log('postbuild: headers added');

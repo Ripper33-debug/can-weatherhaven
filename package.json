@@ -4,8 +4,8 @@
   "type": "module",
   "version": "0.1.0",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build && node scripts/postbuild.mjs",
+    "dev": "node scripts/content_index.mjs && astro dev",
+    "build": "node scripts/content_index.mjs && astro build && node scripts/postbuild.mjs",
     "preview": "astro preview",
     "test": "node tests/run.mjs",
     "budget": "node scripts/budget.mjs"

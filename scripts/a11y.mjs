@@ -3,7 +3,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 const { chromium } = createRequire(import.meta.url)(process.env.PW || '/opt/npm-tools/node_modules/playwright');
 const BASE = process.argv[2] || 'http://127.0.0.1:8800';
-const PAGES = ['/', '/products/', '/products/trecc/', '/products/mecc/', '/products/polar/', '/ar/mecc/', '/plan/', '/contact/', '/company/', '/services/'];
+const PAGES = ['/', '/products/', '/products/trecc/', '/products/mecc/', '/products/polar/', '/products/compare/', '/ar/mecc/', '/plan/', '/contact/', '/company/', '/services/', '/military/', '/military/c2/', '/services/support/kitchens/', '/products/accessories/interconnectors/', '/news/', '/news/staking-out-new-ground/', '/buy/', '/record/'];
 const axe = fs.readFileSync('node_modules/axe-core/axe.min.js', 'utf8');
 const b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 const pg = await b.newPage({ viewport: { width: 1280, height: 800 } });

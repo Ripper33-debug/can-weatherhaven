@@ -3,9 +3,11 @@ import { ASSETS } from '../client/app.js';
 import '../styles/fonts.css';
 import '../styles/site.css';
 import SITE from '../content/site.json';
+import { canonicalPath } from '../lib/canonical.js';
 const { title, description, path, chrome, jsonld, image, noindex } = Astro.props;
 const site = Astro.site ? String(Astro.site).replace(/\/$/, '') : '';
 const url = site + path;
+const canonical = site + canonicalPath(path);   // section URLs point at their parent page
 const NOINDEX = noindex || import.meta.env.PUBLIC_NOINDEX === '1';
 const ogImage = site + (image || '/assets/img/og-default.jpg');
 const ANALYTICS = import.meta.env.PUBLIC_ANALYTICS || 'none';   // plausible | vercel | none — both are cookieless, no consent banner needed
@@ -19,7 +21,7 @@ const CONSENT = import.meta.env.PUBLIC_CONSENT === '1';          // set when a c
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{title}</title>
 <meta name="description" content={description}>
-<link rel="canonical" href={url}>
+<link rel="canonical" href={canonical}>
 {NOINDEX && <meta name="robots" content="noindex, nofollow">}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Weatherhaven">
@@ -30,7 +32,7 @@ const CONSENT = import.meta.env.PUBLIC_CONSENT === '1';          // set when a c
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#061A2F">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230D4275'/%3E%3Cpath d='M7 25V12c0-3 2-5 5-5h13v18H19V14h-6v11z' fill='%23fff'/%3E%3C/svg%3E">
-<link rel="preload" href={`/assets/js/three.min.js${ASSETS.v}`} as="script" media="(min-width: 760px)">
+{path === "/" && <link rel="preload" href={`/assets/js/three.min.js${ASSETS.v}`} as="script" media="(min-width: 760px)">}
 {jsonld && (Array.isArray(jsonld) ? jsonld : [jsonld]).map(j => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
 {ANALYTICS === 'plausible' && <script defer data-domain={import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN} src="https://plausible.io/js/script.js"></script>}
 {ANALYTICS === 'vercel' && <script defer src="/_vercel/insights/script.js"></script>}
