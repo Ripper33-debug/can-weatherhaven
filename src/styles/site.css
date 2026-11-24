@@ -1579,3 +1579,9 @@ body.presenting .hero-foot{display:none}
   .hero-mobile .hero-clip{left:60%;right:var(--gutter,24px);width:auto;bottom:140px;top:calc(var(--top0) + 40px);height:auto;max-height:none;object-fit:contain;object-position:center;-webkit-mask-image:none;mask-image:none;border-radius:8px}
   .hero-mobile .dock-in{max-width:420px}
 }
+/* sector pages: proof points from each application's own page */
+.app-proof{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:18px 24px;margin:24px 0 4px;padding:18px 0 0;border-top:1px solid var(--rule);max-width:620px}
+.app-proof div{display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:5px}
+.app-proof dd{font-family:var(--f-head);font-size:clamp(19px,1.6vw,22px);font-weight:600;line-height:1.1;color:var(--navy);margin:0}
+.app-proof dt{font-size:13.5px;line-height:1.35;color:var(--steel)}
+.app p{font-size:18px;line-height:1.6}
