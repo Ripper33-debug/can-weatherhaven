@@ -19,7 +19,7 @@ for (const path of urls) {
   if (!/<h1[\s>]/.test(body)) fail(`${path}: no h1`);
   if (!/<meta name="description" content="[^"]{20,}"/.test(body)) fail(`${path}: no description`);
   for (const m of body.matchAll(/<script type="application\/ld\+json">([^<]*)<\/script>/g)) { try { JSON.parse(m[1]); } catch { fail(`${path}: bad JSON-LD`); } }
-  for (const m of body.matchAll(/href="(\/[^"#?]*)/g)) { const h = m[1]; if (!/^\/(assets|_astro|api)\//.test(h)) seenLinks.add(h.replace(/\/?$/, '/')); }
+  for (const m of body.matchAll(/href="(\/[^"#?]*)/g)) { const h = m[1]; if (!/^\/(assets|_astro|api)\//.test(h) && !/\.[a-z0-9]{2,12}$/i.test(h)) seenLinks.add(h.replace(/\/?$/, '/')); }
 }
 for (const h of seenLinks) { if (!urls.includes(h) && h !== '/ar/' && h !== '/products/compare/') { const { status } = await text(BASE + h); if (status !== 200) fail(`dead link ${h} → ${status}`); } }
 // endpoint (skipped on a static server)

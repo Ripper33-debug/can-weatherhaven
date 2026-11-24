@@ -4,7 +4,7 @@
    three.js downloads only when the viewer comes near the screen, and only on a GPU: software WebGL keeps
    the poster, with the deploy video and the interior render instead. */
 import { SYSTEM_MODELS, MODEL_NAMES } from '../lib/system-models';
-import { SITE_FOR } from '../lib/three/siteBackdrop';
+import { SITE_FOR } from '../lib/site-for';
 
 // Site (the shelter in the climate it's sold for) or studio (the clean grid); remembered per visitor.
 const SITE_LABEL = { desert: 'Desert', arctic: 'Arctic', temperate: 'Forest', tropical: 'Tropical' };

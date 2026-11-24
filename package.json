@@ -11,14 +11,17 @@
     "budget": "node scripts/budget.mjs"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.7.4",
-    "@astrojs/vercel": "^8.2.11",
-    "astro": "^5.18.2",
+    "@astrojs/sitemap": "^3.7.6",
+    "@astrojs/vercel": "^11.0.22",
+    "astro": "^7.4.13",
     "sharp": "^0.35.5",
     "three": "^0.184.0",
     "three-mesh-bvh": "^0.9.16"
   },
   "devDependencies": {
     "axe-core": "^4.14.0"
+  },
+  "overrides": {
+    "path-to-regexp@<6.3.0": "^6.3.0"
   }
 }

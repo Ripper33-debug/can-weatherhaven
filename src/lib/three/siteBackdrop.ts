@@ -7,7 +7,8 @@
  */
 import * as THREE from "three";
 
-export type SiteKind = "desert" | "arctic" | "temperate" | "tropical";
+import type { SiteKind } from "../site-for";
+export type { SiteKind };
 
 type Palette = {
   skyTop: number; skyMid: number; skyBot: number; sun: number; clouds: number;
@@ -239,9 +240,3 @@ export function createSiteBackdrop(kind: SiteKind, center: THREE.Vector3, radius
     dispose: () => disposables.forEach((d) => d.dispose()),
   };
 }
-
-/** Which climate each system's page shows it in (where Weatherhaven describes it working). */
-export const SITE_FOR: Record<string, SiteKind> = {
-  mecc: "temperate", ehmecc: "desert", ateps: "desert", hercon: "temperate", series4: "temperate", series8: "tropical",
-  rdmss: "desert", mts: "temperate", mex26: "desert", polarhaven: "arctic", polarchief: "arctic", endurance: "arctic",
-};
