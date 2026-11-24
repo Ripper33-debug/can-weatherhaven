@@ -4,6 +4,11 @@
    three.js downloads only when the viewer comes near the screen, and only on a GPU: software WebGL keeps
    the poster, with the deploy video and the interior render instead. */
 import { SYSTEM_MODELS, MODEL_NAMES } from '../lib/system-models';
+import { SITE_FOR } from '../lib/three/siteBackdrop';
+
+// Site (the shelter in the climate it's sold for) or studio (the clean grid); remembered per visitor.
+const SITE_LABEL = { desert: 'Desert', arctic: 'Arctic', temperate: 'Forest', tropical: 'Tropical' };
+const viewPref = () => { try { return localStorage.getItem('wh-sv-view') || 'site'; } catch (_) { return 'site'; } };
 
 const ease = t => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
 const FINISHES = [['green', 'Green', '#4b5a37'], ['tan', 'Desert tan', '#a38c62'], ['arctic', 'Arctic white', '#e4e7e6']];
@@ -41,6 +46,7 @@ export function systemViewerHTML(ids, esc) {
       <div class="sv-seg sv-3d" role="group" aria-label="Packed or deployed"><button data-sv-dep="0" aria-pressed="false">Packed</button><button data-sv-dep="1" aria-pressed="true">Deployed</button></div>
       <button class="sv-btn sv-3d" data-sv-inside aria-pressed="false">Show inside</button>
       <button class="sv-btn sv-3d" data-sv-walk>Step inside</button>
+      <div class="sv-seg sv-3d sv-view" role="group" aria-label="Background"><button data-sv-view="site" aria-pressed="true" data-sv-sitelabel>${esc(SITE_LABEL[SITE_FOR[ids[0]] || 'temperate'])}</button><button data-sv-view="studio" aria-pressed="false">Studio</button></div>
       <span class="sv-fin sv-3d" role="group" aria-label="Finish" ${fin ? '' : 'hidden'}>${FINISHES.map(([k, l, c], i) => `<button data-sv-fin="${k}" aria-pressed="${i === 0}" title="${l}" aria-label="${l}"><i style="background:${c}"></i></button>`).join('')}</span>
       <button class="sv-btn sv-2d" data-sv-video>Watch it deploy</button>
       <button class="sv-btn sv-2d" data-sv-still aria-pressed="false">Inside</button>
@@ -85,6 +91,7 @@ export function mountSystemViewer(root, { reduced = false } = {}) {
     else tween = { from: dep, to, start: performance.now(), ms: stage.deployMs * Math.max(0.35, Math.abs(to - dep)) };
     kick();
   };
+  const setViewUI = v => { $$('[data-sv-view]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.svView === v))); const l = $('[data-sv-sitelabel]'); if (l) l.textContent = SITE_LABEL[SITE_FOR[id] || 'temperate']; };
   const setDepUI = on => $$('[data-sv-dep]').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.svDep === '1') === on)));
   const setInsideUI = on => { inside = on; $('[data-sv-inside]').setAttribute('aria-pressed', String(on)); };
   const walkUI = on => { walking = on; root.classList.toggle('sv-walking', on); hint.hidden = !on; outBtn.hidden = !on; if (on) canvas.focus({ preventScroll: true }); };
@@ -104,9 +111,9 @@ export function mountSystemViewer(root, { reduced = false } = {}) {
       const { createSystemStage } = await import('../lib/three/systemStage');
       if (my !== token || cancelled) return;
       if (stage) { stage.dispose(); stage = null; const c = canvas.cloneNode(false); canvas.replaceWith(c); canvas = c; bindCanvas(); }
-      const s = await createSystemStage(canvas, SYSTEM_MODELS[id], { maxDpr: 1.75 });
+      const s = await createSystemStage(canvas, SYSTEM_MODELS[id], { maxDpr: 1.75, site: viewPref() === 'studio' ? null : (SITE_FOR[id] || 'temperate') });
       if (my !== token || cancelled) { s.dispose(); return; }
-      stage = s; stage.enableControls(kick);
+      stage = s; stage.enableControls(kick); setViewUI(viewPref());
       tween = null; pending = null; setInsideUI(false); walkUI(false);
       $$('.sv-3d[data-sv-dep], [data-sv-dep]').forEach(b => b.disabled = !stage.canStow);
       $('[data-sv-inside]').hidden = !stage.hasInside; $('[data-sv-walk]').hidden = !stage.canWalk;
@@ -165,6 +172,7 @@ export function mountSystemViewer(root, { reduced = false } = {}) {
     else if (b.hasAttribute('data-sv-inside')) toggleInside();
     else if (b.hasAttribute('data-sv-walk')) stepInside();
     else if (b.hasAttribute('data-sv-out')) stepOutside();
+    else if (b.dataset.svView) { const v = b.dataset.svView; try { localStorage.setItem('wh-sv-view', v); } catch (_) { } setViewUI(v); stage && (stage.setSite(v === 'studio' ? null : (SITE_FOR[id] || 'temperate')), kick()); }
     else if (b.dataset.svFin) { $$('[data-sv-fin]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); stage && (stage.setFinish(b.dataset.svFin, !reduced), kick()); }
     else if (b.hasAttribute('data-sv-fs')) { const fs = document.fullscreenElement; fs ? document.exitFullscreen() : (root.requestFullscreen ? root.requestFullscreen().catch(() => { }) : null); }
     else if (b.dataset.svm) switchModel(b.dataset.svm);

@@ -24,6 +24,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import type { SystemModel } from "../system-models";
 import type { TreccFinish } from "./treccFinishes";
 import { withImageTextures } from "./gltfImageTextures";
+import { createSiteBackdrop, type SiteBackdrop, type SiteKind } from "./siteBackdrop";
 import type { WalkController, WalkRoom } from "./walkThrough";
 
 /** Same Draco decoder the AR page uses (the newer one; model-viewer and three both read it). */
@@ -77,6 +78,8 @@ export type SystemStage = {
   walkKey: (k: "forward" | "back" | "left" | "right") => void;
   /** True while standing inside (not while walking in or out). */
   walking: () => boolean;
+  /** Puts the shelter on a site (sky, ground, horizon) or back on the studio grid (null). */
+  setSite: (kind: SiteKind | null) => void;
 };
 
 /** Ease in-out cubic, as the deploy toggle uses. */
@@ -96,7 +99,7 @@ const smooth = (a: number, b: number, v: number) => {
 export async function createSystemStage(
   canvas: HTMLCanvasElement,
   model: SystemModel,
-  { maxDpr = 1.75, shadows = true }: { maxDpr?: number; shadows?: boolean } = {},
+  { maxDpr = 1.75, shadows = true, site = null }: { maxDpr?: number; shadows?: boolean; site?: SiteKind | null } = {},
 ): Promise<SystemStage> {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxDpr));
@@ -385,6 +388,21 @@ export async function createSystemStage(
   grid.position.y = 0.001;
   scene.add(grid);
 
+  // ---- site: the shelter on the ground in a climate, or on the studio grid ----
+  let backdrop: SiteBackdrop | null = null;
+  const studio = { fog: scene.fog, key: key.color.clone(), keyI: key.intensity, hemiSky: hemi.color.clone(), hemiGround: hemi.groundColor.clone(), hemiI: hemi.intensity };
+  const padHalf: [number, number] = [size.x / 2 + 0.8, size.z / 2 + 0.8];
+  const setSite = (kind: SiteKind | null) => {
+    if (backdrop) { scene.remove(backdrop.group); backdrop.dispose(); backdrop = null; }
+    const L = kind ? (backdrop = createSiteBackdrop(kind, center, radius, padHalf)).light : null;
+    if (backdrop) scene.add(backdrop.group);
+    scene.fog = backdrop ? backdrop.fog : studio.fog;
+    key.color.copy(L ? L.key : studio.key); key.intensity = sunlight.key = L ? L.keyI : studio.keyI;
+    hemi.color.copy(L ? L.hemiSky : studio.hemiSky); hemi.groundColor.copy(L ? L.hemiGround : studio.hemiGround); hemi.intensity = L ? L.hemiI : studio.hemiI;
+    grid.visible = shadowFloor.visible = !kind;
+    renderer.shadowMap.needsUpdate = true;
+  };
+
   // Camera: three-quarter view of the end with the door (the side the site kit lies on, when there
   // is one; otherwise +Z), framed on the deployed footprint.
   const siteKit = [...hidden, ...grown].find((h) => /site|kit/i.test(h.name));
@@ -393,10 +411,13 @@ export async function createSystemStage(
     const kb = new THREE.Box3().setFromObject(siteKit);
     doorSign = kb.getCenter(new THREE.Vector3()).z < center.z ? -1 : 1;
   }
-  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, radius * 20 + 40);
+  // far enough for the site's sky (see siteBackdrop: radius × 16 + 40, at least 4 m)
+  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, Math.max(4, radius) * 20 + 80);
+  if (site) setSite(site);
   const target = new THREE.Vector3(center.x, size.y * 0.38, center.z);
   const az = THREE.MathUtils.degToRad(doorSign > 0 ? 36 : 180 + 36);
-  const el = THREE.MathUtils.degToRad(17);
+  // A little lower on a site, so the horizon and sky are in frame; the studio view looks down a bit more.
+  const el = THREE.MathUtils.degToRad(site ? 11 : 17);
   let dist = 10;
   /** The camera backs off a little while looking in: seen from above, the footprint is taller in frame. */
   let viewZoom = 1;
@@ -856,7 +877,7 @@ export async function createSystemStage(
     const to = on ? 1 : 0;
     camFrom = new THREE.Spherical().setFromVector3(camera.position.clone().sub(orbitTarget()));
     camTo = camFrom.clone();
-    camTo.phi = THREE.MathUtils.degToRad(90 - (on ? INSIDE_ELEVATION : OUTSIDE_ELEVATION));
+    camTo.phi = THREE.MathUtils.degToRad(90 - (on ? INSIDE_ELEVATION : backdrop ? 11 : OUTSIDE_ELEVATION));
     viewZoom = on ? 1.22 : 1;
     camTo.radius = dist * viewZoom;
     if (animate) {
@@ -1039,6 +1060,7 @@ export async function createSystemStage(
     setWalk,
     walkKey: (k) => walkCtrl?.key(k),
     walking: () => !!walkCtrl,
+    setSite: (kind) => { setSite(kind); },
     preloadInside: loadFitout,
     insideProgress: () => insideK,
     setDeploy,
@@ -1080,6 +1102,6 @@ export async function createSystemStage(
     render,
     resize,
     isAnimating: () => finishT < 1 || (inside.ms > 0 && insideK !== inside.to) || !!walkMove || walkBusy,
-    dispose: disposeAll,
+    dispose: () => { backdrop?.dispose(); disposeAll(); },
   };
 }
