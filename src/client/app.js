@@ -14,6 +14,8 @@ import CONTACTS from '../content/contacts.json';
 import NEWS from '../content/news.json';
 import SITES from '../content/sites.json';
 import RFP from '../content/rfp.json';
+import { PRODUCT_MODELS } from '../lib/system-models';
+import { systemViewerHTML, mountSystemViewer } from './systemViewer.js';
 import PLACES from '../content/places.json';
 import FINDER from '../content/finder.json';
 import TRUSTED from '../content/trusted.json';
@@ -926,7 +928,7 @@ function pageProduct(p) {
   return `${pageHero({ crumb: [['Products', '/products'], [fam.name, `/products?f=${p.family}`], [p.name, null]], title: p.name, sub: p.full, lead: p.tagline + ' ' + p.summary.split('. ')[0] + '.', imgKey: p.imgs[0], stats: p.stats,
     actions: `<a class="btn btn-primary" href="/contact?product=${p.id}">Request a quote</a><button class="btn btn-ghost" data-cmp="${p.id}" aria-pressed="${compare.has(p.id)}">${compare.has(p.id) ? 'Added to compare' : 'Add to compare'}</button>` })}
   <nav class="subnav pillnav" aria-label="On this page"><div class="wrap"><div class="pill">
-    <a href="/products/${p.id}/overview" data-sub="overview">Overview</a>${p.viewer ? `<a href="/products/${p.id}/viewer" data-sub="viewer">3D model</a>` : ''}<a href="/products/${p.id}/applications" data-sub="applications">Applications</a><a href="/products/${p.id}/related" data-sub="related">Related</a>
+    <a href="/products/${p.id}/overview" data-sub="overview">Overview</a>${p.viewer || PRODUCT_MODELS[p.id] ? `<a href="/products/${p.id}/viewer" data-sub="viewer">3D model</a>` : ''}<a href="/products/${p.id}/applications" data-sub="applications">Applications</a><a href="/products/${p.id}/related" data-sub="related">Related</a>
     <a class="pill-cta" href="/contact?product=${p.id}"><span class="pc-full">Request a quote</span><span class="pc-short">Quote</span></a></div></div></nav>
   <section class="sec" id="overview"><div class="wrap pd">
     <div class="gallery"><div class="main">${img(p.imgs[0], `${p.name} — photo 1`, 'id="gmain"')}</div>${p.imgs.length > 1 ? `<div class="thumbs">${p.imgs.map((k, i) => `<button data-g="${k}" aria-pressed="${i === 0}" aria-label="Photo ${i + 1}">${img(k, '')}</button>`).join('')}</div>` : ''}</div>
@@ -936,6 +938,7 @@ function pageProduct(p) {
       <div class="pd-acts"><a class="btn btn-primary" href="/contact?product=${p.id}">Request a quote</a><a class="btn btn-line" href="${SITE.rfpGuide}" target="_blank" rel="noopener">${I.doc}RFP guide</a></div></div>
   </div></section>
   ${scaleSingle(p.id)}
+  ${!p.viewer && PRODUCT_MODELS[p.id] ? `<section class="sec-tight sv-sec" id="viewer"><div class="wrap"><div class="sec-head"><h2 class="h-l">See it deploy.</h2><p class="lead">${PRODUCT_MODELS[p.id].length > 1 ? 'Pick a shelter, watch it go up, look inside, then step in and walk round.' : `Watch the ${esc(p.name)} deploy, look inside, then step in and walk round.`} Drag to turn it.</p></div>${systemViewerHTML(PRODUCT_MODELS[p.id], esc)}</div></section>` : ''}
   ${p.viewer ? (() => { const isM = p.viewer === 'mecc' || p.viewer === 'ehmecc', V = VIEWER_COPY[p.viewer]; return `<section class="sec-tight ice" id="viewer"><div class="wrap"><div class="sec-head"><h2 class="h-l">See it deploy.</h2><p class="lead">${esc(V.lead)} Drag to look around.</p></div>
     <div class="viewer-card" id="pd-card"><div class="stage" id="pd-stage" style="background:url(${IMG[p.imgs[0]]}) center/cover"></div>${isM ? insideUI() : p.viewer === 'trecc' ? insideUI('trecc') : ''}<div class="vbar" id="pd-vbar"><button class="deploy-btn" data-deploy aria-pressed="false"><span class="ic">${I.up}</span><span class="t">Deploy</span></button>${p.viewer === 'trecc' ? paintPick() + `<label class="xr-ctl" title="Section cut"><span>Section cut</span><input type="range" min="0" max="100" value="0" data-xray aria-label="Section cut depth"></label>` : ''}
       ${p.viewer === 'trecc' ? `<div class="readout"><div><small>Floor area vs. footprint</small><b data-area>1.0×</b></div><div><small>Height</small><b data-height>5\u0027</b></div></div>` : isM ? `<div class="readout"><div><small>Floor area, approx.</small><b data-area>160 ft²</b></div><div><small>Height</small><b data-height>8\u0027</b></div></div>` : `<div class="readout"><div><small>${esc(V.k)}</small><b>${esc(V.v)}</b></div></div>`}
@@ -961,6 +964,7 @@ const VIEWER_COPY = {
 };
 function initProduct(p) {
   initScale();
+  if (!p.viewer && PRODUCT_MODELS[p.id]) cleanups.push(mountSystemViewer($('#viewer .sv'), { reduced: reduceMotion }));
   const main = $('#gmain');
   $$('[data-g]').forEach(b => b.addEventListener('click', () => { main.src = IMG[b.dataset.g]; $$('[data-g]').forEach(x => x.setAttribute('aria-pressed', x === b)); }));
   if (p.viewer) {

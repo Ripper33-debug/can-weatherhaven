@@ -110,7 +110,6 @@
    ]
   ],
   "note": "First MECC units were delivered in 1994 to US Natick Labs and the Canadian Coast Guard.",
-  "viewer": "mecc",
   "src": "https://weatherhaven.com/products/expandable-container/mecc",
   "finder": {
    "m": {
@@ -252,7 +251,6 @@
    "q": "Love the EHMECC. Best bit of kit we’ve seen on this.",
    "a": "United Kingdom Ministry of Defence"
   },
-  "viewer": "ehmecc",
   "src": "https://weatherhaven.com/products/expandable-container/ehmecc",
   "finder": {
    "m": {
@@ -435,7 +433,6 @@
   "name": "HERCon",
   "full": "Hardwall Expandable Redeployable Container",
   "family": "expandable",
-  "viewer": "hercon",
   "tagline": "Two 4' units ship as one. Up to six times the space.",
   "stats": [
    [
@@ -919,7 +916,6 @@
   "name": "Series 4",
   "full": "The original Weatherhaven shelter",
   "family": "soft",
-  "viewer": "series4",
   "tagline": "High performance in every climate, polar regions included.",
   "stats": [
    [

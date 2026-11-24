@@ -1,0 +1,24 @@
+---
+/* AR page for every system with a model (the TRECC keeps /ar/). Same template as the TRECC page. */
+import tpl from '../../ar-template.html?raw';
+import IMG from '../../generated/img.json';
+import fontsCss from '../../styles/fonts.css?raw';
+import { SYSTEM_MODELS, PRODUCT_MODELS } from '../../lib/system-models';
+export function getStaticPaths() { return Object.keys(SYSTEM_MODELS).map(id => ({ params: { id } })); }
+const { id } = Astro.params;
+const m = SYSTEM_MODELS[id];
+const name = m.ar.title.replace(/^See the /, '').replace(/ at full size$/, '');
+const product = Object.keys(PRODUCT_MODELS).find(k => PRODUCT_MODELS[k].includes(id)) || id;
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const swap = (s, a, b) => { if (!s.includes(a)) throw new Error('AR template changed: ' + a.slice(0, 60)); return s.replace(a, b); };
+let html = tpl.replace('/*FONTS*/', fontsCss).replace('/*LOGO*/', IMG.logo_w).replace('/*GLB*/', m.arModel || m.deployed).replace('/*DRACO*/', '/assets/draco-ar/').replace('/*QR*/', '/assets/ar/qrcode.js').replace('/*MV*/', '/assets/ar/model-viewer.min.js');
+html = swap(html, 'content="Place the deployed Weatherhaven TRECC in your space at full size with augmented reality."', `content="Place the deployed Weatherhaven ${esc(name)} in your space at full size with augmented reality."`);
+html = swap(html, '<title>TRECC at full size — Weatherhaven</title>', `<title>${esc(name)} at full size — Weatherhaven</title>`);
+html = swap(html, '<a href="../#/products/trecc">← Back to the TRECC</a>', `<a href="/products/${product}/">← Back to the ${esc(name)}</a>`);
+html = swap(html, 'alt="Weatherhaven TRECC expandable container, deployed"', `alt="${esc(m.ar.alt)}"`);
+html = swap(html, '>Weatherhaven CAD model</p><h1>See the TRECC at full size.</h1>', `>3D model built from published specifications and photos</p><h1>${esc(m.ar.title)}.</h1>`);
+html = html.replace(/<p>Place the deployed TRECC in the room[^<]*<\/p>/, `<p>${esc(m.ar.lead)}</p>`);
+html = html.replace(/<div class="facts">[\s\S]*?<\/div>/, `<div class="facts">${m.ar.facts.map(f => `<span><b>${esc(f)}</b></span>`).join('')}</div>`);
+html = html.replace(/<p class="small">The paint shown is the green finish;[^<]*<\/p>/, '<p class="small">An illustrative 3D model, not engineering CAD. Shown deployed, without the interior fit-out.</p>');
+---
+<Fragment set:html={html} />
