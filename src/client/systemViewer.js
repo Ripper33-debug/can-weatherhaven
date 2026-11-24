@@ -97,6 +97,8 @@ export function mountSystemViewer(root, { reduced = false } = {}) {
   const walkUI = on => { walking = on; root.classList.toggle('sv-walking', on); hint.hidden = !on; outBtn.hidden = !on; if (on) canvas.focus({ preventScroll: true }); };
   const cantWalk = () => { walkUI(false); stage && stage.setInside(true, !reduced).then(kick); };
 
+  // iPhone Safari has no full screen for page elements: don't show a button that can't work
+  if (!document.fullscreenEnabled || !root.requestFullscreen) { const fs = $('[data-sv-fs]'); fs && (fs.hidden = true); }
   const onScreen = new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) kick(); });
   onScreen.observe(root);
 
